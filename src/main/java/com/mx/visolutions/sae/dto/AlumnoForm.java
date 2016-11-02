@@ -1,0 +1,63 @@
+package com.mx.visolutions.sae.dto;
+
+import javax.validation.constraints.NotNull;
+
+public class AlumnoForm {
+	
+	@NotNull
+	private String apPaterno;
+	
+	@NotNull
+	private String apMaterno;
+	
+	@NotNull
+	private String nombre;
+	
+	private Integer gradoId;
+	private Integer semaforoId;
+	private Boolean becaId;
+	
+	public String getApPaterno() {
+		return apPaterno;
+	}
+	public void setApPaterno(String apPaterno) {
+		this.apPaterno = apPaterno;
+	}
+	public String getApMaterno() {
+		return apMaterno;
+	}
+	public void setApMaterno(String apMaterno) {
+		this.apMaterno = apMaterno;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public Integer getGradoId() {
+		return gradoId;
+	}
+	public void setGradoId(Integer gradoId) {
+		this.gradoId = gradoId;
+	}
+	public Integer getSemaforoId() {
+		return semaforoId;
+	}
+	public void setSemaforoId(Integer semaforoId) {
+		this.semaforoId = semaforoId;
+	}
+	public Boolean getBecaId() {
+		return becaId;
+	}
+	public void setBecaId(Boolean becaId) {
+		this.becaId = becaId;
+	}
+	
+	@Override
+	public String toString() {
+		return "AlumnoForm [apPaterno=" + apPaterno + ", apMaterno=" + apMaterno + ", nombre=" + nombre + ", gradoId="
+				+ gradoId + ", semaforoId=" + semaforoId + ", becaId=" + becaId + "]";
+	}
+
+}
