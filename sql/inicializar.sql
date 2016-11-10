@@ -65,7 +65,7 @@ create table sae.pago_grado(
     primary key(id)
 )charset=utf8;
 
-alter table sae.pago_grado add constraint foreign key (id_pago) references cat_pagos(id);
+alter table sae.pago_grado add constraint foreign key (id_pago) references sae.cat_pagos(id);
 
 create unique index IDX_PAGO_ROL on sae.pago_grado(id_pago,id_grado);
 
@@ -80,7 +80,7 @@ create table sae.alumno_pago(
     primary key(id)
 )charset=utf8;
 
-alter table sae.alumno_pago add constraint foreign key (id_pago_grado) references pago_grado(id);
+alter table sae.alumno_pago add constraint foreign key (id_pago_grado) references sae.pago_grado(id);
 
 /*create unique index IDX_PAGO_ROL on sae.pago_grado(id_alumno,id_grado);*/
     
