@@ -12,88 +12,69 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="Usuario")
+@Table(name="usuario")
 public class User {
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
-	
+	@Column
+	private int id;
+	@Column
+	private String password;
 	@Column
 	private String email;
-	
+	@Column
+	private int rol_id;
+	@Column
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fecha_alta;
+	@Column
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fecha_modificacion;
 	@Column
 	private String usuario;
 	
-	@Column
-	private String password;
-	
-	@Column
-	private long rolId;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column
-	private Date fechaAlta;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column
-	private Date fechaModificacion;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getUsuario() {
 		return usuario;
 	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setUsuario(String username) {
+		this.usuario = username;
 	}
-
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public long getRolId() {
-		return rolId;
+	public String getEmail() {
+		return email;
 	}
-
-	public void setRolId(long rolId) {
-		this.rolId = rolId;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
-	public Date getFechaAlta() {
-		return fechaAlta;
+	public int getRol_id() {
+		return rol_id;
 	}
-
-	public void setFechaAlta(Date fechaAlta) {
-		this.fechaAlta = fechaAlta;
+	public void setRol_id(int rol_id) {
+		this.rol_id = rol_id;
 	}
-
-	public Date getFechaModificacion() {
-		return fechaModificacion;
+	public Date getFecha_alta() {
+		return fecha_alta;
 	}
-
-	public void setFechaModificacion(Date fechaModificacion) {
-		this.fechaModificacion = fechaModificacion;
+	public void setFecha_alta(Date fecha_alta) {
+		this.fecha_alta = fecha_alta;
 	}
-
+	public Date getFecha_modificacion() {
+		return fecha_modificacion;
+	}
+	public void setFecha_modificacion(Date fecha_modificacion) {
+		this.fecha_modificacion = fecha_modificacion;
+	}
+	
 	
 }

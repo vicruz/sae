@@ -77,6 +77,8 @@
     <script src="/public/lib/sae/js/alumnoTable.js"></script>
     <script src="/public/lib/sae/js/alumnoPagosTable.js"></script>
     <script type="text/javascript" src="/public/lib/sae/js/alumnoPagosTableJS.js"></script>
+    <script src="/public/lib/sae/js/userTable.js"></script>
+    <script src="/public/lib/sae/js/catPagos.js"></script>
     
     
     <script>      

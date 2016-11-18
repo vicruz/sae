@@ -52,7 +52,7 @@ public class AlumnoController {
 	
 	@RequestMapping(value="/alumnos", method = RequestMethod.GET)
 	public String alumnos(Model model) {
-		
+		System.out.println("Alumno controller-GET");
 		//model.addAttribute("name","vic");
 		model.addAttribute(new AlumnoForm());
 		//logger.info("Alumnos GET request");
@@ -62,7 +62,7 @@ public class AlumnoController {
 	@RequestMapping(value="/alumnos", method = RequestMethod.POST)
 	public String signup(@ModelAttribute("alumnoForm") @Valid AlumnoForm alumnoForm,
 			BindingResult result, RedirectAttributes redirectAttributes){
-		
+		System.out.println("Alumno controller");
 		if(result.hasErrors())
 			return "alumnos";
 			

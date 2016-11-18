@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		user.setEmail(signupForm.getEmail());
 		user.setUsuario(signupForm.getName());
 		user.setPassword(passwordEncoder.encode(signupForm.getPassword()));
+		
 		userRepository.save(user);
 	}
 	
@@ -46,6 +47,18 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		return new UserDetailsImpl(user);
 			
 		
+	}
+
+	@Override
+	public User findUserById(int usuarioId) {
+		// TODO Auto-generated method stub
+		return userRepository.findUserById(usuarioId);
+	}
+
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public int deleteUserById(int usuarioId) {
+		// TODO Auto-generated method stub
+		return userRepository.deleteById(usuarioId);
 	}
 
 }

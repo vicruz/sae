@@ -1,0 +1,62 @@
+package com.mx.visolutions.sae.controller.rest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+
+
+import com.mx.visolutions.sae.entities.User;
+
+
+import com.mx.visolutions.sae.json.JSon;
+import com.mx.visolutions.sae.json.UserJson;
+
+import com.mx.visolutions.sae.repositories.UserRepository;
+
+
+
+@RestController
+public class UserRestController {
+
+	private static final Logger logger = LoggerFactory.getLogger(UserRestController.class);
+	
+	private UserRepository userRepository;
+	
+	public UserRestController(UserRepository userRepository){
+		this.userRepository = userRepository;
+	}
+	
+	
+	@RequestMapping(value="/userRest",method = RequestMethod.POST)
+	public JSon adminRest(){
+		
+		JSon value = new JSon();
+		
+		logger.info("Usuario POST request");
+		List<UserJson> lstJson = new ArrayList<UserJson>();
+		
+	List<User> lstAdmin = userRepository.findAll();
+		
+		if(lstAdmin!=null){
+			for(User administrador : lstAdmin){
+				UserJson json = new UserJson();
+				json.setUsuario(administrador.getUsuario());
+				json.setEmail(administrador.getEmail());
+				json.setId(administrador.getId());
+				json.setUrl("/usuario/"+administrador.getId());
+				lstJson.add(json);
+			}
+		}
+		
+		value.setData(lstJson);
+		return value;
+	}
+	
+	
+	}

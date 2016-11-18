@@ -28,6 +28,7 @@ private static final Logger logger = LoggerFactory.getLogger(AlumnoRestControlle
 	@RequestMapping(value="/alumnoRest", method = RequestMethod.POST)
 	public JSon alumnosRest() {
 		JSon value = new JSon();
+		System.out.println("alumno rest");
 		//model.addAttribute("name","vic");
 		//model.addAttribute(new SignupForm());
 		logger.info("Alumnos GET request");

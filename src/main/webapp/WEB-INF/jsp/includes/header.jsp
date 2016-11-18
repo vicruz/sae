@@ -90,7 +90,21 @@
                     <li><a href="<c:url value='/alumnos' />"><i class="fa fa-desktop fa-fw">
                         <div class="icon-bg bg-orange"></div>
                     </i><span class="menu-title">Alumnos</span></a></li>
+                
+                
+                 <div class="clearfix"></div>
+                    <li><a href="<c:url value='/usuario' />"><i class="fa fa-desktop fa-fw">
+                        <div class="icon-bg bg-orange"></div>
+                    </i><span class="menu-title">Usuarios</span></a></li>
+                    
+                    
+                      <div class="clearfix"></div>
+                    <li><a href="<c:url value='/getPagos' />"><i class="fa fa-desktop fa-fw">
+                        <div class="icon-bg bg-orange"></div>
+                    </i><span class="menu-title">Catalogo Pagos</span></a></li>
+                    
                 </ul>
+                
             </div>
         </nav>
           

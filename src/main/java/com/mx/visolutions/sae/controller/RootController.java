@@ -47,7 +47,7 @@ public class RootController {
 	
 	@RequestMapping(value="/signup", method = RequestMethod.GET)
 	public String signup(Model model) {
-		
+		System.out.println("ENTRA////");
 		//model.addAttribute("name","vic");
 		model.addAttribute(new SignupForm());
 		
@@ -57,7 +57,7 @@ public class RootController {
 	@RequestMapping(value="/signup", method = RequestMethod.POST)
 	public String signup(@ModelAttribute("signupForm") @Valid SignupForm signupForm,
 			BindingResult result, RedirectAttributes redirectAttributes){
-		
+		System.out.println("POST////");
 		if(result.hasErrors())
 			return "signup";
 			
