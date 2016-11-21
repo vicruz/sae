@@ -19,7 +19,7 @@ $(document).ready(function() {
     	                    { "data": "email" },
     	                    { "data": "url",
     	                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-    	                            $(nTd).html("<a href='"+oData.url+"'><span class=\"glyphicon glyphicon-credit-card\" aria-hidden=\"true\"></span>&nbsp;Baja</a>");
+    	                            $(nTd).html("<a href='"+oData.url+"'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Baja</a>");
     	                        }
     	                    }
     	                    

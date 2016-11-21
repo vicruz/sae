@@ -87,24 +87,24 @@
                 <ul id="side-menu" class="nav">
                     
                     <div class="clearfix"></div>
-                    <li><a href="<c:url value='/alumnos' />"><i class="fa fa-desktop fa-fw">
+                    <li><a href="<c:url value='/alumnos' />"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                         <div class="icon-bg bg-orange"></div>
                     </i><span class="menu-title">Alumnos</span></a></li>
                 
                 
                  <div class="clearfix"></div>
-                    <li><a href="<c:url value='/usuario' />"><i class="fa fa-desktop fa-fw">
+                    <li><a href="<c:url value='/usuario' />"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         <div class="icon-bg bg-orange"></div>
                     </i><span class="menu-title">Usuarios</span></a></li>
                     
                     
                       <div class="clearfix"></div>
-                    <li><a href="<c:url value='/getPagos' />"><i class="fa fa-desktop fa-fw">
+                    <li><a href="<c:url value='/getPagos' />"><span class="glyphicon glyphicon-usd"></span>
                         <div class="icon-bg bg-orange"></div>
                     </i><span class="menu-title">Catalogo Pagos</span></a></li>
                     
                       <div class="clearfix"></div>
-                    <li><a href="<c:url value='/pagoGrado' />"><i class="fa fa-desktop fa-fw">
+                    <li><a href="<c:url value='/pagoGrado' />"><span class="glyphicon glyphicon-credit-card"></span>
                         <div class="icon-bg bg-orange"></div>
                     </i><span class="menu-title">Relación pagos con grado</span></a></li>
                     

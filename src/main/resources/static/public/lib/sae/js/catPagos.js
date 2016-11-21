@@ -20,7 +20,7 @@ $(document).ready(function() {
     	                    { "data": "fecha" },
     	                    { "data": "url",
     	                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-    	                            $(nTd).html("<a href='"+oData.url+"'><span class=\"glyphicon glyphicon-credit-card\" aria-hidden=\"true\"></span>&nbsp;Borrar</a>");
+    	                            $(nTd).html("<a href='"+oData.url+"'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Borrar</a>");
     	                        }
     	                    }
     	                ]
