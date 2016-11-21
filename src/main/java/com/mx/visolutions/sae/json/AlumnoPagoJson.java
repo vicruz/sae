@@ -1,7 +1,7 @@
 package com.mx.visolutions.sae.json;
 
 import java.io.Serializable;
-import java.util.Date;
+
 
 public class AlumnoPagoJson implements Serializable{
 

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mx.visolutions.sae.dto.CatPagosForm;
 import com.mx.visolutions.sae.entities.CatPagos;
 import com.mx.visolutions.sae.entities.PagoGrado;
-import com.mx.visolutions.sae.entities.User;
 import com.mx.visolutions.sae.repositories.CatPagosRepository;
 import com.mx.visolutions.sae.repositories.PagoGradoRepository;
 
@@ -57,4 +56,6 @@ public class CatPagosServiceImpl implements CatPagosService {
 		// TODO Auto-generated method stub
 		return catPagosRepository.deleteById(pagoId);
 	}
+
+
 }

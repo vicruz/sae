@@ -1,6 +1,8 @@
 package com.mx.visolutions.sae.controller;
 
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,43 +14,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mx.visolutions.sae.dto.CatPagosForm;
-import com.mx.visolutions.sae.dto.SignupForm;
 import com.mx.visolutions.sae.entities.CatPagos;
-import com.mx.visolutions.sae.entities.User;
-import com.mx.visolutions.sae.services.AlumnoPagoService;
 import com.mx.visolutions.sae.services.CatPagosService;
-import com.mx.visolutions.sae.services.PagoGradoService;
-import com.mx.visolutions.sae.services.UserService;
+import com.mx.visolutions.sae.util.MyUtil;
 
 import javax.validation.Valid;
-
-import org.slf4j.Logger;
 
 @Controller
 public class PagosController {
 
 private static final Logger logger = LoggerFactory.getLogger(PagosController.class);
 	
-	private UserService userService;
-	private PagoGradoService pagoGradoService;
-	private AlumnoPagoService alumnoPagoService;
+	
 	private CatPagosService catPagosService;
 	
+	
 	@Autowired
-	public PagosController(UserService userService,PagoGradoService pagoGradoService,
-			AlumnoPagoService alumnoPagoService, CatPagosService catPagosService) {
-		this.userService = userService;
-		this.pagoGradoService = pagoGradoService;
-		this.alumnoPagoService = alumnoPagoService;
+	public PagosController(CatPagosService catPagosService) {
 		this.catPagosService = catPagosService;
 	}
 	
 	@RequestMapping(value="/getPagos" ,method=RequestMethod.GET)
 	public String administrador(Model model){
 		
-		System.out.println("pagoscontroller");
 		model.addAttribute(new  CatPagosForm());
-		System.out.println("pagoscontroller2");
 		return "catalogoPagos";
 	}
 	
@@ -65,10 +54,10 @@ public String signup(@ModelAttribute("signupForm") @Valid CatPagosForm catPagosF
 	
 	try {
 		catPagosService.addNuevoPago(catPagosForm);
-//		MyUtil.flash(redirectAttributes, "success", "signupSuccess");
+        MyUtil.flash(redirectAttributes, "success", "signupSuccess");
 	} catch (Exception e) {
-		//TODO Cambiar el label
-	//	MyUtil.flashNotProperties(redirectAttributes, "danger", e.getMessage());
+		
+	    MyUtil.flashNotProperties(redirectAttributes, "danger", e.getMessage());
 		logger.error(e.getMessage());
 		e.printStackTrace();
 	}
@@ -86,12 +75,12 @@ public String borrarUsuario(@PathVariable("usuarioId") Integer pagoId, Model mod
 		
 		if(catPagoBusqueda!=null){
 			catPagosService.deleteCatPago(pagoId);
+			MyUtil.flash(redirectAttributes, "success", "signupSuccess");
 		}
 		
-//		MyUtil.flash(redirectAttributes, "success", "signupSuccess");
+		
 	} catch (Exception e) {
-		//TODO Cambiar el label
-	//	MyUtil.flashNotProperties(redirectAttributes, "danger", e.getMessage());
+	    MyUtil.flashNotProperties(redirectAttributes, "danger", e.getMessage());
 		logger.error(e.getMessage());
 		e.printStackTrace();
 	}

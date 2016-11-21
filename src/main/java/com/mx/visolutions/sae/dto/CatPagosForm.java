@@ -26,6 +26,10 @@ public class CatPagosForm {
 		this.monto = monto;
 	}
 	
+	@Override
+	public String toString() {
+		return "CatPagoForm [conceptp=" + concepto + "monto" + monto + "]";
+	}
 	
 
 	

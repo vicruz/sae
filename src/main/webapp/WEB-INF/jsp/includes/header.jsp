@@ -103,6 +103,11 @@
                         <div class="icon-bg bg-orange"></div>
                     </i><span class="menu-title">Catalogo Pagos</span></a></li>
                     
+                      <div class="clearfix"></div>
+                    <li><a href="<c:url value='/pagoGrado' />"><i class="fa fa-desktop fa-fw">
+                        <div class="icon-bg bg-orange"></div>
+                    </i><span class="menu-title">Relación pagos con grado</span></a></li>
+                    
                 </ul>
                 
             </div>

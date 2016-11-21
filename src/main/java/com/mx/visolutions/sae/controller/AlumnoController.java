@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mx.visolutions.sae.dto.AlumnoForm;
 import com.mx.visolutions.sae.dto.AlumnoPagoForm;
 import com.mx.visolutions.sae.entities.Alumno;
-import com.mx.visolutions.sae.entities.CatPagos;
 import com.mx.visolutions.sae.entities.PagoGrado;
 import com.mx.visolutions.sae.services.AlumnoPagoService;
 import com.mx.visolutions.sae.services.AlumnoService;
@@ -38,7 +37,7 @@ public class AlumnoController {
 	private AlumnoService alumnoService;
 	private PagoGradoService pagoGradoService;
 	private AlumnoPagoService alumnoPagoService;
-	private CatPagosService catPagosService;
+
 	
 	@Autowired
 	public AlumnoController(AlumnoService alumnoService,PagoGradoService pagoGradoService,
@@ -46,7 +45,6 @@ public class AlumnoController {
 		this.alumnoService = alumnoService;
 		this.pagoGradoService = pagoGradoService;
 		this.alumnoPagoService = alumnoPagoService;
-		this.catPagosService = catPagosService;
 	}
 	
 	

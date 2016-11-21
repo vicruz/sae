@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mx.visolutions.sae.dto.CatPagosForm;
-import com.mx.visolutions.sae.dto.SignupForm;
 import com.mx.visolutions.sae.entities.CatPagos;
-import com.mx.visolutions.sae.entities.User;
 import com.mx.visolutions.sae.json.CatPagosJson;
 import com.mx.visolutions.sae.json.JSon;
 import com.mx.visolutions.sae.services.CatPagosService;
@@ -70,5 +67,6 @@ public class CatPagosRestController {
 		return value;
 	}
 	
+
 	
 }

@@ -66,7 +66,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 
 	@Override
 	public List<Alumno> findAll() {
-		System.out.println("SEVice impl");
+		
 		return alumnoRepository.findAll();
 	}
 

@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import com.mx.visolutions.sae.dto.SignupForm;
 import com.mx.visolutions.sae.entities.User;
+import com.mx.visolutions.sae.services.AlumnoService;
 import com.mx.visolutions.sae.services.UserService;
 import com.mx.visolutions.sae.util.MyUtil;
 
@@ -28,18 +28,16 @@ public class UserController {
 
 	private UserService userService;
 
-
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService,AlumnoService alumnoService) {
 		this.userService = userService;
 
 	}
-
-
 	@RequestMapping(value="/usuario" ,method=RequestMethod.GET)
 	public String usuario(Model model){
-
+		
 		model.addAttribute(new  SignupForm());
+		
 		return "usuario";
 	}
 
@@ -55,9 +53,8 @@ public class UserController {
 
 		try {
 			userService.signup(signupForm);
-				MyUtil.flash(redirectAttributes, "success", "signupSuccess");
+			MyUtil.flash(redirectAttributes, "success", "signupSuccess");
 		} catch (Exception e) {
-			//TODO Cambiar el label
 			MyUtil.flashNotProperties(redirectAttributes, "danger", e.getMessage());
 			logger.error(e.getMessage());
 			e.printStackTrace();
@@ -70,14 +67,13 @@ public class UserController {
 	@RequestMapping(value="/usuario/{usuarioId}", method=RequestMethod.GET)
 	public String borrarUsuario(@PathVariable("usuarioId") Integer usuarioId, Model model
 			,RedirectAttributes redirectAttributes){
-		System.out.println("dele controller");
 		try {
 			User usuarioBusqueda=userService.findUserById(usuarioId);
 			if(usuarioBusqueda!=null){
 				userService.deleteUserById(usuarioId);
+				MyUtil.flash(redirectAttributes, "success", "signupSuccess");
 			}
-
-					MyUtil.flash(redirectAttributes, "success", "signupSuccess");
+					
 		} catch (Exception e) {
 			//TODO Cambiar el label
 			MyUtil.flashNotProperties(redirectAttributes, "danger", e.getMessage());
@@ -88,7 +84,4 @@ public class UserController {
 		return "redirect:/usuario";
 	}
 
-
 }
-
-

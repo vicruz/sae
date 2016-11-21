@@ -17,7 +17,15 @@ public class SignupForm {
 	@NotNull
 	@Size(min=1, max=30)
 	private String password;
+	@NotNull
+	private String nameAl;
 
+	public String getNameAl() {
+		return nameAl;
+	}
+	public void setNameAl(String nameAl) {
+		this.nameAl = nameAl;
+	}
 	public String getEmail() {
 		return email;
 	}

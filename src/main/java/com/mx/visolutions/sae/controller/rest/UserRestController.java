@@ -5,21 +5,17 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
 import com.mx.visolutions.sae.entities.User;
-
-
 import com.mx.visolutions.sae.json.JSon;
 import com.mx.visolutions.sae.json.UserJson;
-
 import com.mx.visolutions.sae.repositories.UserRepository;
-
-
 
 @RestController
 public class UserRestController {
@@ -37,11 +33,14 @@ public class UserRestController {
 	public JSon adminRest(){
 		
 		JSon value = new JSon();
+		Authentication userAuth= SecurityContextHolder.getContext().getAuthentication();
+        
 		
-		logger.info("Usuario POST request");
+		logger.info("Usuario POST request"+userAuth.getName());
 		List<UserJson> lstJson = new ArrayList<UserJson>();
 		
-	List<User> lstAdmin = userRepository.findAll();
+		
+		List<User> lstAdmin = userRepository.findAllMinus(userAuth.getName());
 		
 		if(lstAdmin!=null){
 			for(User administrador : lstAdmin){
