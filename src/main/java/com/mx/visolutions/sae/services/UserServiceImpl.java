@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mx.visolutions.sae.dto.SignupForm;
 import com.mx.visolutions.sae.dto.UserDetailsImpl;
+import com.mx.visolutions.sae.dto.UserForm;
 import com.mx.visolutions.sae.entities.User;
 import com.mx.visolutions.sae.repositories.UserRepository;
 
@@ -59,6 +60,16 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	public int deleteUserById(int usuarioId) {
 		// TODO Auto-generated method stub
 		return userRepository.deleteById(usuarioId);
+	}
+
+	@Override
+	public void newUser(UserForm userForm) {
+		User user = new User();
+		user.setEmail(userForm.getEmail());
+		user.setUsuario(userForm.getName());
+		user.setPassword(passwordEncoder.encode(userForm.getPassword()));
+		
+		userRepository.save(user);
 	}
 
 }
