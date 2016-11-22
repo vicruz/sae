@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mx.visolutions.sae.dto.SignupForm;
+import com.mx.visolutions.sae.dto.UserForm;
 import com.mx.visolutions.sae.entities.User;
 import com.mx.visolutions.sae.services.AlumnoService;
 import com.mx.visolutions.sae.services.UserService;
@@ -35,24 +36,22 @@ public class UserController {
 	}
 	@RequestMapping(value="/usuario" ,method=RequestMethod.GET)
 	public String usuario(Model model){
-		
-		model.addAttribute(new  SignupForm());
-		
+		model.addAttribute(new  UserForm());
 		return "usuario";
 	}
 
 
 	@RequestMapping(value="/usuario", method = RequestMethod.POST)
-	public String signup(@ModelAttribute("signupForm") @Valid SignupForm signupForm,
+	public String signup(@ModelAttribute("signupForm") @Valid UserForm userForm,
 			BindingResult result, RedirectAttributes redirectAttributes){
-
-		if(result.hasErrors())
+		if(result.hasErrors()){
 			return "usuario";
+		}
 
-		logger.info(signupForm.toString());
+		logger.info("Sigup-Post"+userForm.toString());
 
 		try {
-			userService.signup(signupForm);
+			userService.newUser(userForm);
 			MyUtil.flash(redirectAttributes, "success", "signupSuccess");
 		} catch (Exception e) {
 			MyUtil.flashNotProperties(redirectAttributes, "danger", e.getMessage());

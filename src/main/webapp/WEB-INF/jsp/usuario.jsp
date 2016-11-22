@@ -20,7 +20,7 @@
         <h4 class="modal-title" id="myModalLabel">Agregar Usuario</h4>
       </div>
       <div class="modal-body">
-        <form:form modelAttribute="signupForm" role="form">
+        <form:form modelAttribute="userForm" role="form">
 		
 			<form:errors/>
 		
