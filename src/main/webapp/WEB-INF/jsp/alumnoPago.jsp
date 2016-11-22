@@ -1,5 +1,7 @@
 <%@include file="includes/header.jsp"%>
 
+<input type="hidden" name="elPath" id="elPath" value="${conPath}">
+
 <div class="page-content">
 
 	<div class="panel panel-default">

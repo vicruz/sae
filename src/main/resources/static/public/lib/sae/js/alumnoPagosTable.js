@@ -31,7 +31,8 @@
 
 $(document).ready(function() {
 	var idAlumno= $("#id").val();
-	var urlRest= "/pagosRest/"+$("#id").val();
+	var elPath = $("#elPath").val();
+	var urlRest= elPath +"/pagosRest/"+$("#id").val();
 	$('#alumnoPagos').DataTable( {
 		"language": {
 	        	"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"

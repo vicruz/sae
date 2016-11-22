@@ -9,50 +9,50 @@
         </div>
     </div>
     <!-- jQuery 2.2.3 
-    <script src="public/lib/jquery-3.1.1.min.js"></script>-->
-    <!-- <script src="public/lib/kadmin/script/jquery-1.10.2.min.js"></script> -->
-    <script src="/public/lib/kadmin/script/jquery-3.1.1.min.js"></script>
-    <script src="/public/lib/kadmin/script/jquery-migrate-1.2.1.min.js"></script>
-    <script src="/public/lib/kadmin/script/jquery-ui.js"></script>
-    <script src="/public/lib/kadmin/script/bootstrap.min.js"></script> 
+    <script src="${conPath}/public/lib/jquery-3.1.1.min.js"></script>-->
+    <!-- <script src="${conPath}/public/lib/kadmin/script/jquery-1.10.2.min.js"></script> -->
+    <script src="${conPath}/public/lib/kadmin/script/jquery-3.1.1.min.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery-migrate-1.2.1.min.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery-ui.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/bootstrap.min.js"></script> 
     <!-- Bootstrap 3.3.6
-    <script src="public/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script> -->
+    <script src="${conPath}/public/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script> -->
     
-    <script src="/public/lib/kadmin/script/bootstrap-hover-dropdown.js"></script>
-    <script src="/public/lib/kadmin/script/html5shiv.js"></script>
-    <script src="/public/lib/kadmin/script/respond.min.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.metisMenu.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.slimscroll.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.cookie.js"></script>
-    <script src="/public/lib/kadmin/script/icheck.min.js"></script>
-    <script src="/public/lib/kadmin/script/custom.min.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.news-ticker.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.menu.js"></script>
-    <script src="/public/lib/kadmin/script/pace.min.js"></script>
-    <script src="/public/lib/kadmin/script/holder.js"></script>
-    <script src="/public/lib/kadmin/script/responsive-tabs.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.flot.js"></script> 
-    <script src="/public/lib/kadmin/script/jquery.flot.categories.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.flot.pie.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.flot.tooltip.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.flot.resize.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.flot.fillbetween.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.flot.stack.js"></script>
-    <script src="/public/lib/kadmin/script/jquery.flot.spline.js"></script>
-    <script src="/public/lib/kadmin/script/zabuto_calendar.min.js"></script>
-    <script src="/public/lib/kadmin/script/index.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/bootstrap-hover-dropdown.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/html5shiv.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/respond.min.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.metisMenu.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.slimscroll.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.cookie.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/icheck.min.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/custom.min.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.news-ticker.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.menu.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/pace.min.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/holder.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/responsive-tabs.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.flot.js"></script> 
+    <script src="${conPath}/public/lib/kadmin/script/jquery.flot.categories.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.flot.pie.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.flot.tooltip.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.flot.resize.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.flot.fillbetween.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.flot.stack.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/jquery.flot.spline.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/zabuto_calendar.min.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/index.js"></script>
     <!--LOADING SCRIPTS FOR CHARTS-->
-    <!-- <script src="public/lib/kadmin/script/highcharts.js"></script> 
-    <script src="public/lib/kadmin/script/data.js"></script>
-    <script src="public/lib/kadmin/script/drilldown.js"></script>
-    <script src="public/lib/kadmin/script/exporting.js"></script>
-    <script src="public/lib/kadmin/script/highcharts-more.js"></script>
-    <script src="public/lib/kadmin/script/charts-highchart-pie.js"></script>
-    <script src="public/lib/kadmin/script/charts-highchart-more.js"></script> -->
+    <!-- <script src="${conPath}/public/lib/kadmin/script/highcharts.js"></script> 
+    <script src="${conPath}/public/lib/kadmin/script/data.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/drilldown.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/exporting.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/highcharts-more.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/charts-highchart-pie.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/charts-highchart-more.js"></script> -->
     <!-- DATA TABLES
-    <script type="text/javascript" charset="utf8" src="public/lib/datatable/js/jquery.dataTables.js"></script> -->    
-    <script src="/public/lib/datatable/js/jquery.dataTables.min.js"></script>
-    <script src="/public/lib/datatable/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="${conPath}/public/lib/datatable/js/jquery.dataTables.js"></script> -->    
+    <script src="${conPath}/public/lib/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="${conPath}/public/lib/datatable/js/dataTables.bootstrap.min.js"></script>
 
 	<!-- DATA TABLES Botones para exportar -->
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
@@ -73,12 +73,12 @@
 
 	
     <!--CORE JAVASCRIPT-->
-    <script src="/public/lib/kadmin/script/main.js"></script>
-    <script src="/public/lib/sae/js/alumnoTable.js"></script>
-    <script src="/public/lib/sae/js/alumnoPagosTable.js"></script>
-    <script type="text/javascript" src="/public/lib/sae/js/alumnoPagosTableJS.js"></script>
-    <script src="/public/lib/sae/js/userTable.js"></script>
-    <script src="/public/lib/sae/js/catPagos.js"></script>
+    <script src="${conPath}/public/lib/kadmin/script/main.js"></script>
+    <script src="${conPath}/public/lib/sae/js/alumnoTable.js"></script>
+    <script src="${conPath}/public/lib/sae/js/alumnoPagosTable.js"></script>
+    <script type="text/javascript" src="${conPath}/public/lib/sae/js/alumnoPagosTableJS.js"></script>
+    <script src="${conPath}/public/lib/sae/js/userTable.js"></script>
+    <script src="${conPath}/public/lib/sae/js/catPagos.js"></script>
     
     
     <script>      

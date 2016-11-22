@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	var elPath = $("#elPath").val();
     	    $('#alumnos').DataTable( {
     	        "language": {
     	        	"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
@@ -10,7 +11,7 @@ $(document).ready(function() {
     	    	"processing": true,
     	        //"serverSide": true,
     	        "ajax": {
-    	        	"url": "../alumnoRest",
+    	        	"url": elPath + "/alumnoRest",
     	        	"type": "POST"
     	        },
     	        "columns": [
@@ -22,7 +23,7 @@ $(document).ready(function() {
     	                    { "data": "semaforo" },
     	                    { "data": "url",
     	                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-    	                            $(nTd).html("<a href='"+oData.url+"'><span class=\"glyphicon glyphicon-credit-card\" aria-hidden=\"true\"></span>&nbsp;pagos</a>");
+    	                            $(nTd).html("<a href='"+elPath+oData.url+"'><span class=\"glyphicon glyphicon-credit-card\" aria-hidden=\"true\"></span>&nbsp;pagos</a>");
     	                        }
     	                    }
     	                ]
