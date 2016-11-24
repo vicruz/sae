@@ -6,3 +6,16 @@ function cambiaMonto(){
 		$("#monto").val(respuesta);
 	})
 }
+
+$( function() {
+    $( "#datepicker" ).datepicker({dateFormat:'yy-mm-dd'});
+  } );
+
+function cambiaAnio(){
+	var elPath = $("#elPath").val();
+	var url = elPath + "/catpagos/getAnio";
+	$.get(url,function(respuesta){
+		$("#anio").val(respuesta);
+	})
+}
+

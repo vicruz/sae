@@ -15,8 +15,6 @@ import com.mx.visolutions.sae.entities.CatPagos;
 import com.mx.visolutions.sae.entities.PagoGrado;
 import com.mx.visolutions.sae.repositories.PagoGradoRepository;
 
-import ch.qos.logback.classic.Logger;
-
 @Service
 @Transactional(propagation=Propagation.SUPPORTS, readOnly=true)
 public class PagoGradoServiceImpl implements PagoGradoService {
@@ -35,7 +33,6 @@ public class PagoGradoServiceImpl implements PagoGradoService {
 
 	@Override
 	public List<PagoGrado> findAll() {
-		// TODO Auto-generated method stub
 		return pagoGradoRepository.findAll();
 	}
 
@@ -50,13 +47,11 @@ public class PagoGradoServiceImpl implements PagoGradoService {
 		
 		Date fechaLimite =formatter.parse(pagoGrado.getFechaLimite());
 		int anio = Integer.valueOf(pagoGrado.getAnio());
-		int mes=Integer.valueOf(pagoGrado.getMes());
 		
 		pago.setIdGrado(pagoGrado.getIdGrado());
-		//pago.setIdPago(pagoGrado.getIdPago());
 		pago.setFechaLimite(fechaLimite);
 		pago.setAnio_corresponde(anio);
-		pago.setMes_corresponde(mes);
+		pago.setMes_corresponde(pagoGrado.getMes());
 		pago.setCatPago(catpago);
 
 		pagoGradoRepository.save(pago);

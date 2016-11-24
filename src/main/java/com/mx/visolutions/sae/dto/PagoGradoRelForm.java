@@ -1,9 +1,5 @@
 package com.mx.visolutions.sae.dto;
 
-
-
-import javax.validation.constraints.NotNull;
-
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
@@ -14,7 +10,7 @@ public class PagoGradoRelForm {
 	
 	private String fechaLimite;
 	
-	private String mes;
+	private Integer mes;
 	
 	private String anio;
 
@@ -28,10 +24,10 @@ public class PagoGradoRelForm {
 	public void setFechaLimite(String fechaLimite) {
 		this.fechaLimite = fechaLimite;
 	}
-	public String getMes() {
+	public Integer getMes() {
 		return mes;
 	}
-	public void setMes(String mes) {
+	public void setMes(Integer mes) {
 		this.mes = mes;
 	}
 	public String getAnio() {

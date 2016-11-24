@@ -3,11 +3,12 @@
  */
 package com.mx.visolutions.sae.controller;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -56,6 +57,7 @@ public class PagoGradoController {
 		List<CatPagos> catPagos;
 		Map<String,String> map = new HashMap<String,String>();
 		Map<String,String> map2 = new HashMap<String,String>();
+		Map<Integer,String> mesesMap = new HashMap<Integer,String>();
 
 		model.addAttribute(new PagoGradoRelForm());
 		grado = gradoService.findAll();
@@ -69,8 +71,33 @@ public class PagoGradoController {
 			String concepto =cat.getConcepto(); 
 			map2.put(""+cat.getId(), concepto);
 		}
+		mesesMap.put(1, "Enero");
+		mesesMap.put(2, "Febrero");
+		mesesMap.put(3, "Marzo");
+		mesesMap.put(4, "Abril");
+		mesesMap.put(5, "Mayo");
+		mesesMap.put(6, "Junio");
+		mesesMap.put(7, "Julio");
+		mesesMap.put(8, "Agosto");
+		mesesMap.put(9, "Septiembre");
+		mesesMap.put(10, "Octubre");
+		mesesMap.put(11, "Noviembre");
+		mesesMap.put(12, "Diciembre");
+				 
+		 Map<Integer, String> treeMap = new TreeMap<Integer, String>(
+	                new Comparator<Integer>() {
+
+	                    @Override
+	                    public int compare(Integer o1, Integer o2) {
+	                        return o2.compareTo(o1);
+	                    }
+
+	                });   
+		 
+		 treeMap.putAll(mesesMap);
 		model.addAttribute("grados", map);
 		model.addAttribute("conceptos", map2);
+		model.addAttribute("meses", treeMap);
 
 		return "pagoGrado";
 	}

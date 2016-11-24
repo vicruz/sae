@@ -1,6 +1,7 @@
 package com.mx.visolutions.sae.controller.rest;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,14 @@ public class CatPagosRestController {
 		
 		value.setData(lstJson);
 		return value;
+	}
+	
+	@RequestMapping(path="/getAnio", method = RequestMethod.GET)
+	public String getAnio(){
+		Calendar fecha = Calendar.getInstance();
+        int año = fecha.get(Calendar.YEAR);
+        
+		return String.valueOf(año);
 	}
 	
 

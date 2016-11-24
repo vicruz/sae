@@ -79,6 +79,7 @@
     <script type="text/javascript" src="${conPath}/public/lib/sae/js/alumnoPagosTableJS.js"></script>
     <script src="${conPath}/public/lib/sae/js/userTable.js"></script>
     <script src="${conPath}/public/lib/sae/js/catPagos.js"></script>
+    <script src="${conPath}/public/lib/sae/js/pagoGradoTable.js"></script>
     
     
     <script>      
