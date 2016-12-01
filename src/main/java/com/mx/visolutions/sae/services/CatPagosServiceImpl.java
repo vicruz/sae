@@ -33,8 +33,8 @@ public class CatPagosServiceImpl implements CatPagosService {
 
 	@Override
 	public CatPagos findByPagoGradoId(Integer id) {
-		PagoGrado pagoGrado = pagoGradoRepository.findOne(id);
-		return pagoGrado.getCatPago();
+		CatPagos catPagos = catPagosRepository.findById(id);
+		return catPagos;
 	}
 
 	public List<CatPagos> findAll(){
