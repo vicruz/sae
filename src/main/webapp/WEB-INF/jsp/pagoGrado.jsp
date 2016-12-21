@@ -1,13 +1,22 @@
 <%@include file="includes/header.jsp"%>
 
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+	<div class="page-header pull-left">
+		<div class="page-title">Relaci&oacute;n pagos con grado</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
 <input type="hidden" name="elPath" id="elPath" value="${conPath}">
 
 <div class="page-content">
- 
-<div align="right">
-				<button type="button" id="addAlumno" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal" >
-					<span class="glyphicon glyphicon-plus"></span> Agregar Pago</button>
-			</div>
+		
+	<div id="addButton">
+		<div class="panel-body">
+			<button type="button" id="addAlumno" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal" >
+			<span class="glyphicon glyphicon-plus"></span> Agregar Pago</button>		
+		</div>
+	</div>
 		
 
 
@@ -80,15 +89,22 @@
 				
 				<div class="form-group">
 					<form:label path="anio">Año: </form:label>
-					<form:input path="anio" type="anio" class="form-control"  readonly="true"/>
+					<form:select id="selectAnio" path="anio" class="form-control">
+						<form:option value="2016" label="2016" />
+						<form:option value="2017" label="2017" />
+						<form:option value="2018" label="2018" />
+						<form:option value="2019" label="2019" />
+						<form:option value="2020" label="2020" />
+						<form:option value="2021" label="2021" />
+					</form:select>
 			    </div>
 				
 				
 					
 				<div class="form-group">
 					<form:label path="fechaLimite">fecha Limite: </form:label>
-					<span class="glyphicon glyphicon-calendar" id="calendario"></span>
 					<form:input id="datepicker" path="fechaLimite" type="fechaLimite" class="form-control" placeholder="AAAA-MM-DD"/>
+					<span class="glyphicon glyphicon-calendar" id="calendario"></span>
 			    </div>
 			
 				<br>
@@ -117,20 +133,21 @@
                   <th>Monto</th>
   				  <th>Grado</th>
   				  <th>Mes</th>
-  				  <th>Anio</th>
-  				  <th>fechaLimite</th>
+  				  <th>A&ntilde;o</th>
+  				  <th>Fecha L&iacute;mite</th>
                 </tr>
                 
                 </thead>
                
                 <tfoot>
                 <tr>
+                  <th>#</th>
                   <th>Concepto</th>
                   <th>Monto</th>
   				  <th>Grado</th>
   				  <th>Mes</th>
-  				  <th>Anio</th>
-  				  <th>fechaLimite</th>
+  				  <th>A&ntilde;o</th>
+  				  <th>Fecha L&iacute;mite</th>
                 </tr>
                 </tfoot>
               </table>

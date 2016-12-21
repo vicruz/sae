@@ -13,4 +13,8 @@ public interface PagoGradoRepository extends JpaRepository<PagoGrado, Integer>{
 	
 	@Query("Select pg From  PagoGrado pg")
 	List<PagoGrado> findAll();
+	
+	@Query("Select pg from PagoGrado pg where pg.idGrado = ?1 "
+			+ "and pg.id not in (Select ap.pagoGrado.id from AlumnoPago ap where ap.idAlumno = ?2)")
+	List<PagoGrado> findByIdGradoNotInAlumno(Integer idGrado, Integer idAlumno);
 }

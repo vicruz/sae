@@ -13,6 +13,7 @@ import com.mx.visolutions.sae.dto.AlumnoPagoForm;
 import com.mx.visolutions.sae.entities.AlumnoPago;
 import com.mx.visolutions.sae.entities.PagoGrado;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
+import com.mx.visolutions.sae.util.MyUtil;
 
 @Service
 @Transactional(propagation=Propagation.SUPPORTS, readOnly=true)
@@ -43,9 +44,13 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			alumnoPago.setIdAlumno(alumnoForm.getIdAlumno());
 			alumnoPago.setMonto(alumnoForm.getMonto());
 			alumnoPago.setPago(alumnoForm.getPago());
-			alumnoPago.setFechaPago(Calendar.getInstance().getTime());
+			if(alumnoForm.getFechaPago()!=null){
+				alumnoPago.setFechaPago(Calendar.getInstance().getTime());				
+			}
 			alumnoPago.setPagoGrado(pagoGrado);
-			if(alumnoForm.getPago().compareTo(alumnoForm.getMonto())==0){
+			if(alumnoForm.getPago()==0.0){
+				alumnoPago.setIdSemaforo(4);
+			}else if(alumnoForm.getPago().compareTo(alumnoForm.getMonto())==0){
 				alumnoPago.setIdSemaforo(1);
 			}else if(alumnoForm.getPago()>0 && alumnoForm.getPago()<alumnoForm.getMonto()){
 				alumnoPago.setIdSemaforo(2);
@@ -60,8 +65,50 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	}
 
 	@Override
-	public void update(AlumnoPagoForm alumnoForm) {
-		// TODO Auto-generated method stub
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public AlumnoPagoForm updatePago(Integer idPago, Double pago, Integer idUsuario) {
+		AlumnoPago alumnoPago = alumnoPagoRepository.findOne(idPago);
+		AlumnoPagoForm alumnoPagoForm = new AlumnoPagoForm();
+		
+		Double pagoOriginal = alumnoPago.getPago();
+		pagoOriginal = pagoOriginal + pago;
+
+		alumnoPago.setPago(pagoOriginal);
+		Integer idSemaforo = alumnoPago.getIdSemaforo();
+		
+		//Pago completo
+		if(alumnoPago.getMonto()<=pagoOriginal){
+			alumnoPago.setIdSemaforo(1);
+		}
+		//Pago parcial
+		else if(alumnoPago.getMonto()>pagoOriginal){
+			//Si el pago es pendiente, el semaforo se pone en parcial
+			if(idSemaforo==4){
+				alumnoPago.setIdSemaforo(2);
+			}
+		}
+		alumnoPago.setFechaPago(Calendar.getInstance().getTime());
+		alumnoPagoRepository.save(alumnoPago);
+		
+	
+		alumnoPagoForm.setId(alumnoPago.getId());
+		alumnoPagoForm.setConcepto(alumnoPago.getPagoGrado().getCatPago().getConcepto() + " " +
+				MyUtil.getMonth(alumnoPago.getPagoGrado().getMes_corresponde())+ " " +
+				alumnoPago.getPagoGrado().getAnio_corresponde());
+		alumnoPagoForm.setFechaPago(alumnoPago.getFechaPago());
+		alumnoPagoForm.setIdAlumno(alumnoPago.getIdAlumno());
+		//alumnoPagoForm.setIdConcepto(//alumnoPago.*);
+		alumnoPagoForm.setMonto(alumnoPago.getMonto());
+		alumnoPagoForm.setPago(alumnoPago.getPago());
+		
+		if(alumnoPago.getIdSemaforo()==1){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");}
+		else if(alumnoPago.getIdSemaforo()==2){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");}
+		else if(alumnoPago.getIdSemaforo()==3){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-danger\">Adeudo</span>");}
+		else if(alumnoPago.getIdSemaforo()==4){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-info\">Pendiente</span>");}
+		
+		//TODO falta actualizar una tabla de bitacoras con los pagos respectivos
+		
+		return alumnoPagoForm;
 
 	}
 

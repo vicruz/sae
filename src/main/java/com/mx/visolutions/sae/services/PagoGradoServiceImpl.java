@@ -1,9 +1,11 @@
 package com.mx.visolutions.sae.services;
 
 import java.text.SimpleDateFormat;
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,15 @@ public class PagoGradoServiceImpl implements PagoGradoService {
 	
 	private PagoGradoRepository pagoGradoRepository;
 	
+	
 	@Autowired
 	public PagoGradoServiceImpl(PagoGradoRepository pagoGradoRepository){
 		this.pagoGradoRepository = pagoGradoRepository;
+	}
+
+	@Override
+	public PagoGrado findOne(Integer idPagoGrado) {
+		return pagoGradoRepository.findOne(idPagoGrado);
 	}
 
 	@Override
@@ -37,8 +45,8 @@ public class PagoGradoServiceImpl implements PagoGradoService {
 	}
 
 	@Override
-	public void addNew(PagoGradoRelForm pagoGrado) throws Throwable {
-		// TODO Auto-generated method stub
+	public PagoGrado addNew(PagoGradoRelForm pagoGrado) throws Throwable {
+
 		PagoGrado pago= new PagoGrado();
 		CatPagos catpago = new CatPagos();
 		catpago.setId(pagoGrado.getIdPago());
@@ -54,8 +62,23 @@ public class PagoGradoServiceImpl implements PagoGradoService {
 		pago.setMes_corresponde(pagoGrado.getMes());
 		pago.setCatPago(catpago);
 
-		pagoGradoRepository.save(pago);
+		return pagoGradoRepository.save(pago);
 	}
+
+	@Override
+	public List<PagoGrado> findByIdGradoNotInAlumno(Integer idGrado, Integer idAlumno) {
+		try{
+			return pagoGradoRepository.findByIdGradoNotInAlumno(idGrado, idAlumno);
+		}catch(NoResultException e){
+			e.printStackTrace();
+			return new ArrayList<PagoGrado>();
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ArrayList<PagoGrado>();
+		}
+	}
+
+	
 
 
 }

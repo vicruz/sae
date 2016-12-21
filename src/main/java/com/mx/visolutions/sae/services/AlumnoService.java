@@ -18,4 +18,6 @@ public interface AlumnoService {
 	public void delete(AlumnoForm alumnoForm);
 	
 	public void getList();
+	
+	public List<Alumno> findByGrado(Integer idGrado);
 }

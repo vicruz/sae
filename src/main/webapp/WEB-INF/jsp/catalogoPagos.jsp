@@ -1,4 +1,10 @@
 <%@include file="includes/header.jsp" %>
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+	<div class="page-header pull-left">
+		<div class="page-title">Cat&aacute;logo de pagos</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
 
 <input type="hidden" name="elPath" id="elPath" value="${conPath}">
 
@@ -46,7 +52,8 @@
 		
 		</form:form>
       </div>
-      
+      <div class="modal-footer">
+      </div>
     </div>
   </div>
 </div>

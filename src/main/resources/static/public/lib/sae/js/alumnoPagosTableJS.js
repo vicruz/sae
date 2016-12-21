@@ -8,7 +8,7 @@ function cambiaMonto(){
 }
 
 $( function() {
-    $( "#datepicker" ).datepicker({dateFormat:'yy-mm-dd'});
+    $( "#datepicker" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, autoclose: true});
   } );
 
 function cambiaAnio(){

@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mx.visolutions.sae.dto.AlumnoPagoForm;
 import com.mx.visolutions.sae.entities.AlumnoPago;
 import com.mx.visolutions.sae.entities.PagoGrado;
 import com.mx.visolutions.sae.json.AlumnoPagoJson;
 import com.mx.visolutions.sae.json.JSon;
 import com.mx.visolutions.sae.json.PagoGradoJson;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
+import com.mx.visolutions.sae.services.AlumnoPagoService;
 import com.mx.visolutions.sae.services.PagoGradoService;
 import com.mx.visolutions.sae.util.MyUtil;
 
@@ -28,13 +30,15 @@ public class PagosRestController {
 	private static final Logger logger = LoggerFactory.getLogger(PagosRestController.class);
 	
 	private AlumnoPagoRepository alumnoPagoRepository;
+	private AlumnoPagoService alumnoPagoService;
 	private PagoGradoService pagoGradoService;
 	
 	@Autowired
 	public PagosRestController(AlumnoPagoRepository alumnoPagoRepository,
-			PagoGradoService pagoGradoService){
+			PagoGradoService pagoGradoService, AlumnoPagoService alumnoPagoService){
 		this.alumnoPagoRepository = alumnoPagoRepository;
 		this.pagoGradoService = pagoGradoService;
+		this.alumnoPagoService = alumnoPagoService;
 	}
 	
 	@RequestMapping(value="/pagosRest/{id}", method = RequestMethod.POST)
@@ -49,10 +53,14 @@ public class PagosRestController {
 		if(lstAlumnosPago != null){
 			for(AlumnoPago alumnoPago : lstAlumnosPago){
 				AlumnoPagoJson json = new AlumnoPagoJson();
+				json.setId(alumnoPago.getId());
+				json.setIdAlumno(id);
 				json.setConcepto(alumnoPago.getPagoGrado().getCatPago().getConcepto() + " " +
 						MyUtil.getMonth(alumnoPago.getPagoGrado().getMes_corresponde())+ " " +
 						alumnoPago.getPagoGrado().getAnio_corresponde());
-				json.setFecha(sdf.format(alumnoPago.getFechaPago()));
+				if(alumnoPago.getFechaPago()!=null){
+					json.setFecha(sdf.format(alumnoPago.getFechaPago()));					
+				}
 				json.setMonto(alumnoPago.getMonto());
 				json.setPago(alumnoPago.getPago());
 				
@@ -60,6 +68,10 @@ public class PagosRestController {
 				if(alumnoPago.getIdSemaforo()==1){json.setEstatus("<span class=\"label label-sm label-success\">Pagado</span>");}
 				else if(alumnoPago.getIdSemaforo()==2){json.setEstatus("<span class=\"label label-sm label-warning\">Parcial</span>");}
 				else if(alumnoPago.getIdSemaforo()==3){json.setEstatus("<span class=\"label label-sm label-danger\">Adeudo</span>");}
+				else if(alumnoPago.getIdSemaforo()==4){json.setEstatus("<span class=\"label label-sm label-info\">Pendiente</span>");}
+				
+				if(alumnoPago.getIdSemaforo()==1){json.setEditar("<button type=\"button\" class=\"btn-table disabled-btn-table\">Pagar</button>"); }
+				else{ json.setEditar("<button type=\"button\" class=\"btn-table\" >Pagar</button>"); }
 				
 				lstJson.add(json);
 			}
@@ -104,6 +116,39 @@ public class PagosRestController {
 		}
 		
 		return lst;
+	}
+	
+	
+	/**
+	 * Actualiza el monto de los pagos por alumno
+	 * @param id
+	 * @param pago
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping(value="/pagosRest/update/{id}", method = RequestMethod.POST)
+	public AlumnoPagoJson updatePago(@PathVariable("id") Integer id, Double pago, Integer userId){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		
+		logger.info("Sumando el pago: " + pago + " al pago: " + id);
+		
+		AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId);
+		
+		AlumnoPagoJson json = new AlumnoPagoJson();
+		json.setId(alumno.getId());
+		json.setIdAlumno(alumno.getIdAlumno());
+		json.setConcepto(alumno.getConcepto());
+		if(alumno.getFechaPago()!=null){
+			json.setFecha(sdf.format(alumno.getFechaPago()));					
+		}
+		json.setMonto(alumno.getMonto());
+		json.setPago(alumno.getPago());
+		json.setEstatus(alumno.getSemaforo());
+		
+		if(alumno.getSemaforo().contains("Pagado")){json.setEditar("<button type=\"button\" class=\"btn-table disabled-btn-table\">Pagar</button>"); }
+		else{ json.setEditar("<button type=\"button\" class=\"btn-table\" >Pagar</button>"); }
+		
+		return json;
 	}
 	
 	

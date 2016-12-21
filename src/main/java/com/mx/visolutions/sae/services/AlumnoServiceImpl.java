@@ -70,6 +70,14 @@ public class AlumnoServiceImpl implements AlumnoService {
 		return alumnoRepository.findAll();
 	}
 
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public List<Alumno> findByGrado(Integer idGrado) {
+		Grado grado = new Grado();
+		grado.setId(idGrado);
+		return alumnoRepository.findByGrado(grado);
+	}
+
 	
 
 }

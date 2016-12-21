@@ -91,7 +91,8 @@ public class AlumnoController {
 		model.addAttribute(alumno);
 		model.addAttribute(new AlumnoPagoForm());
 		
-		pagoGradosForm = pagoGradoService.getByIdGrado(alumno.getGrado().getId());
+		//pagoGradosForm = pagoGradoService.getByIdGrado(alumno.getGrado().getId());
+		pagoGradosForm = pagoGradoService.findByIdGradoNotInAlumno(alumno.getGrado().getId(),alumnoId);
 		
 		for(PagoGrado pagoGrado: pagoGradosForm){
 			String concepto = pagoGrado.getCatPago().getConcepto()

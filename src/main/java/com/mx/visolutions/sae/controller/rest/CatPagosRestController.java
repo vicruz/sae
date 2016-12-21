@@ -5,36 +5,41 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mx.visolutions.sae.entities.CatPagos;
+import com.mx.visolutions.sae.entities.PagoGrado;
 import com.mx.visolutions.sae.json.CatPagosJson;
 import com.mx.visolutions.sae.json.JSon;
 import com.mx.visolutions.sae.services.CatPagosService;
+import com.mx.visolutions.sae.services.PagoGradoService;
 
 @RestController
 @RequestMapping(path="/catpagos")
 public class CatPagosRestController {
 	
 	private CatPagosService catPagosService;
+	private PagoGradoService pagoGradoService;
 
 	@Autowired
-	public CatPagosRestController(CatPagosService catPagosService){
+	public CatPagosRestController(CatPagosService catPagosService, PagoGradoService pagoGradoService){
 		this.catPagosService = catPagosService;
+		this.pagoGradoService = pagoGradoService;
 	}
 	
-	@RequestMapping(path="/getMonto/{idPago}", method = RequestMethod.GET)
-	public String getMonto(@PathVariable("idPago") Integer idPago){
-		CatPagos pago = catPagosService.findByPagoGradoId(idPago);//findById(idPago);
-		if(pago==null){
+	@RequestMapping(path="/getMonto/{idPagoGrado}", method = RequestMethod.GET)
+	public String getMonto(@PathVariable("idPagoGrado") Integer idPagoGrado){
+		//el valor que llega es idPagoGrado
+		PagoGrado pagoGrado = pagoGradoService.findOne(idPagoGrado);
+		
+		if(pagoGrado==null){
 			return "0";
 		}
 		else{
-			return pago.getMonto().toString();
+			return pagoGrado.getCatPago().getMonto().toString();
 		}
 	}
 

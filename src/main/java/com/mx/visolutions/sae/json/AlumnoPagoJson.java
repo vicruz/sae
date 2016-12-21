@@ -9,12 +9,27 @@ public class AlumnoPagoJson implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Integer id;
+	private Integer idAlumno;
 	private String concepto;
 	private Double monto;
 	private Double pago;
 	private String fecha;
 	private String estatus;
+	private String editar;
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Integer getIdAlumno() {
+		return idAlumno;
+	}
+	public void setIdAlumno(Integer idAlumno) {
+		this.idAlumno = idAlumno;
+	}
 	public String getConcepto() {
 		return concepto;
 	}
@@ -44,6 +59,12 @@ public class AlumnoPagoJson implements Serializable{
 	}
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
+	}
+	public String getEditar() {
+		return editar;
+	}
+	public void setEditar(String editar) {
+		this.editar = editar;
 	}
 	
 }

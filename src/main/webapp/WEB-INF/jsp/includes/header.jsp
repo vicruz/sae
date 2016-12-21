@@ -12,8 +12,6 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>.: Gandhi :.</title>
-	<!-- Boostrap 
-	<link href="${conPath}/public/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">-->
 	
 	<!-- Css 
 	<link href="${conPath}/public/css/styles.css" rel="stylesheet"> -->
@@ -21,7 +19,7 @@
     <!-- <link type="text/css" rel="stylesheet" href="${conPath}/public/lib/kadmin/styles/font-awesome.min.css">-->
     <link type="text/css" rel="stylesheet" href="${conPath}/public/lib/kadmin/styles/bootstrap.min.css">
     <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 
   	 <!-- Ionicons -->
   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
@@ -34,15 +32,59 @@
     <link type="text/css" rel="stylesheet" href="${conPath}/public/lib/kadmin/styles/jquery.news-ticker.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
-	<!-- Data tables -->  
-    <!-- <link rel="stylesheet" type="text/css" href="${conPath}/public/lib/datatable/css/jquery.dataTables.css"> -->
+	<!-- Data tables -->
+	<link rel="stylesheet" type="text/css" href="${conPath}/public/lib/datatable/css/jquery.dataTables.css">
     <link rel="stylesheet"  href="${conPath}/public/lib/datatable/css/dataTables.bootstrap.css">
-    <link rel="stylesheet"  href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <link rel="stylesheet"  href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+    <!-- <link rel="stylesheet"  href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <link rel="stylesheet"  href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">   
+    <link rel="stylesheet" type="text/css" href="${conPath}/public/lib/datatable/datatables.min.css"/> -->
+    
+    <!-- Morris -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
   
-  <!-- Ionicons 
+  <!-- Ionicons --> 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
--->
+  
+  <!-- Datepicker --> 
+  <link rel="stylesheet" href="${conPath}/public/lib/datepicker/css/bootstrap-datepicker3.min.css">
+
+	<!-- Charts -->
+	<style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+    
+    <!-- Alerts -->
+    <link rel="stylesheet"  href="${conPath}/public/css/alerts/jquery-impromptu.css">
+    
+    <!-- Button table -->
+    <style type="text/css">
+    	.btn-table {
+    		background-color: white;
+    		border: 2px solid #4CAF50;
+    		color: black;
+    		font-size: 11px;
+			padding: 1px 20px;
+			text-align: center;
+			display: inline-block;
+			border-radius: 4px;
+		}
+		
+		.btn-table:hover {
+    		background-color: #4CAF50;
+    		color: white;
+		}
+		
+		.disabled-btn-table {
+    		opacity: 0.6;
+    		cursor: not-allowed;
+		}
+    </style>
+
 </head>
 <body>
 	 <div>
@@ -110,7 +152,12 @@
                       <div class="clearfix"></div>
                     <li><a href="<c:url value='/pagoGrado' />"><span class="glyphicon glyphicon-credit-card"></span>
                         <div class="icon-bg bg-orange"></div>
-                    </i><span class="menu-title">Relación pagos con grado</span></a></li>
+                    </i><span class="menu-title">Relaci&oacute;n pagos con grado</span></a></li>
+                    
+                     <div class="clearfix"></div>
+                    <li><a href="<c:url value='/estadisticas' />"><span class="glyphicon glyphicon-list-alt"></span>
+                        <div class="icon-bg bg-orange"></div>
+                    </i><span class="menu-title">Estad&iacute;sticas</span></a></li>
                     
                 </ul>
                 

@@ -1,16 +1,14 @@
 <!--BEGIN FOOTER-->
-                <div id="footer">
+                <!-- <div id="footer">
                     <div class="copyright">
-                        <!-- <a href="http://themifycloud.com">2014 © KAdmin Responsive Multi-Purpose Template</a></div> -->
-                </div>
+                        
+                </div> -->
                 <!--END FOOTER-->
             </div>
             <!--END PAGE WRAPPER-->
         </div>
     </div>
-    <!-- jQuery 2.2.3 
-    <script src="${conPath}/public/lib/jquery-3.1.1.min.js"></script>-->
-    <!-- <script src="${conPath}/public/lib/kadmin/script/jquery-1.10.2.min.js"></script> -->
+    <!-- jQuery 2.2.3 -->
     <script src="${conPath}/public/lib/kadmin/script/jquery-3.1.1.min.js"></script>
     <script src="${conPath}/public/lib/kadmin/script/jquery-migrate-1.2.1.min.js"></script>
     <script src="${conPath}/public/lib/kadmin/script/jquery-ui.js"></script>
@@ -49,12 +47,12 @@
     <script src="${conPath}/public/lib/kadmin/script/highcharts-more.js"></script>
     <script src="${conPath}/public/lib/kadmin/script/charts-highchart-pie.js"></script>
     <script src="${conPath}/public/lib/kadmin/script/charts-highchart-more.js"></script> -->
-    <!-- DATA TABLES
-    <script type="text/javascript" charset="utf8" src="${conPath}/public/lib/datatable/js/jquery.dataTables.js"></script> -->    
-    <script src="${conPath}/public/lib/datatable/js/jquery.dataTables.min.js"></script>
-    <script src="${conPath}/public/lib/datatable/js/dataTables.bootstrap.min.js"></script>
+    <!-- DATA TABLES -->
+    <script src="${conPath}/public/lib/datatable/js/jquery.dataTables.min.js"></script> 
+    <script src="${conPath}/public/lib/datatable/js/dataTables.bootstrap.min.js"></script> 
+    <!-- <script type="text/javascript" src="${conPath}/public/lib/datatable/datatables.min.js"></script> -->
 
-	<!-- DATA TABLES Botones para exportar -->
+	<!-- DATA TABLES Botones para exportar --> 
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
 	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
@@ -63,14 +61,20 @@
 	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
 	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
 
-
-
-
-
-
-
-
-
+	<!-- Chart -->
+    <script src="${conPath}/public/lib/sae/chart/Chart.bundle.js"></script>
+    <%-- <script src="${conPath}/public/lib/sae/chart/utils.js"></script> --%>
+    
+    <!-- Alert -->
+    <script type="text/javascript" src="${conPath}/public/lib/alerts/jquery-impromptu.js"></script>
+    
+    <!-- Morris -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+	
+	<!-- Datepicker -->
+ 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/js/bootstrap-datepicker.min.js"></script>
+ 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
 	
     <!--CORE JAVASCRIPT-->
     <script src="${conPath}/public/lib/kadmin/script/main.js"></script>
@@ -80,9 +84,9 @@
     <script src="${conPath}/public/lib/sae/js/userTable.js"></script>
     <script src="${conPath}/public/lib/sae/js/catPagos.js"></script>
     <script src="${conPath}/public/lib/sae/js/pagoGradoTable.js"></script>
+    <script type="text/javascript" src="${conPath}/public/lib/sae/js/estadistica.js"></script>
     
-    
-    <script>      
+    <script>
     
     (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
@@ -97,44 +101,6 @@
         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
         ga('create', 'UA-145464-12', 'auto');
         ga('send', 'pageview');
-
-        /*$(document).ready(function() {
-            $('#example').DataTable({
-            	"paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
-        } );
-        */
-        
-/*
-        $(document).ready( function () {
-    	    $('#alumnos').DataTable();
-    	} );*/
-
-/*    	$(document).ready(function() {
-    	    $('#alumnos').DataTable( {
-    	        "processing": true,
-    	        //"serverSide": true,
-    	        "ajax": {
-    	        	"url": "../alumnoRest",
-    	        	"type": "POST"
-    	        },
-    	        "columns": [
-    	                    { "data": "id" },
-    	                    { "data": "apPaterno" },
-    	                    { "data": "apMaterno" },
-    	                    { "data": "nombre" },
-    	                    { "data": "grado" },
-    	                    { "data": "semaforo" }
-    	                ]
-    	    } );
-    	} );*/
-        
-        
 
 </script>
 </body>

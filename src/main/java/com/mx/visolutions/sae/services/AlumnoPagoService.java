@@ -11,7 +11,7 @@ public interface AlumnoPagoService {
 	
 	public void save(AlumnoPagoForm alumnoForm) throws Exception;
 	
-	public void update(AlumnoPagoForm alumnoForm);
+	public AlumnoPagoForm updatePago(Integer idPago, Double pago, Integer idUsuario);
 	
 	public List<AlumnoPagoForm> findByIdAlumno(Integer id);
 	
