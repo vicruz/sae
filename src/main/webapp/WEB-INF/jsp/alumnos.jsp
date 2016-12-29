@@ -1,4 +1,5 @@
 <%@include file="includes/header.jsp"%>
+<%@include file="includes/header_html.jsp"%>
 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
 	<div class="page-header pull-left">
 		<div class="page-title">Alumnos</div>
@@ -128,3 +129,5 @@
 
 <!-- <spring:message code="hello"/> -->
 <%@include file="includes/footer.jsp"%>
+<script src="${conPath}/public/lib/sae/js/alumnoTable.js"></script>
+<%@include file="includes/footer_bottom.jsp"%>

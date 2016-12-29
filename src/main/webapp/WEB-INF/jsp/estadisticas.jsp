@@ -1,4 +1,7 @@
 <%@include file="includes/header.jsp"%>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+	<link rel="stylesheet" href="${conPath}/public/lib/datepicker/css/bootstrap-datepicker3.min.css">
+<%@include file="includes/header_html.jsp"%>
 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
 	<div class="page-header pull-left">
 		<div class="page-title">Estad&iacute;sticas</div>
@@ -68,3 +71,9 @@
 
 <!-- <spring:message code="hello"/> -->
 <%@include file="includes/footer.jsp"%>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+ 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/js/bootstrap-datepicker.min.js"></script>
+ 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+ 	<script type="text/javascript" src="${conPath}/public/lib/sae/js/estadistica.js"></script>
+<%@include file="includes/footer_bottom.jsp"%>

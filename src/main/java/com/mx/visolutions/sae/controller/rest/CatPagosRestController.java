@@ -33,13 +33,14 @@ public class CatPagosRestController {
 	@RequestMapping(path="/getMonto/{idPagoGrado}", method = RequestMethod.GET)
 	public String getMonto(@PathVariable("idPagoGrado") Integer idPagoGrado){
 		//el valor que llega es idPagoGrado
-		PagoGrado pagoGrado = pagoGradoService.findOne(idPagoGrado);
+		//PagoGrado pagoGrado = pagoGradoService.findOne(idPagoGrado);
+		CatPagos catPago = catPagosService.findById(idPagoGrado);
 		
-		if(pagoGrado==null){
+		if(catPago==null){
 			return "0";
 		}
 		else{
-			return pagoGrado.getCatPago().getMonto().toString();
+			return catPago.getMonto().toString();
 		}
 	}
 

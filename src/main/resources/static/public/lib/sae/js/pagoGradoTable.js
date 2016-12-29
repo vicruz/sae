@@ -25,3 +25,16 @@ $(document).ready(function() {
     	                ]
     	    } );
     	} );
+
+function cambiaMonto(){
+	var selectedValue= $("#selectConcepto").val();
+	var elPath = $("#elPath").val();
+	var url = elPath + "/catpagos/getMonto/"+selectedValue;
+	$.get(url,function(respuesta){
+		$("#monto").val(respuesta);
+	})
+}
+
+$( function() {
+    $( "#datepicker" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, daysOfWeekDisabled: "0,6", language: "es", autoclose: true});
+  } );

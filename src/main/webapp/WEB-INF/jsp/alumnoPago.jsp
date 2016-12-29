@@ -1,4 +1,29 @@
 <%@include file="includes/header.jsp"%>
+<link rel="stylesheet"  href="${conPath}/public/css/alerts/jquery-impromptu.css">
+<!-- Button table -->
+    <style type="text/css">
+    	.btn-table {
+    		background-color: white;
+    		border: 2px solid #4CAF50;
+    		color: black;
+    		font-size: 11px;
+			padding: 1px 20px;
+			text-align: center;
+			display: inline-block;
+			border-radius: 4px;
+		}
+		
+		.btn-table:hover {
+    		background-color: #4CAF50;
+    		color: white;
+		}
+		
+		.disabled-btn-table {
+    		opacity: 0.6;
+    		cursor: not-allowed;
+		}
+    </style>
+<%@include file="includes/header_html.jsp"%>
 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
 	<div class="page-header pull-left">
 		<div class="page-title">Alumno</div>
@@ -130,6 +155,8 @@
 </div>
 
 
-
-
 <%@include file="includes/footer.jsp"%>
+<script type="text/javascript" src="${conPath}/public/lib/alerts/jquery-impromptu.js"></script>
+<script src="${conPath}/public/lib/sae/js/alumnoPagosTable.js"></script>
+<script type="text/javascript" src="${conPath}/public/lib/sae/js/alumnoPagosTableJS.js"></script>
+<%@include file="includes/footer_bottom.jsp"%>

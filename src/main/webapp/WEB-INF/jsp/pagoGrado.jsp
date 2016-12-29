@@ -1,5 +1,6 @@
 <%@include file="includes/header.jsp"%>
-
+	<link rel="stylesheet" href="${conPath}/public/lib/datepicker/css/bootstrap-datepicker3.min.css">
+<%@include file="includes/header_html.jsp"%>
 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
 	<div class="page-header pull-left">
 		<div class="page-title">Relaci&oacute;n pagos con grado</div>
@@ -157,3 +158,7 @@
 	
 
 <%@include file="includes/footer.jsp"%>
+	<script type="text/javascript" src="${conPath}/public/lib/datepicker/js/bootstrap-datepicker.min.js"></script>
+ 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+	<script src="${conPath}/public/lib/sae/js/pagoGradoTable.js"></script>
+<%@include file="includes/footer_bottom.jsp"%>

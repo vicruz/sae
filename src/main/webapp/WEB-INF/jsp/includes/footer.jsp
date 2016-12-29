@@ -39,18 +39,10 @@
     <script src="${conPath}/public/lib/kadmin/script/jquery.flot.spline.js"></script>
     <script src="${conPath}/public/lib/kadmin/script/zabuto_calendar.min.js"></script>
     <script src="${conPath}/public/lib/kadmin/script/index.js"></script>
-    <!--LOADING SCRIPTS FOR CHARTS-->
-    <!-- <script src="${conPath}/public/lib/kadmin/script/highcharts.js"></script> 
-    <script src="${conPath}/public/lib/kadmin/script/data.js"></script>
-    <script src="${conPath}/public/lib/kadmin/script/drilldown.js"></script>
-    <script src="${conPath}/public/lib/kadmin/script/exporting.js"></script>
-    <script src="${conPath}/public/lib/kadmin/script/highcharts-more.js"></script>
-    <script src="${conPath}/public/lib/kadmin/script/charts-highchart-pie.js"></script>
-    <script src="${conPath}/public/lib/kadmin/script/charts-highchart-more.js"></script> -->
+   
     <!-- DATA TABLES -->
     <script src="${conPath}/public/lib/datatable/js/jquery.dataTables.min.js"></script> 
     <script src="${conPath}/public/lib/datatable/js/dataTables.bootstrap.min.js"></script> 
-    <!-- <script type="text/javascript" src="${conPath}/public/lib/datatable/datatables.min.js"></script> -->
 
 	<!-- DATA TABLES Botones para exportar --> 
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
@@ -61,47 +53,6 @@
 	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
 	<script type="text/javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
 
-	<!-- Chart -->
-    <script src="${conPath}/public/lib/sae/chart/Chart.bundle.js"></script>
-    <%-- <script src="${conPath}/public/lib/sae/chart/utils.js"></script> --%>
-    
-    <!-- Alert -->
-    <script type="text/javascript" src="${conPath}/public/lib/alerts/jquery-impromptu.js"></script>
-    
-    <!-- Morris -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-	
-	<!-- Datepicker -->
- 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/js/bootstrap-datepicker.min.js"></script>
- 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
-	
     <!--CORE JAVASCRIPT-->
     <script src="${conPath}/public/lib/kadmin/script/main.js"></script>
-    <script src="${conPath}/public/lib/sae/js/alumnoTable.js"></script>
-    <script src="${conPath}/public/lib/sae/js/alumnoPagosTable.js"></script>
-    <script type="text/javascript" src="${conPath}/public/lib/sae/js/alumnoPagosTableJS.js"></script>
-    <script src="${conPath}/public/lib/sae/js/userTable.js"></script>
-    <script src="${conPath}/public/lib/sae/js/catPagos.js"></script>
-    <script src="${conPath}/public/lib/sae/js/pagoGradoTable.js"></script>
-    <script type="text/javascript" src="${conPath}/public/lib/sae/js/estadistica.js"></script>
-    
-    <script>
-    
-    (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-        ga('create', 'UA-145464-12', 'auto');
-        ga('send', 'pageview');
-
-</script>
-</body>
-</html>
+   

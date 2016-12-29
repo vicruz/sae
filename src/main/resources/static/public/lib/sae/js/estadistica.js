@@ -60,20 +60,6 @@ function actualizaCharts(){
 	
 }
 
-/*new Morris.Donut({
-	  // ID of the element in which to draw the chart.
-	  element: 'totalchart',
-	  // Chart data records -- each entry in this array corresponds to a point on
-	  // the chart.
-	  data: [
-	    { label: 'Kinder 1', value: 2000 },
-	    { label: 'Kinder 2', value: 1500 }
-	  ]
-	});*/
-
-
-
-/*$( function() {
-    $( "#datepickerInicio" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, autoclose: true, minViewMode: 1});
-    $( "#datepickerFin" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, autoclose: true, minViewMode: 1});
-  } );*/
+$( function() {
+    $( "#datepicker" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, minViewMode: 1, language: "es", autoclose: true});
+  } );
