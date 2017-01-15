@@ -36,5 +36,5 @@ function cambiaMonto(){
 }
 
 $( function() {
-    $( "#datepicker" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, daysOfWeekDisabled: "0,6", language: "es", autoclose: true});
+    $( "#datepicker" ).datepicker({format: "yyyy-mm-dd", weekStart: 0, todayHighlight: true, daysOfWeekDisabled: "0,6", language: "es", autoclose: true});
   } );

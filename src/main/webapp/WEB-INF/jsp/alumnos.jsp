@@ -74,14 +74,14 @@
 								</div>
 							</div>
 
-							<div class="col-md-6">
+							<%-- <div class="col-md-6">
 								<div class="form-group">
 									<div class="checkbox-beca">
 										<form:label path="becaId">Beca: </form:label>
 										<form:checkbox path="becaId" />
 									</div>
 								</div>
-							</div>
+							</div> --%>
 						</div>
 
 						<div class="form-group">
@@ -107,6 +107,7 @@
 				<th>Grado</th>
 				<th>Estatus</th>
 				<th>Pagos</th>
+				<th>Editar</th>
 			</tr>
 		</thead>
 
@@ -119,6 +120,7 @@
 				<th>Grado</th>
 				<th>Estatus</th>
 				<th>Pagos</th>
+				<th>Editar</th>
 			</tr>
 		</tfoot>
 	</table>

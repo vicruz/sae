@@ -4,6 +4,8 @@ import javax.validation.constraints.NotNull;
 
 public class AlumnoForm {
 	
+	private Integer id;
+	
 	@NotNull
 	private String apPaterno;
 	
@@ -17,6 +19,12 @@ public class AlumnoForm {
 	private Integer semaforoId;
 	private Boolean becaId;
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getApPaterno() {
 		return apPaterno;
 	}

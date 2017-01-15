@@ -125,7 +125,7 @@ public class PagoGradoController {
 		List<Alumno> alumnos;
 		
 		if((aniolim<anio)|| (mes>12)||(dia>31)){
-			MyUtil.flash(redirectAttributes, "danger", "pagoNoSuccess");
+			MyUtil.flash(redirectAttributes, "danger", "pagoGradoNoSuccess");
 			return "redirect:/pagoGrado";
 		}
 			
@@ -157,11 +157,11 @@ public class PagoGradoController {
 				alumnoPagoService.save(alumnoForm);
 			}
 			
-			MyUtil.flash(redirectAttributes, "success", "signupSuccess");
+			MyUtil.flash(redirectAttributes, "success", "pagoGradoSuccess");
 		} 
 		catch (Exception  e) {
 			logger.error(pagoGradoRelForm.toString()+e.getMessage());
-			MyUtil.flash(redirectAttributes, "danger", "pagoNoSuccess", e.getMessage());
+			MyUtil.flash(redirectAttributes, "danger", "pagoGradoNoSuccess", e.getMessage());
 			e.printStackTrace();
 		}
 		

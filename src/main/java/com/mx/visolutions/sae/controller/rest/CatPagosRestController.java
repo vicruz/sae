@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mx.visolutions.sae.entities.CatPagos;
-import com.mx.visolutions.sae.entities.PagoGrado;
+//import com.mx.visolutions.sae.entities.PagoGrado;
 import com.mx.visolutions.sae.json.CatPagosJson;
 import com.mx.visolutions.sae.json.JSon;
 import com.mx.visolutions.sae.services.CatPagosService;
-import com.mx.visolutions.sae.services.PagoGradoService;
+//import com.mx.visolutions.sae.services.PagoGradoService;
 
 @RestController
 @RequestMapping(path="/catpagos")
 public class CatPagosRestController {
 	
 	private CatPagosService catPagosService;
-	private PagoGradoService pagoGradoService;
+//	private PagoGradoService pagoGradoService;
 
 	@Autowired
-	public CatPagosRestController(CatPagosService catPagosService, PagoGradoService pagoGradoService){
+	public CatPagosRestController(CatPagosService catPagosService){//, PagoGradoService pagoGradoService){
 		this.catPagosService = catPagosService;
-		this.pagoGradoService = pagoGradoService;
+//		this.pagoGradoService = pagoGradoService;
 	}
 	
 	@RequestMapping(path="/getMonto/{idPagoGrado}", method = RequestMethod.GET)
@@ -65,6 +65,7 @@ public class CatPagosRestController {
 				json.setFecha(String.valueOf(pagos.getFechaAlta()));
 				json.setId(pagos.getId());
 				json.setMonto(pagos.getMonto());
+				json.setBeca(pagos.getAplicaBeca()==1?"<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\">":"<span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\">");
 				json.setUrl("/borrar/"+pagos.getId());
 				lstJson.add(json);
 			}

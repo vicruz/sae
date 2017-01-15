@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	var elPath = $("#elPath").val();
-    	    $('#pagos').DataTable( {
+    var tablaPagos = $('#pagos').DataTable( {
     	        "language": {
     	        	"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
     	        },
@@ -17,13 +17,35 @@ $(document).ready(function() {
     	        "columns": [
     	                    { "data": "id" },
     	                    { "data": "concepto" },
-    	                    { "data": "monto" },
+    	                    { "data": "monto", render: $.fn.dataTable.render.number( ',', '.', 2, '$' )  },
     	                    { "data": "fecha" },
+    	                    { "data": "beca" },
     	                    { "data": "url",
     	                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-    	                            $(nTd).html("<a href='"+elPath+oData.url+"'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Borrar</a>");
+    	                            //$(nTd).html("<a href='"+elPath+oData.url+"'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Borrar</a>");
+    	                            $(nTd).html("<a href='"+elPath+oData.url+"'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>&nbsp;&nbsp;" +
+    	                            //"<a data-target=\"#myPago\" data-toggle=\"modal\" id=\"modifyAlumno\" href=\"#myPago\"><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>");
+    	                            "<button type=\"button\" class=\"btn btn-link\" data-target=\"#myPago\" data-toggle=\"modal\" id=\"modifyAlumno\"><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></button>");
     	                        }
     	                    }
     	                ]
     	    } );
+    
+    $('#pagos tbody').on( 'click', 'button', function () {
+    	var objTabla = $(this).parents('tr');
+        var values = tablaPagos.row( objTabla ).data();
+        var idx = tablaPagos.row( objTabla ).index();
+        document.getElementById('id').value = values.id;
+        document.getElementById('concepto').value = values.concepto;
+        document.getElementById('monto').value = values.monto;
+        if(values.beca=="SI"){
+        	document.getElementById('cbBeca').checked = true;
+        }else{
+        	document.getElementById('cbBeca').checked = false;
+        }
+    } );
+    
+    
+    
     	} );
+

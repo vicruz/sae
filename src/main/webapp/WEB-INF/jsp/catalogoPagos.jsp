@@ -30,26 +30,33 @@
         <form:form modelAttribute="catPagosForm" role="form">
 		
 			<form:errors/>
-		
+			
+			<form:hidden path="id" id="id"/>
+			
 			<div class="form-group">
 				<form:label path="concepto">Concepto </form:label>
-				<form:input path="concepto" type="concepto" class="form-control" placeholder="Concepto"/>
+				<form:input path="concepto" type="concepto" class="form-control" placeholder="Concepto" id="concepto"/>
 				<form:errors cssClass="error" path="concepto"></form:errors>
 			</div>
 			
 			<div class="form-group">
 				<form:label path="monto">Monto </form:label>
-				<form:input path="monto" type="monto" class="form-control" placeholder="Monto"/>
+				<form:input path="monto" type="monto" class="form-control" placeholder="Monto" id="monto"/>
 				<form:errors cssClass="error" path="monto"></form:errors>
 			</div>
+			
+			<div class="form-group" align="right">
+				<form:label path="beca" >Pago aplica para beca </form:label>    			
+				<form:checkbox path="beca" id="cbBeca" name="cbBeca"/>  
+    		</div>	
 		
 			<div class="form-group">
 				<!-- <button type="submit" class="btn btn-default">Submit</button> -->
 	        	<button type="submit" class="btn btn-primary pull-right">Guardar</button>
 				<button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Cerrar</button>
-
 			</div>
-		
+			
+				
 		
 		</form:form>
       </div>
@@ -66,7 +73,8 @@
                   <th>#</th>
                   <th>Concepto</th>
                   <th>Monto</th>
-                  <th>Fecha</th>
+                  <th>Fecha de Registro</th>
+                  <th>Aplica Beca</th>
   				  <th>Acción</th>
                 </tr>
                 
@@ -79,7 +87,8 @@
                   <th>#</th>
                   <th>Concepto</th>
                   <th>Monto</th>
-                  <th>Fecha</th>
+                  <th>Fecha de Registro</th>
+                  <th>Aplica Beca</th>
   				  <th>Acción</th>
                 </tr>
                 </tfoot>

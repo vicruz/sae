@@ -2,6 +2,7 @@ package com.mx.visolutions.sae.services;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -50,17 +51,23 @@ public class PagoGradoServiceImpl implements PagoGradoService {
 		PagoGrado pago= new PagoGrado();
 		CatPagos catpago = new CatPagos();
 		catpago.setId(pagoGrado.getIdPago());
+		Calendar cal = Calendar.getInstance();
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
 		Date fechaLimite =formatter.parse(pagoGrado.getFechaLimite());
 		int anio = Integer.valueOf(pagoGrado.getAnio());
 		
+		cal.set(Calendar.YEAR, anio);
+		cal.set(Calendar.MONTH, pagoGrado.getMes()-1);
+		cal.set(Calendar.DAY_OF_MONTH,1);
+		
 		pago.setIdGrado(pagoGrado.getIdGrado());
 		pago.setFechaLimite(fechaLimite);
 		pago.setAnio_corresponde(anio);
 		pago.setMes_corresponde(pagoGrado.getMes());
 		pago.setCatPago(catpago);
+		pago.setFechaCorresponde(cal.getTime());
 
 		return pagoGradoRepository.save(pago);
 	}

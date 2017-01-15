@@ -21,8 +21,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mx.visolutions.sae.dto.AlumnoForm;
 import com.mx.visolutions.sae.dto.AlumnoPagoForm;
+import com.mx.visolutions.sae.dto.BecaForm;
 import com.mx.visolutions.sae.entities.Alumno;
 import com.mx.visolutions.sae.entities.PagoGrado;
+import com.mx.visolutions.sae.services.AlumnoBecaService;
 import com.mx.visolutions.sae.services.AlumnoPagoService;
 import com.mx.visolutions.sae.services.AlumnoService;
 import com.mx.visolutions.sae.services.CatPagosService;
@@ -37,14 +39,16 @@ public class AlumnoController {
 	private AlumnoService alumnoService;
 	private PagoGradoService pagoGradoService;
 	private AlumnoPagoService alumnoPagoService;
+	private AlumnoBecaService alumnoBecaService;
 
-	
 	@Autowired
 	public AlumnoController(AlumnoService alumnoService,PagoGradoService pagoGradoService,
-			AlumnoPagoService alumnoPagoService, CatPagosService catPagosService) {
+			AlumnoPagoService alumnoPagoService, CatPagosService catPagosService,
+			AlumnoBecaService alumnoBecaService) {
 		this.alumnoService = alumnoService;
 		this.pagoGradoService = pagoGradoService;
 		this.alumnoPagoService = alumnoPagoService;
+		this.alumnoBecaService = alumnoBecaService;
 	}
 	
 	
@@ -81,7 +85,7 @@ public class AlumnoController {
 	
 	@RequestMapping(value="/alumnos/{alumnoId}/pagos", method=RequestMethod.GET)
 	public String pagos(@PathVariable("alumnoId") Integer alumnoId, Model model){
-		logger.info("Buscando usuario con id " + alumnoId );
+		logger.info("Buscando alumno con id " + alumnoId );
 		
 		List<PagoGrado> pagoGradosForm;
 		Map<String,String> map = new HashMap<String,String>();
@@ -132,6 +136,76 @@ public class AlumnoController {
 		return pagos(alumnoId,model);
 		//return "redirect:/alumnoPago"+alumnoId+"/pagos";
 		//return "alumnoPago";
+	}
+	
+	@RequestMapping(value="/alumnos/{alumnoId}/editar", method=RequestMethod.GET)
+	public String editar(@PathVariable("alumnoId") Integer alumnoId, Model model){
+		logger.info("Editar alumno: " + alumnoId );
+		
+		AlumnoForm alumnoForm = new AlumnoForm();
+		Alumno alumno = alumnoService.findById(alumnoId);
+		
+		alumnoForm.setId(alumno.getId());
+		alumnoForm.setApMaterno(alumno.getApMaterno());
+		alumnoForm.setApPaterno(alumno.getApPaterno());
+		alumnoForm.setGradoId(alumno.getGrado().getId());
+		alumnoForm.setNombre(alumno.getNombre());
+		
+		model.addAttribute(alumnoForm);
+		model.addAttribute(new BecaForm());
+				
+		return "alumnoEdit";
+	}
+	
+	@RequestMapping(value="/alumnos/{alumnoId}/editar", method=RequestMethod.POST)
+	public String editarPost(@PathVariable("alumnoId") Integer alumnoId, 
+			@ModelAttribute("alumnoPagoForm") @Valid AlumnoForm alumnoForm,
+			//@ModelAttribute("becaForm") @Valid BecaForm becaForm,
+			BindingResult result, RedirectAttributes redirectAttributes, Model model){
+
+		if(result.hasErrors())
+			return "alumnos";
+
+		alumnoForm.setId(alumnoId);
+	
+		logger.info("Update alumnoForm: " + alumnoForm.toString());
+		try {
+			alumnoService.update(alumnoForm);
+			MyUtil.flash(redirectAttributes, "success", "alumnoUpdateSuccess");
+		} catch (Exception e) {
+			//TODO Cambiar el label
+			MyUtil.flash(redirectAttributes, "danger", "alumnoUpdateNoSuccess", e.getMessage());
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return "redirect:/alumnos";
+	}
+	
+	@RequestMapping(value="/alumnos/{alumnoId}/editar/beca", method=RequestMethod.POST)
+	public String editarPostBeca(@PathVariable("alumnoId") Integer alumnoId, 
+			@ModelAttribute("becaForm") @Valid BecaForm becaForm,
+			BindingResult result, RedirectAttributes redirectAttributes, Model model){
+
+		if(result.hasErrors())
+			return "redirect:/alumnos/"+alumnoId+"/editar";
+		
+		
+		
+		try {
+			if(becaForm.getPorcentaje()>100){
+				MyUtil.flash(redirectAttributes, "danger", "alumnoSaveBecaPorcentajeError");
+			}else{
+				alumnoBecaService.save(becaForm, alumnoId);
+				MyUtil.flash(redirectAttributes, "success", "alumnoSaveBecaSuccess");				
+			}
+		} catch (Exception e) {
+			MyUtil.flash(redirectAttributes, "danger", "alumnoSaveBecaNoSuccess", e.getMessage());
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return "redirect:/alumnos/"+alumnoId+"/editar";
 	}
 	
 }

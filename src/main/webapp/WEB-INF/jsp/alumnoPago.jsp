@@ -43,6 +43,10 @@
 			<div>
 				<input type="hidden" name="id" id="id"
 					value='<c:out value="${alumno.id}" />' />
+				<!--  -->
+				<input type="hidden" name="saldo" id="saldo"
+					value='<c:out value="${alumno.saldo}" />' />
+				
 				<dl class="dl-horizontal">
 					<dt>Nombre:</dt>
 					<dd>
@@ -57,6 +61,16 @@
 					<dd>
 						<c:out value="${alumno.grado.name}" />
 					</dd>
+					
+					<!--  -->
+					<c:if test="${alumno.saldo>0}">
+						<dt>A favor:</dt>
+						<dd>
+							<%-- <c:out value="${alumno.saldo}" /> --%>
+							<span id="divSaldo"> <c:out value="${alumno.saldo}" /> </span>
+						</dd>
+					</c:if>
+					
 				</dl>
 			</div>
 			<div align="right">

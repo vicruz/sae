@@ -47,8 +47,9 @@ public class EstadisticaServiceImpl implements EstadisticaService {
 		calInit.setTime(dateInicio);
 		calFin.setTime(dateFinal);
 		
-		List<AlumnoPago> lstAlumno = alumnoPagoRepository.betweenMonthPays(calInit.get(Calendar.MONTH)+1, calFin.get(Calendar.MONTH) + 1, 
-				calInit.get(Calendar.YEAR), calFin.get(Calendar.YEAR));
+//		List<AlumnoPago> lstAlumno = alumnoPagoRepository.betweenMonthPays(calInit.get(Calendar.MONTH)+1, calFin.get(Calendar.MONTH) + 1, 
+//				calInit.get(Calendar.YEAR), calFin.get(Calendar.YEAR));
+		List<AlumnoPago> lstAlumno = alumnoPagoRepository.betweenMonthPays(dateInicio, dateFinal);
 		
 		if(total){
 			return generaEstadisticaTotal(lstAlumno);

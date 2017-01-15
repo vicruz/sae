@@ -12,6 +12,7 @@ public class AlumnoJson implements Serializable {
 	private String grado;
 	private String semaforo;
 	private String url;
+	private String urlEditar;
 	 
 	public int getId() {
 		return id;
@@ -54,5 +55,11 @@ public class AlumnoJson implements Serializable {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String getUrlEditar() {
+		return urlEditar;
+	}
+	public void setUrlEditar(String urlEditar) {
+		this.urlEditar = urlEditar;
 	}
 }

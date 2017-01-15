@@ -58,7 +58,7 @@
 				
 				<spring:bind path="idGrado">
 					<div class="form-group">
-						<form:label path="idGrado">Grados: </form:label>
+						<form:label path="idGrado">Grado: </form:label>
 						<form:select id="selectGrado" path="idGrado" class="form-control">
 							<form:option value="0" label="--- Selecciona ---" />
 							<form:options items="${grados}" />
@@ -66,12 +66,6 @@
 			        </div>		
 				</spring:bind>
 				
-				<!--  <div class="form-group">
-					<p style='text-indent: 1em'>
-						<form:label path="mes">Mes: </form:label>
-						<form:input path="mes" type="mes" class="form-control" readonly="true"/>
-					</p>
-			    </div>-->	
 				<spring:bind path="mes">
 					<div class="form-group">
 					<p style='text-indent: 1em'>
@@ -100,10 +94,8 @@
 					</form:select>
 			    </div>
 				
-				
-					
 				<div class="form-group">
-					<form:label path="fechaLimite">fecha Limite: </form:label>
+					<form:label path="fechaLimite">Fecha Limite: </form:label>
 					<form:input id="datepicker" path="fechaLimite" type="fechaLimite" class="form-control" placeholder="AAAA-MM-DD"/>
 					<span class="glyphicon glyphicon-calendar" id="calendario"></span>
 			    </div>

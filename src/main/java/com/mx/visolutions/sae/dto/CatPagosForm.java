@@ -5,10 +5,22 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 public class CatPagosForm {
 	
+	private Integer id;
+	
 	private String concepto;
 	
 	@NumberFormat(style = Style.NUMBER, pattern = "$#,#00.00")
 	private Double monto;
+	
+	private Boolean beca;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getConcepto() {
 		return concepto;
@@ -26,9 +38,17 @@ public class CatPagosForm {
 		this.monto = monto;
 	}
 	
+	public Boolean getBeca() {
+		return beca;
+	}
+
+	public void setBeca(Boolean beca) {
+		this.beca = beca;
+	}
+
 	@Override
 	public String toString() {
-		return "CatPagoForm [conceptp=" + concepto + "monto" + monto + "]";
+		return "CatPagoForm [concepto=" + concepto + ", monto=" + monto + ", beca="+beca+"]";
 	}
 	
 

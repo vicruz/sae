@@ -43,8 +43,16 @@ public class AlumnoServiceImpl implements AlumnoService {
 
 	@Override
 	public void update(AlumnoForm alumnoForm) {
-		// TODO Auto-generated method stub
+		Alumno alumno = alumnoRepository.findOne(alumnoForm.getId());
+		Grado grado = new Grado();
 		
+		alumno.setApMaterno(alumnoForm.getApMaterno());
+		alumno.setApPaterno(alumnoForm.getApPaterno());
+		alumno.setNombre(alumnoForm.getNombre());
+		grado.setId(alumnoForm.getGradoId());
+		alumno.setGrado(grado);
+		
+		alumnoRepository.save(alumno);
 	}
 
 	@Override

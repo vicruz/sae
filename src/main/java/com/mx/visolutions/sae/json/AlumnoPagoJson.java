@@ -2,6 +2,9 @@ package com.mx.visolutions.sae.json;
 
 import java.io.Serializable;
 
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 
 public class AlumnoPagoJson implements Serializable{
 
@@ -17,6 +20,9 @@ public class AlumnoPagoJson implements Serializable{
 	private String fecha;
 	private String estatus;
 	private String editar;
+	
+	@NumberFormat(style = Style.NUMBER, pattern = "#00.00")
+	private Double saldo;
 	
 	public Integer getId() {
 		return id;
@@ -65,6 +71,12 @@ public class AlumnoPagoJson implements Serializable{
 	}
 	public void setEditar(String editar) {
 		this.editar = editar;
+	}
+	public Double getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
 	}
 	
 }

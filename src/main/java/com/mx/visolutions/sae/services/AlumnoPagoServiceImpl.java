@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mx.visolutions.sae.dto.AlumnoPagoForm;
+import com.mx.visolutions.sae.entities.Alumno;
 import com.mx.visolutions.sae.entities.AlumnoPago;
 import com.mx.visolutions.sae.entities.PagoGrado;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
+import com.mx.visolutions.sae.repositories.AlumnoRepository;
 import com.mx.visolutions.sae.util.MyUtil;
 
 @Service
@@ -20,10 +22,12 @@ import com.mx.visolutions.sae.util.MyUtil;
 public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	
 	private AlumnoPagoRepository alumnoPagoRepository;
+	private AlumnoRepository alumnoRepository;
 	
 	@Autowired
-	public AlumnoPagoServiceImpl(AlumnoPagoRepository alumnoPagoRepository) {
+	public AlumnoPagoServiceImpl(AlumnoPagoRepository alumnoPagoRepository, AlumnoRepository alumnoRepository) {
 		this.alumnoPagoRepository = alumnoPagoRepository;
+		this.alumnoRepository = alumnoRepository;
 	}
 
 	@Override
@@ -66,15 +70,49 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public AlumnoPagoForm updatePago(Integer idPago, Double pago, Integer idUsuario) {
+	//public AlumnoPagoForm updatePago(Integer idPago, Double pago, Integer idUsuario, Boolean checked, Double saldo) {
+	public AlumnoPagoForm updatePago(Integer idPago, Double pago, Integer idUsuario, Boolean checked) {
+		Alumno alumno = null;
 		AlumnoPago alumnoPago = alumnoPagoRepository.findOne(idPago);
 		AlumnoPagoForm alumnoPagoForm = new AlumnoPagoForm();
+		Double pagoTotal = 0.0;
+		Double saldo = 0.0;
 		
+		if(pago == null){
+			pago = 0.0;
+		}
+		
+		//Se obtiene el pago previo del alumno y el monto a pagar
 		Double pagoOriginal = alumnoPago.getPago();
-		pagoOriginal = pagoOriginal + pago;
+		Double monto = alumnoPago.getMonto();
+		Integer idSemaforo = alumnoPago.getIdSemaforo();
+		
+		//Si se utiliza el saldo a favor del pago, se suman los valores de
+		//pago y saldo para el pagoTotal. 
+		if(checked){
+			alumno = alumnoRepository.findOne(alumnoPago.getIdAlumno());
+			saldo = alumno.getSaldo();
+			pagoTotal = pago + saldo;
+		}else{
+			pagoTotal = pago;
+		}
+		
+		//Se suma el nuevo pago al pago original
+		pagoOriginal = pagoOriginal + pagoTotal;
+		
+		//Si la suma de los pagos es mayor al monto a pagar, el residuo queda en el saldo
+		//Se reduce el pago original al valor del monto
+		if(pagoOriginal>=monto){
+			saldo = pagoOriginal-monto;
+			pagoOriginal = monto;
+		}
+		
+		//Si el check es true y el pago original es menor a al monto, el saldo se va a 0
+		if(checked && (pagoOriginal<monto)){
+			saldo = 0.0;
+		}
 
 		alumnoPago.setPago(pagoOriginal);
-		Integer idSemaforo = alumnoPago.getIdSemaforo();
 		
 		//Pago completo
 		if(alumnoPago.getMonto()<=pagoOriginal){
@@ -90,6 +128,13 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		alumnoPago.setFechaPago(Calendar.getInstance().getTime());
 		alumnoPagoRepository.save(alumnoPago);
 		
+		//Se actualiza el saldo
+		if(checked){
+			//Alumno alumno = alumnoRepository.findOne(alumnoPago.getIdAlumno());
+			alumno.setSaldo(saldo);
+			alumnoRepository.save(alumno);
+		}
+		
 	
 		alumnoPagoForm.setId(alumnoPago.getId());
 		alumnoPagoForm.setConcepto(alumnoPago.getPagoGrado().getCatPago().getConcepto() + " " +
@@ -100,6 +145,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		//alumnoPagoForm.setIdConcepto(//alumnoPago.*);
 		alumnoPagoForm.setMonto(alumnoPago.getMonto());
 		alumnoPagoForm.setPago(alumnoPago.getPago());
+		alumnoPagoForm.setSaldo(saldo);
 		
 		if(alumnoPago.getIdSemaforo()==1){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");}
 		else if(alumnoPago.getIdSemaforo()==2){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");}
@@ -151,5 +197,6 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		// TODO Auto-generated method stub
 
 	}
+
 
 }

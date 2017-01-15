@@ -41,6 +41,10 @@ public class PagoGrado {
 	
 	@Column(name="ANIO_CORRESPONDE")
 	private Integer anio_corresponde;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="FECHA_CORRESPONDE")
+	private Date fechaCorresponde;
 
 	public Integer getId() {
 		return id;
@@ -95,6 +99,14 @@ public class PagoGrado {
 
 	public void setAnio_corresponde(Integer anio_corresponde) {
 		this.anio_corresponde = anio_corresponde;
+	}
+
+	public Date getFechaCorresponde() {
+		return fechaCorresponde;
+	}
+
+	public void setFechaCorresponde(Date fechaCorresponde) {
+		this.fechaCorresponde = fechaCorresponde;
 	}
     
 }

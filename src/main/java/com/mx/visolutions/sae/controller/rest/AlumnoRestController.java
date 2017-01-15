@@ -80,6 +80,7 @@ private static final Logger logger = LoggerFactory.getLogger(AlumnoRestControlle
 						
 				}
 				json.setUrl("/alumnos/"+alumno.getId()+"/pagos");
+				json.setUrlEditar("/alumnos/"+alumno.getId()+"/editar");
 				lstJson.add(json);
 			}
 		}

@@ -25,6 +25,11 @@ $(document).ready(function() {
     	                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
     	                            $(nTd).html("<a href='"+elPath+oData.url+"'><span class=\"glyphicon glyphicon-credit-card\" aria-hidden=\"true\"></span>&nbsp;pagos</a>");
     	                        }
+    	                    },
+    	                    { "data": "urlEditar",
+    	                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+    	                            $(nTd).html("<a href='"+elPath+oData.urlEditar+"'><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span>&nbsp;Editar</a>");
+    	                        }
     	                    }
     	                ]
     	    } );

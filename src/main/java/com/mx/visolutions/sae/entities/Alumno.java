@@ -44,6 +44,9 @@ public class Alumno {
 	@Column(name="BECA_ID")
 	private long beca;
 	
+	@Column(name="SALDO")
+	private double saldo;
+	
 	/*
 	@OneToOne
     private Grado grado;
@@ -121,6 +124,14 @@ public class Alumno {
 
 	public void setBeca(long beca) {
 		this.beca = beca;
+	}
+
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
 	}
 
 	

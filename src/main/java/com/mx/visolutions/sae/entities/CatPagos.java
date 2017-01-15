@@ -35,6 +35,9 @@ public class CatPagos implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="FECHA_ALTA")
     private Date fechaAlta;
+	
+	@Column(name="APLICA_BECA")
+	private Integer aplicaBeca;
 
 	public Integer getId() {
 		return id;
@@ -66,6 +69,14 @@ public class CatPagos implements Serializable{
 
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
+	}
+
+	public Integer getAplicaBeca() {
+		return aplicaBeca;
+	}
+
+	public void setAplicaBeca(Integer aplicaBeca) {
+		this.aplicaBeca = aplicaBeca;
 	}
     
 

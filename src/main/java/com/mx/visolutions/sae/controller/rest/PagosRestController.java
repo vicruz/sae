@@ -127,12 +127,20 @@ public class PagosRestController {
 	 * @return
 	 */
 	@RequestMapping(value="/pagosRest/update/{id}", method = RequestMethod.POST)
-	public AlumnoPagoJson updatePago(@PathVariable("id") Integer id, Double pago, Integer userId){
+	//public AlumnoPagoJson updatePago(@PathVariable("id") Integer id, Double pago, Integer userId, Boolean checked, Double saldo){
+	public AlumnoPagoJson updatePago(@PathVariable("id") Integer id, Double pago, Integer userId, Boolean checked){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		
 		logger.info("Sumando el pago: " + pago + " al pago: " + id);
+		if(checked==null){
+			checked = false;
+		}
+//		if(saldo==null){
+//			saldo = 0.0;
+//		}
 		
-		AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId);
+		//AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId, checked, saldo);
+		AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId, checked);
 		
 		AlumnoPagoJson json = new AlumnoPagoJson();
 		json.setId(alumno.getId());
@@ -144,6 +152,7 @@ public class PagosRestController {
 		json.setMonto(alumno.getMonto());
 		json.setPago(alumno.getPago());
 		json.setEstatus(alumno.getSemaforo());
+		json.setSaldo(alumno.getSaldo());
 		
 		if(alumno.getSemaforo().contains("Pagado")){json.setEditar("<button type=\"button\" class=\"btn-table disabled-btn-table\">Pagar</button>"); }
 		else{ json.setEditar("<button type=\"button\" class=\"btn-table\" >Pagar</button>"); }

@@ -19,7 +19,10 @@ public class AlumnoPagoForm {
 	@NumberFormat(style = Style.NUMBER, pattern = "$#,#00.00")
 	private Double pago;
 	private Date fechaPago;
-	public String semaforo;
+	private String semaforo;
+	
+	@NumberFormat(style = Style.NUMBER, pattern = "#00.00")
+	private Double saldo;
 	
 	public Integer getId() {
 		return id;
@@ -76,6 +79,12 @@ public class AlumnoPagoForm {
 		this.semaforo = semaforo;
 	}
 	
+	public Double getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
 	@Override
 	public String toString() {
 		return "AlumnoPagoForm [id=" + id + ", idConcepto=" + idConcepto + ", idAlumno=" + idAlumno + ", idPagoGrado="

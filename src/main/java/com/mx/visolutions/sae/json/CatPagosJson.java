@@ -6,6 +6,7 @@ public class CatPagosJson {
 	private String concepto;
 	private Double monto;
 	private String fecha;
+	private String beca;
 	private String url;
 	
 	
@@ -32,6 +33,12 @@ public class CatPagosJson {
 	}
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
+	}
+	public String getBeca() {
+		return beca;
+	}
+	public void setBeca(String beca) {
+		this.beca = beca;
 	}
 	public String getUrl() {
 		return url;
