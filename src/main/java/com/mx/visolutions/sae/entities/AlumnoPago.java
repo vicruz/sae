@@ -44,6 +44,10 @@ public class AlumnoPago {
 	
 	@Column(name="ID_SEMAFORO")
 	private Integer idSemaforo;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="FECHA_LIMITE")
+	private Date fechaLimite;
 
 	public Integer getId() {
 		return id;
@@ -107,5 +111,13 @@ public class AlumnoPago {
 
 	public void setIdSemaforo(Integer idSemaforo) {
 		this.idSemaforo = idSemaforo;
+	}
+
+	public Date getFechaLimite() {
+		return fechaLimite;
+	}
+
+	public void setFechaLimite(Date fechaLimite) {
+		this.fechaLimite = fechaLimite;
 	}
 }

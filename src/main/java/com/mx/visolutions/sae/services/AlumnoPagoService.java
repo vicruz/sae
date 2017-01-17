@@ -1,5 +1,6 @@
 package com.mx.visolutions.sae.services;
 
+import java.util.Date;
 import java.util.List;
 
 import com.mx.visolutions.sae.dto.AlumnoPagoForm;
@@ -19,5 +20,11 @@ public interface AlumnoPagoService {
 	public void delete(AlumnoPagoForm alumnoForm);
 	
 	public void getList();
+	
+	public void updateMontoFechaExceed();
+	
+	public void updateStatusByPago(Integer idAlumno);
+	
+	public AlumnoPagoForm updateFechaLimite(Integer idPago, Date fechaLimite);
 	
 }

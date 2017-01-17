@@ -20,6 +20,7 @@ public class AlumnoPagoJson implements Serializable{
 	private String fecha;
 	private String estatus;
 	private String editar;
+	private String fechaLimite;
 	
 	@NumberFormat(style = Style.NUMBER, pattern = "#00.00")
 	private Double saldo;
@@ -77,6 +78,12 @@ public class AlumnoPagoJson implements Serializable{
 	}
 	public void setSaldo(Double saldo) {
 		this.saldo = saldo;
+	}
+	public String getFechaLimite() {
+		return fechaLimite;
+	}
+	public void setFechaLimite(String fechaLimite) {
+		this.fechaLimite = fechaLimite;
 	}
 	
 }

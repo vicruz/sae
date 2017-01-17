@@ -26,8 +26,8 @@ $(document).ready(function() {
                     { "data": "fin" },
                     { "data": "urlBorrar",
                     	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                            $(nTd).html("<a href='"+elPath+oData.urlBorrar+"'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>&nbsp;&nbsp;");// +
-                            //"<button type=\"button\" class=\"btn btn-link\" data-target=\"#myPago\" data-toggle=\"modal\" id=\"modifyAlumno\"><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></button>");
+                            //$(nTd).html("<a href='"+elPath+oData.urlBorrar+"'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>&nbsp;&nbsp;");
+                    		$(nTd).html("<a href='#'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>&nbsp;&nbsp;");
                         } 
                     }
                 ]

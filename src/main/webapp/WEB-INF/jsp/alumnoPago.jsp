@@ -148,6 +148,7 @@
 				<th>Concepto</th>
 				<th>Monto a pagar</th>
 				<th>Pago</th>
+				<th>Fecha L&iacute;mite</th>
 				<th>Fecha de pago</th>
 				<th>Estatus</th>
 				<th>Editar</th>
@@ -160,6 +161,7 @@
 				<th>Concepto</th>
 				<th>Monto a pagar</th>
 				<th>Pago</th>
+				<th>Fecha L&iacute;mite</th>
 				<th>Fecha de pago</th>
 				<th>Estatus</th>
 				<th>Editar</th>
@@ -170,6 +172,8 @@
 
 
 <%@include file="includes/footer.jsp"%>
+<script type="text/javascript" src="${conPath}/public/lib/datepicker/js/bootstrap-datepicker.min.js"></script>
+ 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
 <script type="text/javascript" src="${conPath}/public/lib/alerts/jquery-impromptu.js"></script>
 <script src="${conPath}/public/lib/sae/js/alumnoPagosTable.js"></script>
 <script type="text/javascript" src="${conPath}/public/lib/sae/js/alumnoPagosTableJS.js"></script>

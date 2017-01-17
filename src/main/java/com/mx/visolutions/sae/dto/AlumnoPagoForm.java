@@ -12,6 +12,7 @@ public class AlumnoPagoForm {
 	private Integer idAlumno;
 	private Integer idPagoGrado;
 	private String concepto;
+	private String fechaLimite;
 	
 	@NumberFormat(style = Style.NUMBER, pattern = "$#,#00.00")
 	private Double monto;
@@ -84,6 +85,12 @@ public class AlumnoPagoForm {
 	}
 	public void setSaldo(Double saldo) {
 		this.saldo = saldo;
+	}
+	public String getFechaLimite() {
+		return fechaLimite;
+	}
+	public void setFechaLimite(String fechaLimite) {
+		this.fechaLimite = fechaLimite;
 	}
 	@Override
 	public String toString() {

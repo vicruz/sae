@@ -154,6 +154,7 @@ public class PagoGradoController {
 				alumnoForm.setMonto(catPago.getMonto());
 				alumnoForm.setFechaPago(null);
 				alumnoForm.setPago(0.0);
+				alumnoForm.setFechaLimite(pagoGradoRelForm.getFechaLimite());
 				alumnoPagoService.save(alumnoForm);
 			}
 			

@@ -44,7 +44,10 @@ private static final Logger logger = LoggerFactory.getLogger(AlumnoRestControlle
 				json.setId(alumno.getId());
 				json.setNombre(alumno.getNombre());
 				json.setGrado(alumno.getGrado().getName());
-				switch(alumno.getGrado().getId()){
+				
+				//TODO Pendiente asignar los pagos de cada alumno
+				if(alumno.getIdSemaforo()==0){
+					switch(alumno.getGrado().getId()){
 					case 1:
 						json.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");
 						break;
@@ -76,9 +79,24 @@ private static final Logger logger = LoggerFactory.getLogger(AlumnoRestControlle
 						json.setGrado("Baja");
 						json.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");
 						break;
-					
-						
+					}
+				}else{
+					switch(Long.valueOf(alumno.getIdSemaforo()).intValue()){
+					case 1:
+						json.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");
+						break;
+					case 2:
+						json.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");
+						break;
+					case 3:
+						json.setSemaforo("<span class=\"label label-sm label-danger\">Adeudo</span>");
+						break;
+					default:
+						json.setSemaforo("<span class=\"label label-sm label-info\">Pendiente</span>");
+						break;
+					}
 				}
+				
 				json.setUrl("/alumnos/"+alumno.getId()+"/pagos");
 				json.setUrlEditar("/alumnos/"+alumno.getId()+"/editar");
 				lstJson.add(json);

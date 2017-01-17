@@ -27,6 +27,18 @@ $(document).ready(function() {
 		            { "data": "concepto" },
 		            { "data": "monto", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
 		            { "data": "pago", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
+		            { "data": "fechaLimite",
+                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    		if(oData.estatus.includes("Pagado")){
+                    			$(nTd).html(oData.fechaLimite)
+                    		}else{
+                    			$(nTd).html(oData.fechaLimite+"&nbsp;" +
+                    					"<a href=\"#\" >" +
+                    			"<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>");                    			
+                    		}
+                    		
+                        }
+		            },
 		            { "data": "fecha" },
 		            { "data": "estatus" },
 		            { "data": "editar" }
@@ -37,6 +49,97 @@ $(document).ready(function() {
 		alert($value);
 	}
 	
+	//El link de modificar la fecha de pago
+	$('#alumnoPagos tbody').on( 'click', 'a', function () {
+		var objTabla = $(this).parents('tr');
+        var values = alumnoPagosTable.row( objTabla ).data();
+		console.log( values );
+		var htmlText;
+		
+		htmlText = '<p><b>Actualizar Fecha L&iacute;mite de Pago</b></p>'+
+		'<p>Fecha Limite Actual: '+values.fechaLimite.substring(0, 10)+'</br>'+
+		'Fecha Limite Nueva: <input type="text" id="datepicker" class="datepicker" name="fecha_limite" data-date-format="mm/dd/yyyy" placeholder="AAAA-MM-DD"></p>';
+		
+		var updateFechaBox =  {
+			state0: {
+				title: 'Fecha',
+				html: htmlText,
+				buttons: { Cancelar: 0, Pagar: 1 },
+					//focus: "input[name='fname']",
+					submit:function(e,v,m,f){
+						console.log(f);
+						if(v==0)
+    						$.prompt.close()
+    					
+    					else{
+    						//values.fechaLimite = f.fecha_limite + "&nbsp;<a href=\"#\" ><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>";
+    						//alumnoPagosTable.row( objTabla ).data(values).draw();
+    						if(f.fecha_limite==""){
+    							$.prompt.close();
+    							$.prompt("No existe fecha para actualizar",{
+									title: "ERROR!"
+								});
+    						}
+    						else{
+    							$.ajax({
+    								type: "POST",
+    								url: elPath +"/pagosRest/fechaLimite/"+values.id,
+    								data: {
+    									fechaLimite: f.fecha_limite
+    								},
+    								success: function( data, textStatus, jQxhr ){
+    									console.log("ajax.data: "+data);
+    									values.fechaLimite = f.fecha_limite + "&nbsp;<a href=\"#\" ><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>";
+    									values.monto = data.monto;
+    									values.estatus = data.estatus;
+    									alumnoPagosTable.row( objTabla ).data(values).draw();
+    									$.prompt("La fecha limite se ha actualizado",{
+    										title: "Actualizado!"
+    									});
+    								},
+    								error: function(  jqXHR, textStatus, errorThrown ){
+    									$.prompt("Error al actualizar la fecha" + textStatus,{
+    										title: "ERROR!"
+    									});
+    								}
+    							});
+    						}
+    						
+    					}
+					}
+				}
+		}
+		
+		$.prompt(updateFechaBox,{
+        	close: function(e,v,m,f){
+				if(v !== undefined ){
+					var str;
+					$.each(f,function(i,obj){
+						str = obj;
+						console.log(str);
+					});	
+				}
+			},
+			classes: {
+				box: '',
+				fade: '',
+				prompt: '',
+				close: '',
+				title: 'lead',
+				message: '',
+				buttons: '',
+				button: 'btn',
+				defaultButton: 'btn-primary'
+			}
+        }); 
+		
+		$( "#datepicker" ).datepicker({todayHighlight: true, format: "dd-mm-yyyy",weekStart: 0,language: "es",
+		    daysOfWeekDisabled: "0,6",
+		    autoclose: true });
+		
+	});
+	
+	//Al ser ( 'click', 'button', solo responde a los eventos de los botones
 	$('#alumnoPagos tbody').on( 'click', 'button', function () {
 		var objTabla = $(this).parents('tr');
         var values = alumnoPagosTable.row( objTabla ).data();
@@ -158,5 +261,6 @@ $(document).ready(function() {
 				defaultButton: 'btn-primary'
 			}
         }); 
+        
     } );
 } );

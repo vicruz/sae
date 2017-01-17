@@ -1,5 +1,6 @@
 package com.mx.visolutions.sae.controller.rest;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,10 @@ public class PagosRestController {
 				if(alumnoPago.getIdSemaforo()==1){json.setEditar("<button type=\"button\" class=\"btn-table disabled-btn-table\">Pagar</button>"); }
 				else{ json.setEditar("<button type=\"button\" class=\"btn-table\" >Pagar</button>"); }
 				
+				if(alumnoPago.getFechaLimite()!=null){
+					json.setFechaLimite(sdf.format(alumnoPago.getFechaLimite()));					
+				}
+				
 				lstJson.add(json);
 			}
 		}
@@ -142,6 +147,10 @@ public class PagosRestController {
 		//AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId, checked, saldo);
 		AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId, checked);
 		
+		//Se actualiza el estatus del pago
+		alumnoPagoService.updateStatusByPago(alumno.getIdAlumno());
+		
+		
 		AlumnoPagoJson json = new AlumnoPagoJson();
 		json.setId(alumno.getId());
 		json.setIdAlumno(alumno.getIdAlumno());
@@ -156,6 +165,44 @@ public class PagosRestController {
 		
 		if(alumno.getSemaforo().contains("Pagado")){json.setEditar("<button type=\"button\" class=\"btn-table disabled-btn-table\">Pagar</button>"); }
 		else{ json.setEditar("<button type=\"button\" class=\"btn-table\" >Pagar</button>"); }
+		
+		return json;
+	}
+	
+	/**
+	 * Actualiza el monto de los pagos por alumno
+	 * @param id
+	 * @param pago
+	 * @param userId
+	 * @return
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value="/pagosRest/fechaLimite/{id}", method = RequestMethod.POST)
+	//public AlumnoPagoJson updatePago(@PathVariable("id") Integer id, Double pago, Integer userId, Boolean checked, Double saldo){
+	public AlumnoPagoJson updateFechaLimite(@PathVariable("id") Integer id, String fechaLimite) throws ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		
+		logger.info("Actualizar la fecha limite del pago id: " + id + " con la fecha: " + fechaLimite);
+		
+		AlumnoPagoForm alumno = alumnoPagoService.updateFechaLimite(id, sdf.parse(fechaLimite));
+		
+		//Se actualiza el estatus del pago
+		alumnoPagoService.updateStatusByPago(alumno.getIdAlumno());
+		
+		AlumnoPagoJson json = new AlumnoPagoJson();
+//		json.setId(alumno.getId());
+//		json.setIdAlumno(alumno.getIdAlumno());
+//		json.setConcepto(alumno.getConcepto());
+//		if(alumno.getFechaPago()!=null){
+//			json.setFecha(sdf.format(alumno.getFechaPago()));					
+//		}
+		json.setMonto(alumno.getMonto());
+//		json.setPago(alumno.getPago());
+		json.setEstatus(alumno.getSemaforo());
+//		json.setSaldo(alumno.getSaldo());
+		
+//		if(alumno.getSemaforo().contains("Pagado")){json.setEditar("<button type=\"button\" class=\"btn-table disabled-btn-table\">Pagar</button>"); }
+//		else{ json.setEditar("<button type=\"button\" class=\"btn-table\" >Pagar</button>"); }
 		
 		return json;
 	}

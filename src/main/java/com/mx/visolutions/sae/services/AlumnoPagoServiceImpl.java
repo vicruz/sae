@@ -1,8 +1,12 @@
 package com.mx.visolutions.sae.services;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +44,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void save(AlumnoPagoForm alumnoForm) throws Exception {
 		AlumnoPago alumnoPago = new AlumnoPago();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	
 		
 		if(alumnoForm!=null){
 			PagoGrado pagoGrado = new PagoGrado();
@@ -61,11 +66,11 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			}else{
 				alumnoPago.setIdSemaforo(3);
 			}
+			alumnoPago.setFechaLimite(sdf.parse(alumnoForm.getFechaLimite()));
 			
 			alumnoPagoRepository.save(alumnoPago);
 		}
 		
-
 	}
 
 	@Override
@@ -197,6 +202,116 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void updateMontoFechaExceed() {
+		Calendar fechaActual = Calendar.getInstance();
+		List<AlumnoPago> lstAlumno = alumnoPagoRepository.findPagoLimitExceed(1,fechaActual.getTime());
+		int mesesDiff;
+		Double montoOriginal;
+		Double montoCalculado;
+		int porcentaje;
+		Set<Integer> set = new HashSet<Integer>();
+		Alumno alumno;
+		
+		//Se modifican los montos de cada pago
+		for(AlumnoPago alumnoPago : lstAlumno){
+			
+			mesesDiff = MyUtil.calcularMesesAFecha(alumnoPago.getFechaLimite(), fechaActual.getTime());
+			
+			//Se agrega un mes a la diferencia de meses ya que si solo ha pasado 1 día de retardo no
+			//se hará modificación alguna
+			mesesDiff +=1;
+			
+			//////////////////////////////////
+			//Calculo del % a sumar al pago
+			/////////////////////////////////
+			
+			//Monto original
+			montoOriginal = alumnoPago.getPagoGrado().getCatPago().getMonto();
+			
+			//Porcentaje
+			porcentaje = mesesDiff * 10;
+			
+			//Monto calculado
+			montoCalculado = montoOriginal + ((montoOriginal*porcentaje)/100);
+			
+			//Nuevo monto
+			alumnoPago.setMonto(montoCalculado);
+			alumnoPago.setIdSemaforo(3);
+			
+			//Se agrega el Id del alumno modificado a la lista para posteriormente modificar su estatus
+			set.add(alumnoPago.getIdAlumno());
+			
+			//////////////////////////
+			//Se actualiza el pago
+			//////////////////////////
+			alumnoPagoRepository.save(alumnoPago);
+		}
+		
+		//Una vez modificados los pagos, se modifica el estatus de cada alumno
+		for(Integer idAlumno : set){
+			alumno = alumnoRepository.findOne(idAlumno);
+			alumno.setIdSemaforo(3); //Adeudo
+			alumnoRepository.save(alumno);
+		}
+		
+	}
+
+	@Override
+	public void updateStatusByPago(Integer idAlumno) {
+		Alumno alumno = alumnoRepository.findOne(idAlumno);
+		long idSemaforo = alumno.getIdSemaforo();
+		
+		//Obtener la lista de los pagos del alumno
+		List<AlumnoPago> lst = alumnoPagoRepository.findByIdAlumno(idAlumno);
+		
+		//Hacer un Set para descartar valores repetidos
+		Set<Integer> set = new HashSet<Integer>();
+		for(AlumnoPago alumnoPago : lst){
+			set.add(alumnoPago.getIdSemaforo());
+		}
+		
+		if(set.contains(3)){
+			idSemaforo = 3;
+		}else if(set.contains(2)){
+			idSemaforo = 2;
+		}else if(set.contains(1)){
+			idSemaforo = 1;
+		}else {
+			idSemaforo = 4;
+		}
+		
+		//Se actualiza el semaforo del alumno
+		if(idSemaforo != alumno.getIdSemaforo()){
+			alumno.setIdSemaforo(idSemaforo);
+			alumnoRepository.save(alumno);
+		}
+		
+		
+	}
+
+	@Override
+	public AlumnoPagoForm updateFechaLimite(Integer idPago, Date fechaLimite) {
+		AlumnoPago alumnoPago = alumnoPagoRepository.findOne(idPago);
+		AlumnoPagoForm alumnoPagoForm = new AlumnoPagoForm();
+		
+		alumnoPago.setFechaLimite(fechaLimite);
+		alumnoPago.setMonto(alumnoPago.getPagoGrado().getCatPago().getMonto());
+		alumnoPago.setIdSemaforo(4); //Se pone el estatus como Pendiente
+		
+		alumnoPagoRepository.save(alumnoPago);
+		//updateStatusByPago(alumnoPago.getIdAlumno());
+		
+		alumnoPagoForm.setIdAlumno(alumnoPago.getIdAlumno());
+		alumnoPagoForm.setMonto(alumnoPago.getMonto());
+		alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-info\">Pendiente</span>");
+		
+		return alumnoPagoForm;
+	}
+	
+	
+	
 
 
 }

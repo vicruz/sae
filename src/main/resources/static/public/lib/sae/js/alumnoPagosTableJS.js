@@ -7,9 +7,9 @@ function cambiaMonto(){
 	})
 }
 
-$( function() {
-    $( "#datepicker" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, autoclose: true});
-  } );
+//$( function() {
+//    $( "#datepicker" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, autoclose: true});
+//  } );
 
 function cambiaAnio(){
 	var elPath = $("#elPath").val();
@@ -18,4 +18,3 @@ function cambiaAnio(){
 		$("#anio").val(respuesta);
 	})
 }
-
