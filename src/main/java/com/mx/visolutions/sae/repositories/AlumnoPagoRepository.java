@@ -35,10 +35,10 @@ public interface AlumnoPagoRepository extends JpaRepository<AlumnoPago, Integer>
 	Busca los pagos que han pasado su fecha limite
 	select ap.id_alumno, ap.id_semaforo, ap.monto, ap.fecha_limite
 	from alumno_pago ap
-	where ap.id_semaforo <> 2
+	where ap.id_semaforo = 3
 	and ap.fecha_limite < sysdate();
 	*/
-	@Query("Select ap from AlumnoPago ap where ap.idSemaforo <> ?1 and ap.fechaLimite < ?2")
+	@Query("Select ap from AlumnoPago ap where ap.idSemaforo = ?1 and ap.fechaLimite < ?2")
 	List<AlumnoPago> findPagoLimitExceed(Integer idSemaforo, Date today);
 	
 }

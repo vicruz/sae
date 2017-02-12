@@ -206,7 +206,8 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	@Override
 	public void updateMontoFechaExceed() {
 		Calendar fechaActual = Calendar.getInstance();
-		List<AlumnoPago> lstAlumno = alumnoPagoRepository.findPagoLimitExceed(1,fechaActual.getTime());
+		//Solo busca los pagos que hayan excedido la fecha límite y se encuentren en "pendiente"
+		List<AlumnoPago> lstAlumno = alumnoPagoRepository.findPagoLimitExceed(4,fechaActual.getTime());
 		int mesesDiff;
 		Double montoOriginal;
 		Double montoCalculado;
