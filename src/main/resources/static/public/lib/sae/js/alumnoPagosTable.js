@@ -64,7 +64,7 @@ $(document).ready(function() {
 			state0: {
 				title: 'Fecha',
 				html: htmlText,
-				buttons: { Cancelar: 0, Pagar: 1 },
+				buttons: { Cancelar: 0, Aceptar: 1 },
 					//focus: "input[name='fname']",
 					submit:function(e,v,m,f){
 						console.log(f);
@@ -89,7 +89,12 @@ $(document).ready(function() {
     								},
     								success: function( data, textStatus, jQxhr ){
     									console.log("ajax.data: "+data);
-    									values.fechaLimite = f.fecha_limite + "&nbsp;<a href=\"#\" ><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>";
+    									
+    									if(data.estatus.includes("Pagado")){
+    										values.fechaLimite = f.fecha_limite;
+    									}else{
+    										values.fechaLimite = f.fecha_limite + "&nbsp;<a href=\"#\" ><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>";
+    									}
     									values.monto = data.monto;
     									values.estatus = data.estatus;
     									alumnoPagosTable.row( objTabla ).data(values).draw();
