@@ -38,7 +38,7 @@ public class CatPagosServiceImpl implements CatPagosService {
 	}
 
 	public List<CatPagos> findAll(){
-	return catPagosRepository.findAll();
+		return catPagosRepository.findAll();
 			
 	}
 

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.mx.visolutions.sae.entities.AlumnoPago;
+import com.mx.visolutions.sae.entities.PagoGrado;
 
 public interface AlumnoPagoRepository extends JpaRepository<AlumnoPago, Integer>{
 
@@ -40,5 +41,8 @@ public interface AlumnoPagoRepository extends JpaRepository<AlumnoPago, Integer>
 	*/
 	@Query("Select ap from AlumnoPago ap where ap.idSemaforo = ?1 and ap.fechaLimite < ?2")
 	List<AlumnoPago> findPagoLimitExceed(Integer idSemaforo, Date today);
+	
+	
+	List<AlumnoPago> findByPagoGradoAndFechaLimite(PagoGrado pagoGrado, Date fechaLimite);
 	
 }

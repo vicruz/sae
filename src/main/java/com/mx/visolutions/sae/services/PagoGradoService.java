@@ -16,4 +16,6 @@ public interface PagoGradoService {
 	public PagoGrado addNew(PagoGradoRelForm pagoGradoRelForm) throws Throwable;
 	
 	public List<PagoGrado> findByIdGradoNotInAlumno(Integer idGrado, Integer idAlumno);
+	
+	public void save(PagoGrado pagoGrado);
 }

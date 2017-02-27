@@ -85,6 +85,12 @@ public class PagoGradoServiceImpl implements PagoGradoService {
 		}
 	}
 
+	@Override
+	@Transactional(propagation=Propagation.SUPPORTS, readOnly=false)
+	public void save(PagoGrado pagoGrado) {
+		pagoGradoRepository.save(pagoGrado);
+	}
+
 	
 
 

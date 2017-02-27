@@ -310,6 +310,36 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		
 		return alumnoPagoForm;
 	}
+
+	@Override
+	public List<AlumnoPagoForm> findByIdPagoGradoAndFechaLimite(Integer idPagoGrado, Date fechaLimite) {
+		PagoGrado pagoGrado = new PagoGrado();
+		AlumnoPagoForm alumnoPagoForm;
+		List<AlumnoPagoForm> lstAlumnoPagoForm;
+		pagoGrado.setId(idPagoGrado);
+		
+		List<AlumnoPago> lstAlumnoPago = alumnoPagoRepository.findByPagoGradoAndFechaLimite(pagoGrado, fechaLimite);
+		
+		lstAlumnoPagoForm = new ArrayList<AlumnoPagoForm>();
+		
+		for(AlumnoPago alumno: lstAlumnoPago){
+			alumnoPagoForm = new AlumnoPagoForm();
+			alumnoPagoForm.setFechaPago(alumno.getFechaPago());
+			alumnoPagoForm.setId(alumno.getId());
+			alumnoPagoForm.setMonto(alumno.getMonto());
+			alumnoPagoForm.setPago(alumno.getPago());
+			if(alumno.getIdSemaforo()==1){
+				alumnoPagoForm.setSemaforo("Pagado");
+			}else if(alumno.getIdSemaforo()==2){
+				alumnoPagoForm.setSemaforo("Parcial");
+			}else if(alumno.getIdSemaforo()==3){
+				alumnoPagoForm.setSemaforo("Adeudo");
+			}
+			lstAlumnoPagoForm.add(alumnoPagoForm);
+		}
+		
+		return lstAlumnoPagoForm;
+	}
 	
 	
 	

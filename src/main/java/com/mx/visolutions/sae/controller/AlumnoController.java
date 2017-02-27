@@ -72,10 +72,10 @@ public class AlumnoController {
 		
 		try {
 			alumnoService.save(alumnoForm);
-			MyUtil.flash(redirectAttributes, "success", "signupSuccess");
+			MyUtil.flash(redirectAttributes, "success", "alumnoSaveSuccess");
 		} catch (Exception e) {
 			//TODO Cambiar el label
-			MyUtil.flashNotProperties(redirectAttributes, "danger", e.getMessage());
+			MyUtil.flash(redirectAttributes, "danger", "alumnoSaveNoSuccess",e.getMessage());
 			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
@@ -102,7 +102,7 @@ public class AlumnoController {
 			String concepto = pagoGrado.getCatPago().getConcepto()
 					+" " + MyUtil.getMonth(pagoGrado.getMes_corresponde()) 
 					+" " + pagoGrado.getAnio_corresponde();
-			map.put(""+pagoGrado.getId(), concepto);
+			map.put(""+pagoGrado.getId(), concepto + " - $" + pagoGrado.getCatPago().getMonto());
 		}
 		
 		model.addAttribute("conceptos", map);

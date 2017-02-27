@@ -1,5 +1,7 @@
 package com.mx.visolutions.sae.dto;
 
+import java.util.List;
+
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
@@ -7,16 +9,14 @@ public class PagoGradoRelForm {
 
 	private Integer idGrado;
 	private Integer idPago;
-	
 	private String fechaLimite;
-	
 	private Integer mes;
-	
 	private String anio;
 
 	@NumberFormat(style = Style.NUMBER, pattern = "$#,#00.00")
 	private Double monto;
 	
+	private List<Integer> idGradoLst;
 	
 	public String getFechaLimite() {
 		return fechaLimite;
@@ -56,6 +56,12 @@ public class PagoGradoRelForm {
 	}
 	public void setMonto(Double monto) {
 		this.monto = monto;
+	}
+	public List<Integer> getIdGradoLst() {
+		return idGradoLst;
+	}
+	public void setIdGradoLst(List<Integer> idGradoLst) {
+		this.idGradoLst = idGradoLst;
 	}
 	@Override
 	public String toString() {

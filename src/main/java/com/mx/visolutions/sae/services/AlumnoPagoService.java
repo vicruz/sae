@@ -27,4 +27,6 @@ public interface AlumnoPagoService {
 	
 	public AlumnoPagoForm updateFechaLimite(Integer idPago, Date fechaLimite);
 	
+	public List<AlumnoPagoForm> findByIdPagoGradoAndFechaLimite(Integer idPagoGrado, Date fechaLimite);
+	
 }

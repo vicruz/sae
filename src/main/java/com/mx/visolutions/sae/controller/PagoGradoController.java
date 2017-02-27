@@ -122,50 +122,114 @@ public class PagoGradoController {
 		int mes= Integer.valueOf(pagoGradoRelForm.getFechaLimite().substring(5, 7));
 		int dia=Integer.valueOf(pagoGradoRelForm.getFechaLimite().substring(8, tam));
 		
+		boolean success = true;
+		StringBuilder sb = new StringBuilder();
+		
 		List<Alumno> alumnos;
 		
 		if((aniolim<anio)|| (mes>12)||(dia>31)){
 			MyUtil.flash(redirectAttributes, "danger", "pagoGradoNoSuccess");
 			return "redirect:/pagoGrado";
 		}
-			
+		
 		if(result.hasErrors())
 			return "redirect:/pagoGrado";
 		
-		try {
-			//Se agrega el pago a la relación de pagos por grado
-			PagoGrado pagoGrado = pagoGradoService.addNew(pagoGradoRelForm);
-			
-			///////////////////////////////////////////////////////
-			//Se agrega el pago a los alumnos inscritos en el grado
-			
-			//Se obtienen los alumnos en el grado
-			alumnos = alumnoService.findByGrado(pagoGradoRelForm.getIdGrado());
-			
-			//Se obtiene el monto de pago del concepto
-			CatPagos catPago = catPagosService.findById(pagoGradoRelForm.getIdPago());
-			
-			//Se realiza un ciclo para agregar el pago a cada alumno
-			for(Alumno alumno: alumnos){
-				AlumnoPagoForm alumnoForm = new AlumnoPagoForm();
-				
-				alumnoForm.setIdPagoGrado(pagoGrado.getId());
-				alumnoForm.setIdAlumno(alumno.getId());
-				alumnoForm.setMonto(catPago.getMonto());
-				alumnoForm.setFechaPago(null);
-				alumnoForm.setPago(0.0);
-				alumnoForm.setFechaLimite(pagoGradoRelForm.getFechaLimite());
-				alumnoPagoService.save(alumnoForm);
-			}
-			
-			MyUtil.flash(redirectAttributes, "success", "pagoGradoSuccess");
-		} 
-		catch (Exception  e) {
-			logger.error(pagoGradoRelForm.toString()+e.getMessage());
-			MyUtil.flash(redirectAttributes, "danger", "pagoGradoNoSuccess", e.getMessage());
-			e.printStackTrace();
+		if(pagoGradoRelForm.getIdGradoLst()==null || pagoGradoRelForm.getIdGradoLst().isEmpty()){
+			MyUtil.flash(redirectAttributes, "danger", "pagoGradoNoSelectSuccess");
+			return "redirect:/pagoGrado";
 		}
 		
+		
+		for(Integer idGrado: pagoGradoRelForm.getIdGradoLst()){
+			pagoGradoRelForm.setIdGrado(idGrado);
+			try {
+				//Se agrega el pago a la relación de pagos por grado
+				PagoGrado pagoGrado = pagoGradoService.addNew(pagoGradoRelForm);
+				
+				///////////////////////////////////////////////////////
+				//Se agrega el pago a los alumnos inscritos en el grado
+				
+				//Se obtienen los alumnos en el grado
+				alumnos = alumnoService.findByGrado(pagoGradoRelForm.getIdGrado());
+				
+				//Se obtiene el monto de pago del concepto
+				CatPagos catPago = catPagosService.findById(pagoGradoRelForm.getIdPago());
+				
+				//Se realiza un ciclo para agregar el pago a cada alumno
+				for(Alumno alumno: alumnos){
+					AlumnoPagoForm alumnoForm = new AlumnoPagoForm();
+					
+					alumnoForm.setIdPagoGrado(pagoGrado.getId());
+					alumnoForm.setIdAlumno(alumno.getId());
+					alumnoForm.setMonto(catPago.getMonto());
+					alumnoForm.setFechaPago(null);
+					alumnoForm.setPago(0.0);
+					alumnoForm.setFechaLimite(pagoGradoRelForm.getFechaLimite());
+					alumnoPagoService.save(alumnoForm);
+				}
+				
+				//MyUtil.flash(redirectAttributes, "success", "pagoGradoSuccess");
+			} 
+			catch (Exception  e) {
+				logger.error(pagoGradoRelForm.toString()+e.getMessage());
+				//MyUtil.flash(redirectAttributes, "danger", "pagoGradoNoSuccess", e.getMessage());
+				e.printStackTrace();
+				success = false;
+				String gradoNombre = "";
+				
+				//Si es porque el pago ya se registró, se da aviso
+				if(e.getMessage().contains("ConstraintViolationException")){
+					gradoNombre = "Pago registrado en ";
+				}
+				
+				switch(idGrado){
+				case 1:
+					gradoNombre += "Kinder 1";
+					break;
+				case 2:
+					gradoNombre += "Kinder 2";
+					break;
+				case 3:
+					gradoNombre += "Kinder 3";
+					break;
+				case 4:
+					gradoNombre += "Primaria 1";
+					break;
+				case 5:
+					gradoNombre += "Primaria 2";
+					break;
+				case 6:
+					gradoNombre += "Primaria 3";
+					break;
+				case 7:
+					gradoNombre += "Primaria 4";
+					break;
+				case 8:
+					gradoNombre += "Primaria 5";
+					break;
+				default:
+					gradoNombre += "Primaria 6";
+					break;
+				}
+				
+				
+				//Identificar el grado que no se asocio al pago
+				if(sb.toString().isEmpty()){
+					sb.append(gradoNombre);
+				}else{
+					sb.append(", " + gradoNombre);
+				}
+				
+				
+			}
+		}
+		
+		if(success){
+			MyUtil.flash(redirectAttributes, "success", "pagoGradoSuccess");
+		}else{
+			MyUtil.flash(redirectAttributes, "danger", "pagoGradoNoSuccess",sb.toString());
+		}
 
 		return "redirect:/pagoGrado";
 	}

@@ -34,7 +34,8 @@ public class AlumnoServiceImpl implements AlumnoService {
 		alumno.setApPaterno(alumnoForm.getApPaterno());
 		alumno.setNombre(alumnoForm.getNombre());
 		alumno.setGrado(grado);
-		if(alumnoForm.getBecaId())
+		alumno.setIdSemaforo(4);
+		if(alumnoForm.getBecaId()!=null && alumnoForm.getBecaId())
 			alumno.setBeca(1);
 		else
 			alumno.setBeca(0);

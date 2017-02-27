@@ -3,6 +3,7 @@ package com.mx.visolutions.sae.controller.rest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -132,7 +133,6 @@ public class PagosRestController {
 	 * @return
 	 */
 	@RequestMapping(value="/pagosRest/update/{id}", method = RequestMethod.POST)
-	//public AlumnoPagoJson updatePago(@PathVariable("id") Integer id, Double pago, Integer userId, Boolean checked, Double saldo){
 	public AlumnoPagoJson updatePago(@PathVariable("id") Integer id, Double pago, Integer userId, Boolean checked){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		
@@ -140,10 +140,7 @@ public class PagosRestController {
 		if(checked==null){
 			checked = false;
 		}
-//		if(saldo==null){
-//			saldo = 0.0;
-//		}
-		
+
 		//AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId, checked, saldo);
 		AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId, checked);
 		
@@ -170,7 +167,7 @@ public class PagosRestController {
 	}
 	
 	/**
-	 * Actualiza el monto de los pagos por alumno
+	 * Actualiza la fecha limite de pago por alumno
 	 * @param id
 	 * @param pago
 	 * @param userId
@@ -190,22 +187,81 @@ public class PagosRestController {
 		alumnoPagoService.updateStatusByPago(alumno.getIdAlumno());
 		
 		AlumnoPagoJson json = new AlumnoPagoJson();
-//		json.setId(alumno.getId());
-//		json.setIdAlumno(alumno.getIdAlumno());
-//		json.setConcepto(alumno.getConcepto());
-//		if(alumno.getFechaPago()!=null){
-//			json.setFecha(sdf.format(alumno.getFechaPago()));					
-//		}
 		json.setMonto(alumno.getMonto());
-//		json.setPago(alumno.getPago());
 		json.setEstatus(alumno.getSemaforo());
-//		json.setSaldo(alumno.getSaldo());
-		
-//		if(alumno.getSemaforo().contains("Pagado")){json.setEditar("<button type=\"button\" class=\"btn-table disabled-btn-table\">Pagar</button>"); }
-//		else{ json.setEditar("<button type=\"button\" class=\"btn-table\" >Pagar</button>"); }
 		
 		return json;
 	}
+
+	/**
+	 * Obtiene los pagos para el grado del alumno
+	 * @param idGrado Grado del alumno
+	 * @return JSON con mapa de id - conepto
+	 */
+	@RequestMapping(value="/pagosRest/grado/{idGrado}", method = RequestMethod.GET)
+	public JSon getGradoPago(@PathVariable("idGrado") Integer idGrado){
+		
+		logger.info("Buscando los conceptos de pago para el grado: " + idGrado);
+		
+		List<PagoGrado> lstPagoGrados = pagoGradoService.getByIdGrado(idGrado);
+		List<PagoGradoJson> lst = new ArrayList<PagoGradoJson>();
+		PagoGradoJson json = new PagoGradoJson();
+		JSon myJson = new JSon();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+		if(lstPagoGrados != null){
+			for(PagoGrado pagoGrado : lstPagoGrados){
+				json = new PagoGradoJson();
+				json.setIdPagoGrado(pagoGrado.getId());
+				
+				json.setPagoId(pagoGrado.getCatPago().getId());
+				json.setMonto(pagoGrado.getCatPago().getMonto());
+				json.setMes(MyUtil.getMonth(pagoGrado.getMes_corresponde()));
+				json.setAnio(pagoGrado.getAnio_corresponde());
+				json.setConcepto(pagoGrado.getCatPago().getConcepto());
+				json.setFechaLimite(sdf.format(pagoGrado.getFechaLimite()));
+				json.setUrlBorrar("");
+				lst.add(json);
+			}
+		}
+		
+		myJson.setData(lst);
+		return myJson;
+	}
 	
+	/**
+	 * Actualiza la fecha limite de pago por grado y de los alumnos asociados al pago
+	 * @param idPagoGrado
+	 * @param fechaLimite
+	 * @return
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value="/pagosRest/grado/fechaLimite/{idPagoGrado}", method = RequestMethod.POST)
+	public void updateGradoFechaLimite(@PathVariable("idPagoGrado") Integer idPagoGrado, String fechaLimite) throws ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		AlumnoPagoForm alumno;
+		Date fechaLimiteOld;
+		
+		logger.info("Actualizar la fecha limite del pagoGrado con id: " + idPagoGrado + " a la fecha: " + fechaLimite);
+		
+		//Se obtiene el objeto de PagoGrado al cual se le va a actualizar la fecha limite de pago
+		PagoGrado pagoGrado = pagoGradoService.findOne(idPagoGrado);
+		fechaLimiteOld = pagoGrado.getFechaLimite();
+		pagoGrado.setFechaLimite(sdf.parse(fechaLimite));
+		pagoGradoService.save(pagoGrado);
+		
+		//Buscar todos los alumnos que tengan este pagoGrado y esta fecha 
+		//(solo actualiza los que no han modificado fecha limite)
+		List<AlumnoPagoForm> lstAlumnos = alumnoPagoService.findByIdPagoGradoAndFechaLimite(idPagoGrado, fechaLimiteOld);
+		
+		//Actualizar cada uno de los alumnos
+		for(AlumnoPagoForm form: lstAlumnos){
+			alumno = alumnoPagoService.updateFechaLimite(form.getId(), sdf.parse(fechaLimite));
+			
+			//Se actualiza el estatus del pago
+			alumnoPagoService.updateStatusByPago(alumno.getIdAlumno());
+		}
+		
+	}
 	
 }
