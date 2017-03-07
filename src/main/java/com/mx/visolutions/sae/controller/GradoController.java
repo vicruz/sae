@@ -199,6 +199,7 @@ public class GradoController {
 				try {
 					//Se agrega el pago a la relación de pagos por grado
 					PagoGrado pagoGrado = pagoGradoService.addNew(pagoGradoRelForm);
+					pagoGradoService.flush();
 					
 					//Se obtiene el monto de pago del concepto
 					CatPagos catPago = catPagosService.findById(pagoGradoRelForm.getIdPago());
@@ -213,6 +214,7 @@ public class GradoController {
 						alumnoForm.setFechaPago(null);
 						alumnoForm.setPago(0.0);
 						alumnoForm.setFechaLimite(pagoGradoRelForm.getFechaLimite());
+						alumnoForm.setAplicaBeca(catPago.getAplicaBeca());
 						alumnoPagoService.save(alumnoForm);
 					}
 					

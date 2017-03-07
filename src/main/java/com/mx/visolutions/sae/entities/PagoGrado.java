@@ -26,7 +26,7 @@ public class PagoGrado {
 	/*@Column(name="ID_PAGO")
 	private Integer idPago;*/
 	@JoinColumn(name="ID_PAGO", referencedColumnName="ID")
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.EAGER)
 	private CatPagos catPago;
 	
 	@Column(name="ID_GRADO")

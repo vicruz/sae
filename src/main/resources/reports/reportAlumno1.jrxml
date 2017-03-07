@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportAlumno1" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eb96405e-49a1-4e7c-b236-4f23c544d517">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="191"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="alumno" class="java.lang.String"/>
+	<parameter name="grado" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<field name="fConcepto" class="java.lang.String"/>
+	<field name="fMonto" class="java.lang.Double"/>
+	<field name="fPago" class="java.lang.Double"/>
+	<field name="fFechaPago" class="java.lang.String"/>
+	<field name="fSaldo" class="java.lang.String"/>
+	<field name="fEstatus" class="java.lang.String"/>
+	<group name="Group1">
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Group3">
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="Group4">
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="542aec6a-6eaa-4747-967f-273ae057fae7"/>
+				<staticText>
+					<reportElement x="370" y="58" width="49" height="20" forecolor="#FFFFFF" uuid="5a0e7c67-132a-4e4e-9f5f-327ec26a572a"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Periodo:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="20" y="6" width="497" height="37" forecolor="#FFFFFF" uuid="f0a83658-39ac-468d-ae8c-726cbd4d74cb"/>
+					<textElement verticalAlignment="Middle">
+						<font size="20"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{alumno}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="67" y="58" width="173" height="20" forecolor="#FFFFFF" uuid="56d55b3a-4496-4588-902d-393a3fc2b28f"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{grado}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="20" y="58" width="47" height="20" forecolor="#FFFFFF" uuid="7779c7ee-a120-4e1b-8014-89d57f2c0146"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Grado:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="419" y="58" width="156" height="20" forecolor="#FFFFFF" uuid="b6fe6e5a-2c3c-42d0-971b-4c88d78a180d"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="136" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="7ac678d0-d37e-4c01-b4e1-dc4f827017b7"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="317e6e10-8998-43e2-bd56-2f819ef6bb59"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="136" y="0" width="88" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="5d47c4f4-37bc-4786-9f9b-2831806a2827"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="224" y="0" width="88" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="9233c9da-e595-4997-aa8f-e4f7dbee3124"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="312" y="0" width="88" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="f663490e-a1e8-44fe-bcbe-cee70ba7f2ef"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="0" width="52" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="bda61427-ee2a-4482-a779-78c720fa5409"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="452" y="0" width="103" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="d44c2d6e-688b-423f-9193-ec4b04bd09ef"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estatus]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="555" height="1" uuid="ba097eb8-10b2-412d-9dcb-b84a291918b6"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="136" height="20" uuid="e5acb86b-325b-4c08-8002-660234d17776"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fConcepto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00">
+				<reportElement x="136" y="0" width="88" height="20" uuid="7c6f2c6c-8e4c-4be0-a0fc-7e39cfe00dbb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fMonto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00">
+				<reportElement x="224" y="0" width="88" height="20" uuid="5a947d9f-2753-472f-9fff-8cf02594a39c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fPago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="312" y="0" width="88" height="20" uuid="27a4136e-5dc0-424f-8112-41654774df61"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fFechaPago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="52" height="20" uuid="a0a67626-3f34-405e-b1f4-a81189ed9123"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fSaldo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="452" y="0" width="103" height="20" uuid="81296150-7791-435d-a097-37a0b383ef2b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fEstatus}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="d8d64eef-7a2e-4d73-9925-d0baa16912b1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="d7877af5-7f66-4f47-9a86-495a2e17497d"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="cacb5600-f781-46c9-a11e-2f133ffbdb67"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

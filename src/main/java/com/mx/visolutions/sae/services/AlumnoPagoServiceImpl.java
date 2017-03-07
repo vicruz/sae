@@ -15,10 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mx.visolutions.sae.dto.AlumnoPagoForm;
 import com.mx.visolutions.sae.entities.Alumno;
+import com.mx.visolutions.sae.entities.AlumnoBeca;
 import com.mx.visolutions.sae.entities.AlumnoPago;
+import com.mx.visolutions.sae.entities.AlumnoPagoBitacora;
 import com.mx.visolutions.sae.entities.PagoGrado;
+import com.mx.visolutions.sae.repositories.AlumnoBecaRepository;
+import com.mx.visolutions.sae.repositories.AlumnoPagoBitacoraRepository;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
 import com.mx.visolutions.sae.repositories.AlumnoRepository;
+import com.mx.visolutions.sae.repositories.PagoGradoRepository;
 import com.mx.visolutions.sae.util.MyUtil;
 
 @Service
@@ -26,12 +31,20 @@ import com.mx.visolutions.sae.util.MyUtil;
 public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	
 	private AlumnoPagoRepository alumnoPagoRepository;
+	private PagoGradoRepository pagoGradoRepository;
 	private AlumnoRepository alumnoRepository;
+	private AlumnoPagoBitacoraRepository alumnoPagoBitacoraRepository;
+	private AlumnoBecaRepository alumnoBecaRepository;
 	
 	@Autowired
-	public AlumnoPagoServiceImpl(AlumnoPagoRepository alumnoPagoRepository, AlumnoRepository alumnoRepository) {
+	public AlumnoPagoServiceImpl(AlumnoPagoRepository alumnoPagoRepository, AlumnoRepository alumnoRepository,
+			AlumnoPagoBitacoraRepository alumnoPagoBitacoraRepository, PagoGradoRepository pagoGradoRepository,
+			AlumnoBecaRepository alumnoBecaRepository) {
 		this.alumnoPagoRepository = alumnoPagoRepository;
 		this.alumnoRepository = alumnoRepository;
+		this.alumnoPagoBitacoraRepository = alumnoPagoBitacoraRepository;
+		this.pagoGradoRepository = pagoGradoRepository;
+		this.alumnoBecaRepository = alumnoBecaRepository;
 	}
 
 	@Override
@@ -44,14 +57,35 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void save(AlumnoPagoForm alumnoForm) throws Exception {
 		AlumnoPago alumnoPago = new AlumnoPago();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		PagoGrado pagoGrado = pagoGradoRepository.findOne(alumnoForm.getIdPagoGrado());
+		Double monto = alumnoForm.getMonto(); 
 		
 		if(alumnoForm!=null){
-			PagoGrado pagoGrado = new PagoGrado();
-			pagoGrado.setId(alumnoForm.getIdPagoGrado());
+			
+			//Valida si aplica beca para el pago
+			if(alumnoForm.getAplicaBeca()==1 || pagoGrado.getCatPago().getAplicaBeca()==1){
+				List<AlumnoBeca> lstAlumnoBeca = alumnoBecaRepository.findByIdAlumnoOrderByIdBecaDesc(alumnoForm.getIdAlumno());
+				
+				//Se determina la beca del alumno
+				if(lstAlumnoBeca.size()>0){
+					//se obtiene el elemnto 0 del arreglo, es la última beca asignada
+					AlumnoBeca alumnoBeca = lstAlumnoBeca.get(0);
+					
+					//Se valida si el pago se encuentra en el rango de la beca
+					if(alumnoBeca.getFechaInicio().before(pagoGrado.getFechaCorresponde()) &&
+							alumnoBeca.getFechaFin().after(pagoGrado.getFechaCorresponde())){
+						//Genera el nuevo monto
+						monto = monto -((monto * alumnoBeca.getPorcentaje())/100);
+					}
+					
+				}
+			}
+			
 			
 			alumnoPago.setIdAlumno(alumnoForm.getIdAlumno());
-			alumnoPago.setMonto(alumnoForm.getMonto());
+			//alumnoPago.setMonto(alumnoForm.getMonto());
+			alumnoPago.setMonto(monto);
 			alumnoPago.setPago(alumnoForm.getPago());
 			if(alumnoForm.getFechaPago()!=null){
 				alumnoPago.setFechaPago(Calendar.getInstance().getTime());				
@@ -66,7 +100,12 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			}else{
 				alumnoPago.setIdSemaforo(3);
 			}
-			alumnoPago.setFechaLimite(sdf.parse(alumnoForm.getFechaLimite()));
+			
+			if(alumnoForm.getFechaLimite()==null){
+				alumnoPago.setFechaLimite(pagoGrado.getFechaLimite());
+			}else{
+				alumnoPago.setFechaLimite(sdf.parse(alumnoForm.getFechaLimite()));				
+			}
 			
 			alumnoPagoRepository.save(alumnoPago);
 		}
@@ -82,6 +121,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		AlumnoPagoForm alumnoPagoForm = new AlumnoPagoForm();
 		Double pagoTotal = 0.0;
 		Double saldo = 0.0;
+		Double saldoBitacora = 0.0;
 		
 		if(pago == null){
 			pago = 0.0;
@@ -97,6 +137,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		if(checked){
 			alumno = alumnoRepository.findOne(alumnoPago.getIdAlumno());
 			saldo = alumno.getSaldo();
+			saldoBitacora = saldo;
 			pagoTotal = pago + saldo;
 		}else{
 			pagoTotal = pago;
@@ -131,7 +172,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			}
 		}
 		alumnoPago.setFechaPago(Calendar.getInstance().getTime());
-		alumnoPagoRepository.save(alumnoPago);
+		alumnoPago = alumnoPagoRepository.save(alumnoPago);
 		
 		//Se actualiza el saldo
 		if(checked){
@@ -140,6 +181,30 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			alumnoRepository.save(alumno);
 		}
 		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Se almacena en bitácora el pago realizado, realiza por separado lo que se pagó con saldo y con efectivo
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		AlumnoPagoBitacora bitacoraPago;
+		AlumnoPagoBitacora bitacoraSaldo;
+		
+		if(pago != 0){
+			bitacoraPago = new AlumnoPagoBitacora();
+			bitacoraPago.setAlumnoPago(alumnoPago);
+			bitacoraPago.setPago(pago);
+			bitacoraPago.setFechaPago(alumnoPago.getFechaPago());
+			bitacoraPago.setSaldo(false);
+			alumnoPagoBitacoraRepository.save(bitacoraPago);
+		}
+		
+		if(checked){
+			bitacoraSaldo = new AlumnoPagoBitacora();
+			bitacoraSaldo.setAlumnoPago(alumnoPago);
+			bitacoraSaldo.setPago(saldoBitacora - saldo);
+			bitacoraSaldo.setFechaPago(alumnoPago.getFechaPago());
+			bitacoraSaldo.setSaldo(true);
+			alumnoPagoBitacoraRepository.save(bitacoraSaldo);
+		}
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		alumnoPagoForm.setId(alumnoPago.getId());
 		alumnoPagoForm.setConcepto(alumnoPago.getPagoGrado().getCatPago().getConcepto() + " " +

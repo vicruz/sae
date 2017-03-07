@@ -37,7 +37,7 @@ public class CatPagos implements Serializable{
     private Date fechaAlta;
 	
 	@Column(name="APLICA_BECA")
-	private Integer aplicaBeca;
+	private int aplicaBeca;
 
 	public Integer getId() {
 		return id;
@@ -71,11 +71,11 @@ public class CatPagos implements Serializable{
 		this.fechaAlta = fechaAlta;
 	}
 
-	public Integer getAplicaBeca() {
+	public int getAplicaBeca() {
 		return aplicaBeca;
 	}
 
-	public void setAplicaBeca(Integer aplicaBeca) {
+	public void setAplicaBeca(int aplicaBeca) {
 		this.aplicaBeca = aplicaBeca;
 	}
     

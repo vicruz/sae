@@ -18,4 +18,6 @@ public interface PagoGradoService {
 	public List<PagoGrado> findByIdGradoNotInAlumno(Integer idGrado, Integer idAlumno);
 	
 	public void save(PagoGrado pagoGrado);
+	
+	public void flush();
 }

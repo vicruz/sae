@@ -1,0 +1,280 @@
+package com.mx.visolutions.sae.controller.rest;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mx.visolutions.sae.dto.AlumnoReportVO;
+import com.mx.visolutions.sae.entities.Alumno;
+import com.mx.visolutions.sae.entities.AlumnoPago;
+import com.mx.visolutions.sae.entities.AlumnoPagoBitacora;
+import com.mx.visolutions.sae.repositories.AlumnoPagoBitacoraRepository;
+import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
+import com.mx.visolutions.sae.repositories.AlumnoRepository;
+import com.mx.visolutions.sae.util.MyUtil;
+
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+
+@RestController
+public class ReportesRestController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ReportesRestController.class);
+	
+	private AlumnoPagoBitacoraRepository alumnoPagoBitacoraRepository;
+	private AlumnoRepository alumnoRepository;
+	private AlumnoPagoRepository alumnoPagoRepository;
+	
+	@Autowired
+	public ReportesRestController(AlumnoPagoBitacoraRepository alumnoPagoBitacoraRepository,
+			AlumnoRepository alumnoRepository, AlumnoPagoRepository alumnoPagoRepository){
+		this.alumnoPagoBitacoraRepository = alumnoPagoBitacoraRepository;
+		this.alumnoRepository = alumnoRepository;
+		this.alumnoPagoRepository = alumnoPagoRepository;
+	}
+	
+	/**
+	 * Obtiene los pagos para el grado del alumno
+	 * @param idGrado Grado del alumno
+	 * @return JSON con mapa de id - conepto
+	 */
+	@RequestMapping(value="/reporte/alumno/pagos/{idAlumno}/{start}/{end}", method = RequestMethod.GET,
+			produces="application/pdf")
+	public ResponseEntity<InputStreamResource> reportAlumno(@PathVariable("idAlumno") Integer idAlumno, 
+			@PathVariable("start") String start, @PathVariable("end") String end){
+		
+		logger.info("Reporte de alumno: " + idAlumno + " en el periodo " + start +"-" + end);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+		Calendar calInit = Calendar.getInstance();
+		Calendar calFin = Calendar.getInstance();
+		
+		List<AlumnoPagoBitacora> lstAlumnoPagoBitacora = null;
+		Alumno alumno = null;
+		byte[] reporteByte;
+		List<AlumnoReportVO> lstReporte = new ArrayList<AlumnoReportVO>();
+		List<AlumnoPago> lstAlumnoPago;
+		AlumnoReportVO reporteVO;
+		
+		//Parametros
+		String alumnoNombre;
+		String grado;
+		String periodo;
+		
+		Map<String, Object> mapParams = new HashMap<String, Object>();
+		
+		try {
+			calInit.setTime(sdf.parse(start));
+			calInit.set(Calendar.HOUR_OF_DAY, 0);
+			calInit.set(Calendar.MINUTE, 0);
+			calInit.set(Calendar.SECOND, 0);
+			
+			calFin.setTime(sdf.parse(end));
+			calFin.set(Calendar.HOUR_OF_DAY, 23);
+			calFin.set(Calendar.MINUTE, 59);
+			calFin.set(Calendar.SECOND, 59);
+			
+			
+			alumno = alumnoRepository.findOne(idAlumno);
+			
+			alumnoNombre = alumno.getNombre() + " " + alumno.getApPaterno() + " " + alumno.getApMaterno();
+			grado = alumno.getGrado().getName();
+			periodo = sdf2.format(calInit.getTime()) + " - " + sdf2.format(calFin.getTime()); 
+			
+			mapParams.put("alumno", alumnoNombre);
+			mapParams.put("grado", grado);
+			mapParams.put("periodo", periodo);
+			
+			lstAlumnoPago = alumnoPagoRepository.findByIdAlumnoAndBetweenMonthPays(alumno.getId(),calInit.getTime(), calFin.getTime());
+
+			if(lstAlumnoPago.size() > 0){
+				//Construyendo el reporte
+				for(AlumnoPago alumnoPago : lstAlumnoPago){
+					
+					lstAlumnoPagoBitacora = alumnoPagoBitacoraRepository.findByAlumnoPagoId(alumnoPago.getId());
+					
+					if(lstAlumnoPagoBitacora.size()>0){
+						for (AlumnoPagoBitacora alumnoPagoBitacora : lstAlumnoPagoBitacora) {
+							reporteVO = new AlumnoReportVO();
+							reporteVO.setfConcepto(alumnoPago.getPagoGrado().getCatPago().getConcepto() + " " +
+									MyUtil.getMonth(alumnoPago.getPagoGrado().getMes_corresponde()) + " " +
+									alumnoPago.getPagoGrado().getAnio_corresponde());
+							reporteVO.setfMonto(alumnoPago.getMonto());
+							reporteVO.setfPago(alumnoPagoBitacora.getPago());
+							reporteVO.setfSaldo(alumnoPagoBitacora.getSaldo()?"SI":"NO");
+							reporteVO.setfFechaPago(sdf2.format(alumnoPagoBitacora.getFechaPago()));
+							if(alumnoPago.getIdSemaforo()==1){
+								reporteVO.setfEstatus("Pagado");
+							}else if(alumnoPago.getIdSemaforo()==2){
+								reporteVO.setfEstatus("Parcial");
+							}else if(alumnoPago.getIdSemaforo()==3){
+								reporteVO.setfEstatus("Adeudo");
+							}else{
+								reporteVO.setfEstatus("Pendiente");
+							}
+							lstReporte.add(reporteVO);
+						}
+					}else{
+						reporteVO = new AlumnoReportVO();
+						reporteVO.setfConcepto(alumnoPago.getPagoGrado().getCatPago().getConcepto() + " " +
+								MyUtil.getMonth(alumnoPago.getPagoGrado().getMes_corresponde()) + " " +
+								alumnoPago.getPagoGrado().getAnio_corresponde());
+						reporteVO.setfMonto(alumnoPago.getMonto());
+						reporteVO.setfPago(0D);
+						reporteVO.setfSaldo("");
+						reporteVO.setfFechaPago("");
+						if(alumnoPago.getIdSemaforo()==1){
+							reporteVO.setfEstatus("Pagado");
+						}else if(alumnoPago.getIdSemaforo()==2){
+							reporteVO.setfEstatus("Parcial");
+						}else if(alumnoPago.getIdSemaforo()==3){
+							reporteVO.setfEstatus("Adeudo");
+						}else{
+							reporteVO.setfEstatus("Pendiente");
+						}
+						lstReporte.add(reporteVO);
+					}
+					
+				}
+			}
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile("src/main/resources/reports/reportAlumno1.jasper");
+			JRBeanCollectionDataSource ds =new JRBeanCollectionDataSource(lstReporte);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, mapParams, ds);
+			
+			// OutputStream
+			final ByteArrayOutputStream report = new ByteArrayOutputStream();
+
+			// PDF
+			//JasperExportManager.exportReportToPdfStream(jasperPrint, report);
+			
+			JRPdfExporter exporter = new JRPdfExporter();
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(report));
+			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+			exporter.setConfiguration(configuration);
+			exporter.exportReport();
+
+			reporteByte = report.toByteArray();
+			
+			final InputStream is = new ByteArrayInputStream(reporteByte);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Cache-Control","no-cache, no-store, must-revalidate");
+			headers.add("Expires", "0");
+			headers.add("Content-Disposition", "attachment;filename="+alumnoNombre+".pdf");
+			
+			return ResponseEntity.ok().headers(headers).contentLength(reporteByte.length)
+					.contentType(MediaType.parseMediaType("application/octet-stream"))
+					.body(new InputStreamResource(is));
+			
+			/*return Response.status(Response.Status.OK).entity(is)
+					.header("Cache-Control","private, max-age=1")
+					.header("Content-Length", reporteByte.length+"")
+					.header("Expires", "0")
+					.header("Content-Disposition", "attachment;filename="+alumnoNombre+".pdf").build();
+			*/
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	@RequestMapping(value="/reporte/test", method = RequestMethod.GET,
+			produces="application/pdf")
+	public ResponseEntity<InputStreamResource> reportTest(){
+		
+		byte[] reporteByte;
+		
+		Map<String, Object> mapParams = new HashMap<String, Object>();
+		
+		try {
+			
+			mapParams.put("alumno", "Cualquiera");
+			mapParams.put("grado", "1");
+			mapParams.put("periodo", "hoy");
+			
+			JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile("src/main/resources/reports/reportAlumno1.jasper");
+			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, mapParams, new JREmptyDataSource());
+			
+			// OutputStream
+			final ByteArrayOutputStream report = new ByteArrayOutputStream();
+
+			// PDF
+			//JasperExportManager.exportReportToPdfStream(jasperPrint, report);
+			
+			JRPdfExporter exporter = new JRPdfExporter();
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(report));
+			SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+			exporter.setConfiguration(configuration);
+			exporter.exportReport();
+
+			reporteByte = report.toByteArray();
+			
+			final InputStream is = new ByteArrayInputStream(reporteByte);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Cache-Control","no-cache, no-store, must-revalidate");
+			headers.add("Expires", "0");
+			headers.add("Content-Disposition", "attachment;filename=test.pdf");
+			
+			return ResponseEntity.ok().headers(headers).contentLength(reporteByte.length)
+					.contentType(MediaType.parseMediaType("application/octet-stream"))
+					.body(new InputStreamResource(is));
+			
+			/*return Response.status(Response.Status.OK).entity(is)
+					.header("Cache-Control","private, max-age=1")
+					.header("Content-Length", reporteByte.length+"")
+					.header("Expires", "0")
+					.header("Content-Disposition", "attachment;filename="+alumnoNombre+".pdf").build();
+			*/
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	
+	
+
+}

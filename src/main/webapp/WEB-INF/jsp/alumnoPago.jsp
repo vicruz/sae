@@ -73,13 +73,37 @@
 					
 				</dl>
 			</div>
+	<!-- 		
 			<div align="right">
+			
 				<button type="button" id="addAlumno"
 					class="btn btn-primary pull-right" data-toggle="modal"
 					data-target="#myModal">
 					<span class="glyphicon glyphicon-plus"></span> Agregar Pago
 				</button>
+				
+				<button type="button" id="reporteAlumno" class="btn btn-primary pull-right" onclick="reporte()">
+			<span class="glyphicon glyphicon-usd"></span> Reporte</button>
+				
 			</div>
+	 -->
+	 		<!-- Single button -->
+	 		<div align="right">
+				<div class="btn-group">
+	  				<button type="button" id="reporteAlumno" class="btn btn-success pull-right" onclick="creaReporte()" 
+	  				aria-haspopup="true" aria-expanded="false">
+	     				<span class="glyphicon glyphicon-usd"></span> Reporte de pagos
+	  				</button>
+				</div>
+				
+				<div class="btn-group">
+	  				<button type="button" id="addAlumno"
+					class="btn btn-primary pull-right" data-toggle="modal"
+					data-target="#myModal">
+					<span class="glyphicon glyphicon-plus"></span> Agregar Pago
+				</button>
+				</div>	
+	 		</div>
 		</div>
 	</div>
 
@@ -173,7 +197,7 @@
 
 <%@include file="includes/footer.jsp"%>
 <script type="text/javascript" src="${conPath}/public/lib/datepicker/js/bootstrap-datepicker.min.js"></script>
- 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+<script type="text/javascript" src="${conPath}/public/lib/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
 <script type="text/javascript" src="${conPath}/public/lib/alerts/jquery-impromptu.js"></script>
 <script src="${conPath}/public/lib/sae/js/alumnoPagosTable.js"></script>
 <script type="text/javascript" src="${conPath}/public/lib/sae/js/alumnoPagosTableJS.js"></script>

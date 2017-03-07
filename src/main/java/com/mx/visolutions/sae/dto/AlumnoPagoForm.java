@@ -14,6 +14,9 @@ public class AlumnoPagoForm {
 	private String concepto;
 	private String fechaLimite;
 	
+	//Se usa cuando se almacena un pago desde el catalogo
+	private int aplicaBeca;
+	
 	@NumberFormat(style = Style.NUMBER, pattern = "$#,#00.00")
 	private Double monto;
 	
@@ -91,6 +94,12 @@ public class AlumnoPagoForm {
 	}
 	public void setFechaLimite(String fechaLimite) {
 		this.fechaLimite = fechaLimite;
+	}
+	public int getAplicaBeca() {
+		return aplicaBeca;
+	}
+	public void setAplicaBeca(int aplicaBeca) {
+		this.aplicaBeca = aplicaBeca;
 	}
 	@Override
 	public String toString() {

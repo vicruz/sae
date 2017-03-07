@@ -30,5 +30,7 @@ public interface AlumnoBecaRepository extends JpaRepository<AlumnoBeca, Integer>
 			+ "and cp.aplicaBeca = 1 "
 			+ "and pg.fechaCorresponde between ?2 and ?3")
 	List<AlumnoPago> findPagosAplicaBeca(Integer idAlumno, Date fechaInicio, Date fechafin);
+	
+	List<AlumnoBeca> findByIdAlumnoOrderByIdBecaDesc(Integer idAlumno);
 
 }

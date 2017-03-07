@@ -45,4 +45,7 @@ public interface AlumnoPagoRepository extends JpaRepository<AlumnoPago, Integer>
 	
 	List<AlumnoPago> findByPagoGradoAndFechaLimite(PagoGrado pagoGrado, Date fechaLimite);
 	
+	@Query("Select ap from AlumnoPago ap "
+			+ "where ap.idAlumno = ?1 and ap.pagoGrado.fechaCorresponde between ?2 and ?3")
+	List<AlumnoPago> findByIdAlumnoAndBetweenMonthPays(Integer idAlumno, Date fechaInicio, Date fechaFin);
 }

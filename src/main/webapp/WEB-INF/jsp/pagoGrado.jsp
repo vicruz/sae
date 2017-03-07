@@ -11,7 +11,7 @@
 <input type="hidden" name="elPath" id="elPath" value="${conPath}">
 
 <div class="page-content">
-		
+	
 	<div id="addButton">
 		<div class="panel-body">
 			<button type="button" id="addAlumno" class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal" >

@@ -91,7 +91,10 @@ public class PagoGradoServiceImpl implements PagoGradoService {
 		pagoGradoRepository.save(pagoGrado);
 	}
 
-	
+	@Override
+	public void flush(){
+		pagoGradoRepository.flush();
+	}
 
 
 }
