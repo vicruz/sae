@@ -90,6 +90,11 @@
 							<li><a href="<c:url value='/estadisticas' />"><span
 									class="glyphicon glyphicon-list-alt"></span>
 									<div class="icon-bg bg-orange"></div> </i><span class="menu-title">Estad&iacute;sticas</span></a></li>
+							
+							<div class="clearfix"></div>
+							<li><a href="<c:url value='/reportes' />"><span
+									class="glyphicon glyphicon-usd"></span>
+									<div class="icon-bg bg-orange"></div> </i><span class="menu-title">Reportes</span></a></li>
 
 						</ul>
 

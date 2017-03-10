@@ -168,4 +168,38 @@ public class MyUtil {
             return 0;
         }
     }
+	
+	public static String getGrado(int idGrado){
+		String grado = "";
+		switch(idGrado){
+		case 1:
+			grado = "Kinder 1";
+			break;
+		case 2:
+			grado = "Kinder 2";
+			break;
+		case 3:
+			grado = "Kinder 3";
+			break;
+		case 4:
+			grado = "Primaria 1";
+			break;
+		case 5:
+			grado = "Primaria 2";
+			break;
+		case 6:
+			grado = "Primaria 3";
+			break;
+		case 7:
+			grado = "Primaria 4";
+			break;
+		case 8:
+			grado = "Primaria 5";
+			break;
+		default:
+			grado = "Primaria 6";
+			break;
+		}
+		return grado;
+	}
 }

@@ -2,15 +2,28 @@ package com.mx.visolutions.sae.controller.rest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +40,11 @@ import com.mx.visolutions.sae.dto.AlumnoReportVO;
 import com.mx.visolutions.sae.entities.Alumno;
 import com.mx.visolutions.sae.entities.AlumnoPago;
 import com.mx.visolutions.sae.entities.AlumnoPagoBitacora;
+import com.mx.visolutions.sae.entities.AlumnoReportDailyVO;
 import com.mx.visolutions.sae.repositories.AlumnoPagoBitacoraRepository;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
 import com.mx.visolutions.sae.repositories.AlumnoRepository;
+import com.mx.visolutions.sae.services.AlumnoPagoBitacoraService;
 import com.mx.visolutions.sae.util.MyUtil;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -52,13 +67,16 @@ public class ReportesRestController {
 	private AlumnoPagoBitacoraRepository alumnoPagoBitacoraRepository;
 	private AlumnoRepository alumnoRepository;
 	private AlumnoPagoRepository alumnoPagoRepository;
+	private AlumnoPagoBitacoraService alumnoPagoBitacoraService;
 	
 	@Autowired
 	public ReportesRestController(AlumnoPagoBitacoraRepository alumnoPagoBitacoraRepository,
-			AlumnoRepository alumnoRepository, AlumnoPagoRepository alumnoPagoRepository){
+			AlumnoRepository alumnoRepository, AlumnoPagoRepository alumnoPagoRepository,
+			AlumnoPagoBitacoraService alumnoPagoBitacoraService){
 		this.alumnoPagoBitacoraRepository = alumnoPagoBitacoraRepository;
 		this.alumnoRepository = alumnoRepository;
 		this.alumnoPagoRepository = alumnoPagoRepository;
+		this.alumnoPagoBitacoraService = alumnoPagoBitacoraService;
 	}
 	
 	/**
@@ -274,7 +292,196 @@ public class ReportesRestController {
 		
 	}
 	
+	/**
+	 * Obtiene los pagos en un periodo de fechas
+	 * @param start fecha inicial
+	 * @param end fecha final
+	 * @return reporte excel
+	 */
+	@RequestMapping(value="/reporte/pagos/fechas/{start}/{end}", method = RequestMethod.GET,
+			produces="application/xls")
+	public ResponseEntity<InputStreamResource> reportPagos( 
+			@PathVariable("start") String start, @PathVariable("end") String end){
+		
+		logger.info("Reporte de pagos en fechas: " + start +"-" + end);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		
+		List<AlumnoReportDailyVO> lst;
+		Calendar calInit = Calendar.getInstance();
+		Calendar calFin = Calendar.getInstance();
+		Set<String> setConceptos;
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet;
+		XSSFRow row;
+		XSSFCell cell;
+		int fila;
+		int columna;
+		float total;
+		
+		byte[] reporteByte;
+		
+		try {
+			calInit.setTime(sdf.parse(start));
+			calInit.set(Calendar.HOUR_OF_DAY, 0);
+			calInit.set(Calendar.MINUTE, 0);
+			calInit.set(Calendar.SECOND, 0);
+			
+			calFin.setTime(sdf.parse(end));
+			calFin.set(Calendar.HOUR_OF_DAY, 23);
+			calFin.set(Calendar.MINUTE, 59);
+			calFin.set(Calendar.SECOND, 59);
+			
+			lst = alumnoPagoBitacoraService.getPagosBetweenFechaPago(calInit.getTime(), calFin.getTime());
+			setConceptos = new HashSet<String>();
+			
+			//Obtener los conceptos de los pagos
+			for (AlumnoReportDailyVO alumnoReportVO : lst) {
+				setConceptos.add(alumnoReportVO.getConcepto());
+			}
+			
+			//Crear el excel
+			sheet = workbook.createSheet("Pagos");
+			fila = 0;
+			
+			//Iterar los conceptos
+			Iterator<String> it = setConceptos.iterator();
+			String concepto;
+			while(it.hasNext()){
+				concepto = it.next();
+				sheet.addMergedRegion(new CellRangeAddress(fila,fila,0,3));
+				row = sheet.createRow(fila++);
+				columna = 0;
+				cell = row.createCell(columna);
+				
+				//Se pone el concepto como titulo
+				cell.setCellValue(concepto.toUpperCase());
+				cell.setCellStyle(cellBorderBold(workbook));
+				
+				//Nueva fila
+				row = sheet.createRow(fila++);
+				columna = 0;
+				//Se ponen titulos
+				cell = row.createCell(columna++);
+				cell.setCellValue("NOMBRE");
+				cell.setCellStyle(cellBorderBold(workbook));
+				
+				cell = row.createCell(columna++);
+				cell.setCellValue("GRADO");
+				cell.setCellStyle(cellBorderBold(workbook));
+				
+				cell = row.createCell(columna++);
+				cell.setCellValue("USO SALDO");
+				cell.setCellStyle(cellBorderBold(workbook));
+
+				cell = row.createCell(columna++);
+				cell.setCellValue("MONTO");
+				cell.setCellStyle(cellBorderBold(workbook));
+				
+				total = 0;
+				for (AlumnoReportDailyVO alumnoReportVO : lst) {
+					if(concepto.equals(alumnoReportVO.getConcepto())){
+						row = sheet.createRow(fila++);
+						columna = 0;
+						
+						cell = row.createCell(columna++);
+						cell.setCellValue(alumnoReportVO.getNombre());
+						cell.setCellStyle(cellBorder(workbook));
+						
+						cell = row.createCell(columna++);
+						cell.setCellValue(alumnoReportVO.getGrado());
+						cell.setCellStyle(cellBorder(workbook));
+						
+						cell = row.createCell(columna++);
+						cell.setCellValue(alumnoReportVO.isSaldo()?"X":"");
+						cell.setCellStyle(cellBorder(workbook));
+						
+						cell = row.createCell(columna++);
+						cell.setCellValue(alumnoReportVO.getPago());
+						cell.setCellStyle(cellBorder(workbook));
+						
+						if(!alumnoReportVO.isSaldo()){
+							total += alumnoReportVO.getPago();
+						}
+					}
+				}
+				//TOTAL
+				columna = 0;
+				sheet.addMergedRegion(new CellRangeAddress(fila,fila,0,2));
+				row = sheet.createRow(fila++);
+				cell = row.createCell(columna++);
+				cell.setCellValue("TOTAL");
+				cell.setCellStyle(cellBorder(workbook));
+				
+				cell = row.createCell(3);
+				cell.setCellValue(total);
+				cell.setCellStyle(cellBorder(workbook));
+				
+				row = sheet.createRow(fila++);
+			}
+			
+			// OutputStream
+			final ByteArrayOutputStream report = new ByteArrayOutputStream();
+			workbook.write(report);
+			workbook.close();
+
+			reporteByte = report.toByteArray();
+			
+			final InputStream is = new ByteArrayInputStream(reporteByte);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Cache-Control","no-cache, no-store, must-revalidate");
+			headers.add("Expires", "0");
+			headers.add("Content-Disposition", "attachment;filename=Reporte Pagos.xlsx");
+			
+			return ResponseEntity.ok().headers(headers).contentLength(reporteByte.length)
+					.contentType(MediaType.parseMediaType("application/octet-stream"))
+					.body(new InputStreamResource(is));
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		return null;
+		
+	}
 	
+	//////////////////////////////////////////
+	//funciones de las celdas
+	//////////////////////////////////////////
+	
+	//Pone bordes a las celdas
+	private CellStyle cellBorder(XSSFWorkbook wb){
+	    CellStyle style = wb.createCellStyle();
+	    style.setBorderBottom(BorderStyle.THIN);
+	    style.setBorderLeft(BorderStyle.THIN);
+	    style.setBorderRight(BorderStyle.THIN);
+	    style.setBorderTop(BorderStyle.THIN);
+	    
+	    return style;
+	}
+	
+	//Pone bordes a las celdas y letras en negritas
+	private CellStyle cellBorderBold(XSSFWorkbook wb){
+		CellStyle style = wb.createCellStyle();
+		style.setBorderBottom(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setBorderRight(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);
+		
+		Font font = wb.createFont();
+		font.setBold(true);
+		
+		style.setFont(font);
+		style.setAlignment(HorizontalAlignment.CENTER);
+		
+		return style;
+	}
 	
 
 }

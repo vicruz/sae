@@ -20,5 +20,12 @@ public class EstadisticaController {
 		//model.addAttribute(new EstadisticaForm());
 		return "estadisticas";
 	}
+	
+	@RequestMapping(value="/reportes", method=RequestMethod.GET)
+	public String reportes(Model model){
+		logger.debug("Reportes");
+		
+		return "reportes";
+	}
 
 }
