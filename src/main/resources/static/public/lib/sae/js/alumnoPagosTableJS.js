@@ -29,10 +29,10 @@ function creaReporte(){
 	console.log(idAlumno);
 	
 	var htmlText = '<p><b>Periodo de pago</b></p>' + 
-		'<div class="input-daterange input-group" id="datepicker">'+
-		'<input type="text" id="datepickerInicio" class="form-control" name="start" placeholder="DD-MM-AAAA" readonly/>'+
+		'<div class="input-daterange input-group" id="datepickerPeriodo">'+
+		'<input type="text" id="datepickerInicio" class="form-control" name="start" placeholder="MM-AAAA" readonly/>'+
 		'<span class="input-group-addon">A</span>'+
-		'<input type="text" id="datepickerFin" class="form-control" name="end" placeholder="DD-MM-AAAA" readonly/>'+
+		'<input type="text" id="datepickerFin" class="form-control" name="end" placeholder="MM-AAAA" readonly/>'+
 		'</div>';
 	
 	
@@ -105,7 +105,11 @@ function creaReporte(){
 		}
 	});
 	
-	$( "#datepicker" ).datepicker({todayHighlight: true, format: "dd-mm-yyyy",weekStart: 0,language: "es",
+	/*$( "#datepickerPeriodo" ).datepicker({startView: 1, minViewMode: 1, todayHighlight: true, format: "dd-mm-yyyy",weekStart: 0,language: "es",
 	    daysOfWeekDisabled: "0,6",
-	    autoclose: true });
+	    autoclose: true});
+	*/
+	/*$( "#datepickerPeriodo" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, minViewMode: 1, language: "es", autoclose: true});*/
+	$( "#datepickerPeriodo" ).datepicker({startView: 1, minViewMode: 1, todayHighlight: true, autoclose: true });
 }
+

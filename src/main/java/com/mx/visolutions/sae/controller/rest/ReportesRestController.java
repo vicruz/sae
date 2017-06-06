@@ -120,7 +120,7 @@ public class ReportesRestController {
 			calFin.set(Calendar.HOUR_OF_DAY, 23);
 			calFin.set(Calendar.MINUTE, 59);
 			calFin.set(Calendar.SECOND, 59);
-			
+			calFin.set(Calendar.DAY_OF_MONTH, calFin.getActualMaximum(Calendar.DAY_OF_MONTH));
 			
 			alumno = alumnoRepository.findOne(idAlumno);
 			
@@ -185,7 +185,16 @@ public class ReportesRestController {
 				}
 			}
 			
-			JasperReport reporte = (JasperReport) JRLoader.loadObjectFromFile("src/main/resources/reports/reportAlumno1.jasper");
+			JasperReport reporte;
+			
+			//TODO para debug
+			try{
+				reporte = (JasperReport) JRLoader.loadObjectFromFile("C:/Workspaces/SAE/sae/src/main/resources/reports/reportAlumno1.jasper");
+			}catch(Exception e){ 
+				reporte = null; 
+				reporte = (JasperReport) JRLoader.loadObjectFromFile("src/main/resources/reports/reportAlumno1.jasper");
+			}
+			
 			JRBeanCollectionDataSource ds =new JRBeanCollectionDataSource(lstReporte);
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, mapParams, ds);

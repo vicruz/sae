@@ -1,4 +1,5 @@
 <%@include file="includes/header.jsp"%>
+<link rel="stylesheet" href="${conPath}/public/lib/datepicker/css/bootstrap-datepicker3.min.css">
 <link rel="stylesheet"  href="${conPath}/public/css/alerts/jquery-impromptu.css">
 <!-- Button table -->
     <style type="text/css">
