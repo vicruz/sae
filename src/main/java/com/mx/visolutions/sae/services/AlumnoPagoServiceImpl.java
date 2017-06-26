@@ -86,8 +86,8 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			alumnoPago.setIdAlumno(alumnoForm.getIdAlumno());
 			//alumnoPago.setMonto(alumnoForm.getMonto());
 			alumnoPago.setMonto(monto);
-			alumnoPago.setPago(alumnoForm.getPago());
-			if(alumnoForm.getFechaPago()!=null){
+			alumnoPago.setPago(alumnoForm.getPago()==null?0D:alumnoForm.getPago());
+			if(alumnoForm.getPago()!=null){ 
 				alumnoPago.setFechaPago(Calendar.getInstance().getTime());				
 			}
 			
@@ -96,7 +96,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			}
 			
 			alumnoPago.setPagoGrado(pagoGrado);
-			if(alumnoForm.getPago()==0.0){
+			if(alumnoForm.getPago()==null || alumnoForm.getPago()==0.0){
 				alumnoPago.setIdSemaforo(4);
 			}else if(alumnoForm.getPago().compareTo(alumnoForm.getMonto())==0){
 				alumnoPago.setIdSemaforo(1);

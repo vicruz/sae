@@ -184,13 +184,13 @@ public class GradoController {
 				
 				//Definir la fecha limite
 				fecha.set(Calendar.DAY_OF_MONTH, gradoPagoForm.getLimite());
-				fecha.add(Calendar.MONTH, 1);
+				//fecha.add(Calendar.MONTH, 1); //Correo 25/05/2017 punto 3
 				
 				//Si la fecha limite de pago es fin de semana, se agrega 1 o 2 días
 				//si es domingo o sabado respectivamente
 				if(fecha.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY){
 					fecha.add(Calendar.DAY_OF_MONTH, 1);
-				}else if(fecha.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY){
+				}else if(fecha.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
 					fecha.add(Calendar.DAY_OF_MONTH, 2);
 				}
 				
