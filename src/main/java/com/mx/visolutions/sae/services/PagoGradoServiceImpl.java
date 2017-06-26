@@ -96,5 +96,23 @@ public class PagoGradoServiceImpl implements PagoGradoService {
 		pagoGradoRepository.flush();
 	}
 
+	@Override
+	public int findPagoMade(int idPagoGrado) {
+		int pagosMade = 0;
+		
+		try{
+			pagosMade = pagoGradoRepository.countPagosMade(idPagoGrado);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return pagosMade;
+	}
+
+	@Override
+	public void delete(Integer idPagoGrado) {
+		pagoGradoRepository.delete(idPagoGrado);
+	}
+
 
 }

@@ -26,8 +26,9 @@ public class AlumnoPago {
 	@Column(name="ID_ALUMNO")
 	private Integer idAlumno;
 	
-	/*@Column(name="ID_PAGO_GRADO")
-	private Integer idPagoGrado;*/
+	@Column(name="ID_PAGO_GRADO", updatable=false, insertable=false)
+	private Integer idPagoGrado;
+	
 	@JoinColumn(name="ID_PAGO_GRADO",referencedColumnName="ID")
 	@OneToOne(fetch=FetchType.LAZY)
 	private PagoGrado pagoGrado;

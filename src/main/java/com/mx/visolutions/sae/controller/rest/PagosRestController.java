@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.Produces;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mx.visolutions.sae.dto.AlumnoPagoForm;
@@ -262,6 +265,37 @@ public class PagosRestController {
 			alumnoPagoService.updateStatusByPago(alumno.getIdAlumno());
 		}
 		
+	}
+	
+	/**
+	 * Elimina el pago si los alumnos no han realizado ningun pago de este ID
+	 * @param idPagoGrado
+	 * @return 'ok' cuando se eliminaron los pagos mensaje de error cuando no se eliminan
+	 * @throws ParseException
+	 */
+	@Produces("application/json")
+	@RequestMapping(value="/pagosRest/borrar/pago/grado/{idPagoGrado}", method = RequestMethod.POST)
+	public String deletePagoGrado(@PathVariable("idPagoGrado") Integer idPagoGrado) throws ParseException{
+		//TODO agregar control de excepciones
+		int pagosMade = 0;
+		
+		logger.info("Elimina el pagoGrado con id: " + idPagoGrado);
+		
+		//Valida si no se han hecho pagos del id que se desea eliminar
+		pagosMade = pagoGradoService.findPagoMade(idPagoGrado);
+		
+		if(pagosMade != 0){
+			return "Ya se han realizado pagos de este concepto";
+		}
+		
+		//Se eliminan los registros de los alumnos asociados al pago
+		//delete from alumnoPago where idPago = x
+		alumnoPagoService.deleteByPagoGradoId(idPagoGrado);
+		
+		//Eliminar el pago
+		pagoGradoService.delete(idPagoGrado);
+		
+		return "ok";
 	}
 	
 }

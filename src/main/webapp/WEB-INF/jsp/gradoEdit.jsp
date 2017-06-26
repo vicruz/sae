@@ -104,7 +104,7 @@
 								</div>
 								
 								<div class="form-group">
-									<form:label path="limite">D&iacute;a L&iacute;mite de pago (mes siguiente): </form:label>
+									<form:label path="limite">D&iacute;a L&iacute;mite de pago: </form:label>
 									<form:select class="form-control" path="limite" id="limite">
 										<option value="1">1</option>
 										<option value="2">2</option>

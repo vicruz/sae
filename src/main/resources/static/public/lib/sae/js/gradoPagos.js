@@ -34,7 +34,7 @@ $(document).ready(function() {
                     },
                     { "data": "urlBorrar",
                     	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    		$(nTd).html("<a href='#'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>&nbsp;&nbsp;");
+                    		$(nTd).html("<button type=\"button\" class=\"btn btn-link\" id=\"deletePago\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></button>&nbsp;&nbsp;");
                         } 
                     }
                 ]
@@ -49,7 +49,7 @@ $(document).ready(function() {
 		
 		htmlText = '<p><b>Actualizar Fecha L&iacute;mite de Pago</b></p>'+
 		'<p>Fecha Limite Actual: '+values.fechaLimite.substring(0, 10)+'</br>'+
-		'Fecha Limite Nueva: <input type="text" id="datepickerFL" class="datepickerFl" name="fecha_limite" data-date-format="mm/dd/yyyy" placeholder="AAAA-MM-DD"></p>';
+		'Fecha Limite Nueva: <input type="text" id="datepickerFL" class="datepickerFL" name="fecha_limite" data-date-format="mm/dd/yyyy" placeholder="AAAA-MM-DD"></p>';
 		
 		var updateFechaBox =  {
 			state0: {
@@ -130,9 +130,59 @@ $(document).ready(function() {
 	});
 	
 	
+	$('#gradoPagosTable tbody').on( 'click', 'button', function () {
+        var objTabla = $(this).parents('tr');
+        var values = gradoPagosTable.row( objTabla ).data();
+		console.log( values );
+		
+		$.prompt("Desea eliminar el pago '"+ values.concepto +"' de " + values.mes + " de " + values.anio + " del grado?", {
+			title: "Eliminar pago?",
+			buttons: { "Si": true, "No": false },
+			submit: function(e,v,m,f){
+				console.log("Value clicked was: "+ v);
+				if(v){
+					$.ajax({
+						type: "POST",
+						url: elPath +"/pagosRest/borrar/pago/grado/"+values.idPagoGrado,
+						data: {
+							fechaLimite: f.fecha_limite
+						},
+						success: function( data, textStatus, jQxhr ){
+							console.log("ajax.data: "+data);
+							
+							if(data=="ok"){
+								$.prompt("El pago '"+ values.concepto +"' de " + values.mes + " de " + values.anio + " se ha eliminado",{
+									title: "Eliminado!"
+								});
+								
+								gradoPagosTable.ajax.reload();
+								
+								
+							}else{
+								$.prompt(data + "\n"+ values.concepto +" de " + values.mes + " de " + values.anio,{
+									title: "ERROR!"
+								});
+							}
+							
+//							values.fechaLimite = f.fecha_limite + "&nbsp;<a href=\"#\" ><span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>";
+//							values.urlBorrar = "<a href='#'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>&nbsp;&nbsp;"
+							
+							
+						},
+						error: function(  jqXHR, textStatus, errorThrown ){
+							$.prompt("Error al eliminar el pago: " + textStatus,{
+								title: "ERROR!"
+							});
+						}
+					});
+				}else{
+					$.prompt.close()					
+				}			
+			}
+		});
+		
+        
+    } );
+	
+	
 } );
-
-
-$( function() {
-    $( "#datepicker" ).datepicker({format: "yyyy-mm", startView: 1, minViewMode: 1, language: "es", autoclose: true});
-  } );

@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mx.visolutions.sae.entities.AlumnoPago;
 import com.mx.visolutions.sae.entities.PagoGrado;
@@ -48,4 +50,13 @@ public interface AlumnoPagoRepository extends JpaRepository<AlumnoPago, Integer>
 	@Query("Select ap from AlumnoPago ap "
 			+ "where ap.idAlumno = ?1 and ap.pagoGrado.fechaCorresponde between ?2 and ?3")
 	List<AlumnoPago> findByIdAlumnoAndBetweenMonthPays(Integer idAlumno, Date fechaInicio, Date fechaFin);
+	
+	//http://docs.spring.io/spring-data/jpa/docs/1.11.4.RELEASE/reference/html/#jpa.modifying-queries.derived-delete
+	//In Bulk indica un objeto de la clase, seguido del nombre del objeto y ID del objeto
+	@Modifying
+	@Transactional
+	@Query("delete from AlumnoPago ap where ap.idPagoGrado = ?1")
+	void deleteInBulkByPagoGradoId(Integer idPagoGrado);
+	
+	
 }

@@ -29,4 +29,6 @@ public interface AlumnoPagoService {
 	
 	public List<AlumnoPagoForm> findByIdPagoGradoAndFechaLimite(Integer idPagoGrado, Date fechaLimite);
 	
+	public void deleteByPagoGradoId(Integer idPagoGrado);
+	
 }

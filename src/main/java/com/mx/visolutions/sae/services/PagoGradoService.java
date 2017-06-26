@@ -20,4 +20,8 @@ public interface PagoGradoService {
 	public void save(PagoGrado pagoGrado);
 	
 	public void flush();
+	
+	public int findPagoMade(int idPagoGrado);
+	
+	public void delete(Integer idPagoGrado);
 }

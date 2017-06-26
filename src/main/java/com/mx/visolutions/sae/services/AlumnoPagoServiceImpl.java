@@ -90,6 +90,11 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			if(alumnoForm.getFechaPago()!=null){
 				alumnoPago.setFechaPago(Calendar.getInstance().getTime());				
 			}
+			
+			if(alumnoPago.getPago()!=null && alumnoPago.getPago().doubleValue()==0){
+				alumnoPago.setFechaPago(null);
+			}
+			
 			alumnoPago.setPagoGrado(pagoGrado);
 			if(alumnoForm.getPago()==0.0){
 				alumnoPago.setIdSemaforo(4);
@@ -167,7 +172,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		//Pago parcial
 		else if(alumnoPago.getMonto()>pagoOriginal){
 			//Si el pago es pendiente, el semaforo se pone en parcial
-			if(idSemaforo==4){
+			if(idSemaforo==4 || idSemaforo==3){
 				alumnoPago.setIdSemaforo(2);
 			}
 		}
@@ -404,6 +409,12 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		}
 		
 		return lstAlumnoPagoForm;
+	}
+
+	//TODO Realizar control
+	@Override
+	public void deleteByPagoGradoId(Integer idPagoGrado) {
+		alumnoPagoRepository.deleteInBulkByPagoGradoId(idPagoGrado);
 	}
 	
 	
