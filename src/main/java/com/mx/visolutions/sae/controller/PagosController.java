@@ -61,8 +61,15 @@ public class PagosController {
 		return "redirect:/getPagos";
 	}
 
-	@RequestMapping(value = "/borrar/{usuarioId}", method = RequestMethod.GET)
-	public String borrarUsuario(@PathVariable("usuarioId") Integer pagoId, Model model,
+	/**
+	 * Elimina el pago del catalogo por ID. No se elimina si este se encuentra asociado a un grado
+	 * @param pagoId
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value = "/borrar/{pagoId}", method = RequestMethod.GET)
+	public String borrarUsuario(@PathVariable("pagoId") Integer pagoId, Model model,
 			RedirectAttributes redirectAttributes) {
 		System.out.println("dele controller");
 		try {
@@ -71,11 +78,11 @@ public class PagosController {
 
 			if (catPagoBusqueda != null) {
 				catPagosService.deleteCatPago(pagoId);
-				MyUtil.flash(redirectAttributes, "success", "signupSuccess");
+				MyUtil.flash(redirectAttributes, "success", "catPagoDeleteSuccess", catPagoBusqueda.getConcepto());
 			}
 
 		} catch (Exception e) {
-			MyUtil.flashNotProperties(redirectAttributes, "danger", e.getMessage());
+			MyUtil.flash(redirectAttributes, "danger", "catPagoDeleteNoSuccess", e.getMessage());
 			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
