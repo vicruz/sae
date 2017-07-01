@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		user.setEmail(userForm.getEmail());
 		user.setUsuario(userForm.getName());
 		user.setPassword(passwordEncoder.encode(userForm.getPassword()));
+		user.setRol_id(userForm.isAdmin()?1:0);
 		
 		userRepository.save(user);
 	}

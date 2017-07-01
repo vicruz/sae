@@ -1,5 +1,6 @@
 </head>
 <body>
+	<input type="hidden" name="isAdmin" id="isAdmin" value="<sec:authentication property='principal.user.rol_id' />">
 	<div>
 		<!--BEGIN THEME SETTING-->
 		<div id="theme-setting">

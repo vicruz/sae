@@ -18,6 +18,7 @@ public class UserForm {
 	@Size(min=1, max=30)
 	private String password;
 	
+	private boolean admin;
 
 	public String getEmail() {
 		return email;
@@ -36,6 +37,12 @@ public class UserForm {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public boolean isAdmin() {
+		return admin;
+	}
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 	@Override
 	public String toString() {

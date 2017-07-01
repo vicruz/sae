@@ -136,8 +136,19 @@ public class PagosRestController {
 	 * @return
 	 */
 	@RequestMapping(value="/pagosRest/update/{id}", method = RequestMethod.POST)
-	public AlumnoPagoJson updatePago(@PathVariable("id") Integer id, Double pago, Integer userId, Boolean checked){
+	public AlumnoPagoJson updatePago(@PathVariable("id") Integer id, Double pago, Integer userId, Boolean checked, String fechaPago){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Date fechaPagoDate = null;
+		
+		//Esta fecha se recibe cuando es un administrador el que inserta el pago y lo inserta en una fecha posterior a la requerida
+		//puede no recibir la feca, en ese caso se usará la fecha del sistema
+		if(fechaPago!=null && !fechaPago.equals("")){
+			try {
+				fechaPagoDate = sdf.parse(fechaPago);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		logger.info("Sumando el pago: " + pago + " al pago: " + id);
 		if(checked==null){
@@ -145,7 +156,7 @@ public class PagosRestController {
 		}
 
 		//AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId, checked, saldo);
-		AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId, checked);
+		AlumnoPagoForm alumno = alumnoPagoService.updatePago(id, pago, userId, checked, fechaPagoDate);
 		
 		//Se actualiza el estatus del pago
 		alumnoPagoService.updateStatusByPago(alumno.getIdAlumno());

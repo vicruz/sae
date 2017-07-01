@@ -43,12 +43,16 @@
                 
                 <c:if test="${param.error != null}">
 			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">&times;</button>
 				Usuario y/o password invalido
 			</div>
 		</c:if>
 		
 		<c:if test="${param.logout != null }">
 			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true">&times;</button>
 				La sesion se ha cerrado
 			</div>
 		</c:if>

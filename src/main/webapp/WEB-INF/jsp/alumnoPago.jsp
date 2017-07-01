@@ -68,7 +68,9 @@
 						<dt>A favor:</dt>
 						<dd>
 							<%-- <c:out value="${alumno.saldo}" /> --%>
-							<span id="divSaldo"> <c:out value="${alumno.saldo}" /> </span>
+							<span id="divSaldo">
+								$ <c:out value="${alumno.saldo}" />  
+							 </span>
 						</dd>
 					</c:if>
 					

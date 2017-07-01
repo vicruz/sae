@@ -120,13 +120,47 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	//public AlumnoPagoForm updatePago(Integer idPago, Double pago, Integer idUsuario, Boolean checked, Double saldo) {
-	public AlumnoPagoForm updatePago(Integer idPago, Double pago, Integer idUsuario, Boolean checked) {
+	public AlumnoPagoForm updatePago(Integer idPago, Double pago, Integer idUsuario, Boolean checked, Date fechaPago) {
 		Alumno alumno = null;
 		AlumnoPago alumnoPago = alumnoPagoRepository.findOne(idPago);
 		AlumnoPagoForm alumnoPagoForm = new AlumnoPagoForm();
 		Double pagoTotal = 0.0;
 		Double saldo = 0.0;
 		Double saldoBitacora = 0.0;
+		
+		int mesesDiff = 0;
+		Double montoOriginal;
+		Double montoCalculado;
+		int porcentaje;
+		
+		if(fechaPago!=null){
+			//Cuando es un administrador, puede ingresar la fecha de pago
+			//Si el pago es anterior a la fecha límite, se obtiene el pago antes de que se le generen recargos
+			if(fechaPago.before(alumnoPago.getFechaLimite())){
+				alumnoPago.setMonto(alumnoPago.getPagoGrado().getCatPago().getMonto());
+			}
+			//Si el pago es posterior a la fecha limite, se obtienen los meses de diferencia entre la fecha límite
+			//y la fecha de pago. El resultado es el porcentaje del monto a pagar
+			if(fechaPago.after(alumnoPago.getFechaLimite())){
+				mesesDiff = MyUtil.calcularMesesAFecha(alumnoPago.getFechaLimite(), fechaPago);
+				
+				//Se agrega un mes a la diferencia de meses ya que si solo ha pasado 1 día de retardo no
+				//se hará modificación alguna
+				mesesDiff +=1;
+				
+				//////////////////////////////////
+				//Calculo del % a sumar al pago
+				/////////////////////////////////				
+				//Monto original
+				montoOriginal = alumnoPago.getPagoGrado().getCatPago().getMonto();
+				//Porcentaje
+				porcentaje = mesesDiff * 10;
+				//Monto calculado
+				montoCalculado = montoOriginal + ((montoOriginal*porcentaje)/100);
+				//Nuevo monto
+				alumnoPago.setMonto(montoCalculado);
+			}
+		}
 		
 		if(pago == null){
 			pago = 0.0;
@@ -139,8 +173,8 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		
 		//Si se utiliza el saldo a favor del pago, se suman los valores de
 		//pago y saldo para el pagoTotal. 
+		alumno = alumnoRepository.findOne(alumnoPago.getIdAlumno());
 		if(checked){
-			alumno = alumnoRepository.findOne(alumnoPago.getIdAlumno());
 			saldo = alumno.getSaldo();
 			saldoBitacora = saldo;
 			pagoTotal = pago + saldo;
@@ -176,7 +210,12 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 				alumnoPago.setIdSemaforo(2);
 			}
 		}
-		alumnoPago.setFechaPago(Calendar.getInstance().getTime());
+		
+		if(fechaPago==null){
+			alumnoPago.setFechaPago(Calendar.getInstance().getTime());			
+		}else{
+			alumnoPago.setFechaPago(fechaPago);
+		}
 		alumnoPago = alumnoPagoRepository.save(alumnoPago);
 		
 		//Se actualiza el saldo
@@ -220,14 +259,13 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		//alumnoPagoForm.setIdConcepto(//alumnoPago.*);
 		alumnoPagoForm.setMonto(alumnoPago.getMonto());
 		alumnoPagoForm.setPago(alumnoPago.getPago());
-		alumnoPagoForm.setSaldo(saldo);
+		alumnoPagoForm.setSaldo(alumno.getSaldo());
 		
 		if(alumnoPago.getIdSemaforo()==1){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");}
 		else if(alumnoPago.getIdSemaforo()==2){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");}
 		else if(alumnoPago.getIdSemaforo()==3){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-danger\">Adeudo</span>");}
 		else if(alumnoPago.getIdSemaforo()==4){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-info\">Pendiente</span>");}
 		
-		//TODO falta actualizar una tabla de bitacoras con los pagos respectivos
 		
 		return alumnoPagoForm;
 
@@ -264,13 +302,12 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	@Override
 	public void delete(AlumnoPagoForm alumnoForm) { 
 		// TODO Auto-generated method stub
-
+		alumnoPagoRepository.delete(alumnoForm.getId());
 	}
 
 	@Override
 	public void getList() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

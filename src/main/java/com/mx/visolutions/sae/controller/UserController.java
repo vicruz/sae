@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mx.visolutions.sae.dto.SignupForm;
 import com.mx.visolutions.sae.dto.UserForm;
 import com.mx.visolutions.sae.entities.User;
 import com.mx.visolutions.sae.services.AlumnoService;

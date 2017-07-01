@@ -2,6 +2,8 @@ $(document).ready(function() {
 	var idAlumno= $("#id").val();
 	var elPath = $("#elPath").val();
 	var urlRest= elPath +"/pagosRest/"+$("#id").val();
+	var isAdmin= $("#isAdmin").val();
+	
 	/////
 	var saldo= parseFloat($("#saldo").val());
 	var montoPago;
@@ -58,7 +60,7 @@ $(document).ready(function() {
 		
 		htmlText = '<p><b>Actualizar Fecha L&iacute;mite de Pago</b></p>'+
 		'<p>Fecha Limite Actual: '+values.fechaLimite.substring(0, 10)+'</br>'+
-		'Fecha Limite Nueva: <input type="text" id="datepicker" class="datepicker" name="fecha_limite" data-date-format="mm/dd/yyyy" placeholder="AAAA-MM-DD"></p>';
+		'Fecha Limite Nueva: <input type="text" id="datepicker" class="datepicker" name="fecha_limite" data-date-format="mm/dd/yyyy" placeholder="dd-mm-yyyy"></p>';
 		
 		var updateFechaBox =  {
 			state0: {
@@ -180,6 +182,11 @@ $(document).ready(function() {
 		'<input autofocus type="text" onkeypress=\"return ((event.charCode >= 48 && event.charCode <= 57)||(event.charCode == 46))\" name="monto_pago" id="monto_pago" value="" placeholder="Monto a pagar" />' +
 		'</p>';
         
+        if(isAdmin==1){
+        	htmlText = htmlText + 
+    		'<p>Fecha de Pago: '+
+    		'<input type="text" id="datepicker" class="datepicker" name="fecha_pago" id="fecha_pago" data-date-format="mm/dd/yyyy" placeholder="dd-mm-yyyy"></p>';
+        }
 
         var updateMontoBox =  {
     			state0: {
@@ -221,11 +228,13 @@ $(document).ready(function() {
         								data: {
         									pago: f.monto_pago,
         									userId: 1, //no sirve de nada
-        									checked: f.check_saldo//,
+        									checked: f.check_saldo,
         									//saldo: saldo
+        									fechaPago: f.fecha_pago
         								},
         								success: function( data, textStatus, jQxhr ){
         									console.log("ajax.data: "+data);
+        									values.monto = data.monto;
         									values.pago = data.pago;
         									values.fecha = data.fecha;
         									values.estatus = data.estatus;
@@ -266,6 +275,10 @@ $(document).ready(function() {
 				defaultButton: 'btn-primary'
 			}
         }); 
+        
+        $( "#datepicker" ).datepicker({todayHighlight: true, format: "dd-mm-yyyy",weekStart: 0,language: "es",
+		    daysOfWeekDisabled: "0,6",
+		    autoclose: true });
         
     } );
 	

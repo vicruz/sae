@@ -48,6 +48,11 @@
 				<form:input path="password" type="password" class="form-control" placeholder="Contraseña"/>
 				<form:errors cssClass="error" path="password"></form:errors>
 			</div>
+			
+			<div class="form-group" align="right">
+				<form:label path="admin" >Administrador: </form:label>    			
+				<form:checkbox path="admin" id="cbAdmin" name="cbAdmin"/>  
+    		</div>
 		
 			<div class="form-group">
 				<!-- <button type="submit" class="btn btn-default">Submit</button> -->
