@@ -328,6 +328,7 @@ public class ReportesRestController {
 		int fila;
 		int columna;
 		float total;
+		float totalFinal = 0;
 		
 		byte[] reporteByte;
 		
@@ -415,20 +416,37 @@ public class ReportesRestController {
 						}
 					}
 				}
+				//El total se pone en una columna fuera de la tabla para poder hacer operaciones
 				//TOTAL
-				columna = 0;
-				sheet.addMergedRegion(new CellRangeAddress(fila,fila,0,2));
+				columna = 4;
+				
+				//sheet.addMergedRegion(new CellRangeAddress(fila,fila,0,2));
 				row = sheet.createRow(fila++);
 				cell = row.createCell(columna++);
 				cell.setCellValue("TOTAL");
-				cell.setCellStyle(cellBorder(workbook));
+				//cell.setCellStyle(cellBorder(workbook));
 				
-				cell = row.createCell(3);
+				cell = row.createCell(columna);
 				cell.setCellValue(total);
-				cell.setCellStyle(cellBorder(workbook));
+				//cell.setCellStyle(cellBorder(workbook));
 				
 				row = sheet.createRow(fila++);
+				
+				totalFinal += total;
 			}
+			
+			row = sheet.createRow(fila++);
+			columna = 4;
+			
+			//sheet.addMergedRegion(new CellRangeAddress(fila,fila,0,2));
+			row = sheet.createRow(fila++);
+			cell = row.createCell(columna++);
+			cell.setCellValue("TOTAL");
+			cell.setCellStyle(cellFont14Bold(workbook));
+			
+			cell = row.createCell(columna);
+			cell.setCellValue(totalFinal);
+			cell.setCellStyle(cellFont14Bold(workbook));
 			
 			// OutputStream
 			final ByteArrayOutputStream report = new ByteArrayOutputStream();
@@ -485,6 +503,24 @@ public class ReportesRestController {
 		
 		Font font = wb.createFont();
 		font.setBold(true);
+		
+		style.setFont(font);
+		style.setAlignment(HorizontalAlignment.CENTER);
+		
+		return style;
+	}
+	
+	//Pone bordes a las celdas y letras en negritas
+	private CellStyle cellFont14Bold(XSSFWorkbook wb){
+		CellStyle style = wb.createCellStyle();
+//		style.setBorderBottom(BorderStyle.THIN);
+//		style.setBorderLeft(BorderStyle.THIN);
+//		style.setBorderRight(BorderStyle.THIN);
+//		style.setBorderTop(BorderStyle.THIN);
+		
+		Font font = wb.createFont();
+		font.setBold(true);
+		font.setFontHeightInPoints((short)14);
 		
 		style.setFont(font);
 		style.setAlignment(HorizontalAlignment.CENTER);
