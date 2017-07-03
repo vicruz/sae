@@ -90,7 +90,12 @@ public class AlumnoController {
 		List<PagoGrado> pagoGradosForm;
 		Map<String,String> map = new HashMap<String,String>();
 		Alumno alumno = alumnoService.findById(alumnoId);
-		//PagoGradoForm pagoGradoForm;
+
+		//Se busca si el alumno tiene beca
+		BecaForm becaForm = alumnoBecaService.findByAlumnoAndCurrentDate(alumnoId);
+		if(becaForm!=null){
+			alumno.setBeca(becaForm.getPorcentaje().longValue());
+		}
 		
 		model.addAttribute(alumno);
 		model.addAttribute(new AlumnoPagoForm());

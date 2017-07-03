@@ -78,11 +78,11 @@
 									<c:otherwise> <option value="1">Kinder 1</option> </c:otherwise>
 								</c:choose>
 								<c:choose>
-									<c:when test="${alumnoForm.gradoId==2}"> <option selected="selected" value="1">Kinder 2</option> </c:when>
+									<c:when test="${alumnoForm.gradoId==2}"> <option selected="selected" value="2">Kinder 2</option> </c:when>
 									<c:otherwise> <option value="2">Kinder 2</option> </c:otherwise>
 								</c:choose>
 								<c:choose>
-									<c:when test="${alumnoForm.gradoId==3}"> <option selected="selected" value="1">Kinder 3</option> </c:when>
+									<c:when test="${alumnoForm.gradoId==3}"> <option selected="selected" value="3">Kinder 3</option> </c:when>
 									<c:otherwise> <option value="3">Kinder 3</option> </c:otherwise>
 								</c:choose>
 								<c:choose>
@@ -108,6 +108,18 @@
 								<c:choose>
 									<c:when test="${alumnoForm.gradoId==9}"> <option selected="selected" value="9">6° Primaria</option> </c:when>
 									<c:otherwise> <option value="9">6° Primaria</option> </c:otherwise>
+								</c:choose>
+								<c:choose>
+									<c:when test="${alumnoForm.gradoId==10}"> <option selected="selected" value="10">1° Secundaria</option> </c:when>
+									<c:otherwise> <option value="10">1° Secundaria</option> </c:otherwise>
+								</c:choose>
+								<c:choose>
+									<c:when test="${alumnoForm.gradoId==11}"> <option selected="selected" value="11">2° Secundaria</option> </c:when>
+									<c:otherwise> <option value="1">2° Secundaria</option> </c:otherwise>
+								</c:choose>
+								<c:choose>
+									<c:when test="${alumnoForm.gradoId==12}"> <option selected="selected" value="12">3° Secundaria</option> </c:when>
+									<c:otherwise> <option value="12">3° Secundaria</option> </c:otherwise>
 								</c:choose>
 							</form:select>
 						</dd>

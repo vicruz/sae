@@ -68,7 +68,7 @@ public class AlumnoBecaServiceImpl implements AlumnoBecaService{
 			
 			//Establecer la diferencia en el alumno
 			Alumno alumno = alumnoRepository.findOne(idAlumno);
-			alumno.setSaldo(diferencia);
+			alumno.setSaldo(alumno.getSaldo()+diferencia);
 			alumnoRepository.save(alumno);
 			
 		} catch (ParseException e) {
@@ -114,6 +114,26 @@ public class AlumnoBecaServiceImpl implements AlumnoBecaService{
 			}
 		}
 		return lst;
+	}
+
+	@Override
+	public BecaForm findByAlumnoAndCurrentDate(Integer idAlumno) {
+
+		AlumnoBeca alumnoBeca;
+		BecaForm becaForm = null;
+		SimpleDateFormat formatter = null;
+		
+		alumnoBeca = alumnoBecaRepository.findByIdAlumnoAndCurrentDate(idAlumno);
+		if(alumnoBeca!=null){
+			formatter = new SimpleDateFormat("yyyy-MM-dd");
+			becaForm = new BecaForm();
+			becaForm.setBecaId(alumnoBeca.getIdBeca());
+			becaForm.setPorcentaje(alumnoBeca.getPorcentaje());
+			becaForm.setFechaInicio(formatter.format(alumnoBeca.getFechaInicio()));
+			becaForm.setFechaFin(formatter.format(alumnoBeca.getFechaFin()));
+		}
+		
+		return becaForm;
 	}
 
 }

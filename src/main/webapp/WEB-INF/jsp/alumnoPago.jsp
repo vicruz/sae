@@ -67,12 +67,26 @@
 					<c:if test="${alumno.saldo>0}">
 						<dt>A favor:</dt>
 						<dd>
-							<%-- <c:out value="${alumno.saldo}" /> --%>
+							$ 
 							<span id="divSaldo">
-								$ <c:out value="${alumno.saldo}" />  
+								<c:out value="${alumno.saldo}" />  
 							 </span>
 						</dd>
 					</c:if>
+					
+					<c:if test="${alumno.beca>0}">
+						<dt>Beca:</dt>
+						<dd>
+							<c:out value="${alumno.beca}" /> %
+						</dd>
+					</c:if>
+					
+					<%-- <c:if test="${alumno.descuento}">
+						<dt>Descuento:</dt>
+						<dd>
+								$ <c:out value="${alumno.descuento}" /> %  
+						</dd>
+					</c:if> --%>
 					
 				</dl>
 			</div>

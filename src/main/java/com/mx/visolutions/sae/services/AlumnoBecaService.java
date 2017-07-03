@@ -11,5 +11,7 @@ public interface AlumnoBecaService {
 	public BecaForm findOne(Integer idBeca);
 	
 	public List<BecaForm> findListAlumno(Integer idAlumno);
+	
+	public BecaForm findByAlumnoAndCurrentDate(Integer idAlumno);
 
 }
