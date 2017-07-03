@@ -59,7 +59,7 @@ function creaReporte(){
 								console.log(f.end);
 								
 								var link = document.createElement("a");
-							    link.download = 'x';
+							    link.download = 'reporte';
 							    link.href = elPath +"/reporte/alumno/pagos/"+idAlumno+"/"+f.start+"/"+f.end;
 							    link.click();
 								
@@ -110,6 +110,6 @@ function creaReporte(){
 	    autoclose: true});
 	*/
 	/*$( "#datepickerPeriodo" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, minViewMode: 1, language: "es", autoclose: true});*/
-	$( "#datepickerPeriodo" ).datepicker({startView: 1, minViewMode: 1, todayHighlight: true, autoclose: true });
+	$( "#datepickerPeriodo" ).datepicker({startView: 1, minViewMode: 1, todayHighlight: true, autoclose: true, language: "es", format: "dd-mm-yyyy" });
 }
 

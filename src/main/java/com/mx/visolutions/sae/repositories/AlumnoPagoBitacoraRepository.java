@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.mx.visolutions.sae.entities.AlumnoPagoBitacora;
+import com.mx.visolutions.sae.entities.vo.AlumnoPagoBitacoraVO;
 
 public interface AlumnoPagoBitacoraRepository extends JpaRepository<AlumnoPagoBitacora, Integer> {
 
@@ -23,4 +24,8 @@ public interface AlumnoPagoBitacoraRepository extends JpaRepository<AlumnoPagoBi
 	@Query("Select apb from AlumnoPagoBitacora apb where apb.alumnoPago.id = ?1")
 	public List<AlumnoPagoBitacora> findByAlumnoPagoId(Integer idAlumnoPago);
 	
+	//Encuentra los pagos por alumno pago
+	@Query("Select new com.mx.visolutions.sae.entities.vo.AlumnoPagoBitacoraVO(apb.alumnoPago.id, sum(apb.pago), apb.fechaPago) "
+			+ "from AlumnoPagoBitacora apb where apb.alumnoPago.id = ?1 group by apb.fechaPago")
+	public List<AlumnoPagoBitacoraVO> findByAlumnoPagoIdSum(Integer idAlumnoPago);
 }

@@ -41,6 +41,7 @@ import com.mx.visolutions.sae.entities.Alumno;
 import com.mx.visolutions.sae.entities.AlumnoPago;
 import com.mx.visolutions.sae.entities.AlumnoPagoBitacora;
 import com.mx.visolutions.sae.entities.AlumnoReportDailyVO;
+import com.mx.visolutions.sae.entities.vo.AlumnoPagoBitacoraVO;
 import com.mx.visolutions.sae.repositories.AlumnoPagoBitacoraRepository;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
 import com.mx.visolutions.sae.repositories.AlumnoRepository;
@@ -96,7 +97,8 @@ public class ReportesRestController {
 		Calendar calInit = Calendar.getInstance();
 		Calendar calFin = Calendar.getInstance();
 		
-		List<AlumnoPagoBitacora> lstAlumnoPagoBitacora = null;
+		//List<AlumnoPagoBitacora> lstAlumnoPagoBitacora = null;
+		List<AlumnoPagoBitacoraVO> lstAlumnoPagoBitacora = null;
 		Alumno alumno = null;
 		byte[] reporteByte;
 		List<AlumnoReportVO> lstReporte = new ArrayList<AlumnoReportVO>();
@@ -138,17 +140,20 @@ public class ReportesRestController {
 				//Construyendo el reporte
 				for(AlumnoPago alumnoPago : lstAlumnoPago){
 					
-					lstAlumnoPagoBitacora = alumnoPagoBitacoraRepository.findByAlumnoPagoId(alumnoPago.getId());
+					//lstAlumnoPagoBitacora = alumnoPagoBitacoraRepository.findByAlumnoPagoId(alumnoPago.getId());
+					lstAlumnoPagoBitacora = alumnoPagoBitacoraRepository.findByAlumnoPagoIdSum(alumnoPago.getId());
 					
 					if(lstAlumnoPagoBitacora.size()>0){
-						for (AlumnoPagoBitacora alumnoPagoBitacora : lstAlumnoPagoBitacora) {
+						//for (AlumnoPagoBitacora alumnoPagoBitacora : lstAlumnoPagoBitacora) {
+						for (AlumnoPagoBitacoraVO alumnoPagoBitacora : lstAlumnoPagoBitacora) {
 							reporteVO = new AlumnoReportVO();
 							reporteVO.setfConcepto(alumnoPago.getPagoGrado().getCatPago().getConcepto() + " " +
 									MyUtil.getMonth(alumnoPago.getPagoGrado().getMes_corresponde()) + " " +
 									alumnoPago.getPagoGrado().getAnio_corresponde());
 							reporteVO.setfMonto(alumnoPago.getMonto());
 							reporteVO.setfPago(alumnoPagoBitacora.getPago());
-							reporteVO.setfSaldo(alumnoPagoBitacora.getSaldo()?"SI":"NO");
+							//reporteVO.setfSaldo(alumnoPagoBitacora.getSaldo()?"SI":"NO");
+							reporteVO.setfAdeudo(alumnoPago.getMonto()-alumnoPagoBitacora.getPago());
 							reporteVO.setfFechaPago(sdf2.format(alumnoPagoBitacora.getFechaPago()));
 							if(alumnoPago.getIdSemaforo()==1){
 								reporteVO.setfEstatus("Pagado");
@@ -168,7 +173,8 @@ public class ReportesRestController {
 								alumnoPago.getPagoGrado().getAnio_corresponde());
 						reporteVO.setfMonto(alumnoPago.getMonto());
 						reporteVO.setfPago(0D);
-						reporteVO.setfSaldo("");
+						//reporteVO.setfSaldo("");
+						reporteVO.setfAdeudo(0D);
 						reporteVO.setfFechaPago("");
 						if(alumnoPago.getIdSemaforo()==1){
 							reporteVO.setfEstatus("Pagado");

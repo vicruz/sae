@@ -6,7 +6,8 @@ public class AlumnoReportVO {
 	private Double fMonto;
 	private Double fPago;
 	private String fFechaPago;
-	private String fSaldo;
+	//private String fSaldo;
+	private Double fAdeudo;
 	private String fEstatus;
 
 	public String getfConcepto() {
@@ -33,12 +34,18 @@ public class AlumnoReportVO {
 	public void setfFechaPago(String fFechaPago) {
 		this.fFechaPago = fFechaPago;
 	}
-	public String getfSaldo() {
+	public Double getfAdeudo() {
+		return fAdeudo;
+	}
+	public void setfAdeudo(Double fAdeudo) {
+		this.fAdeudo = fAdeudo;
+	}
+	/*public String getfSaldo() {
 		return fSaldo;
 	}
 	public void setfSaldo(String fSaldo) {
 		this.fSaldo = fSaldo;
-	}
+	}*/
 	public String getfEstatus() {
 		return fEstatus;
 	}

@@ -70,6 +70,9 @@
 										<option value="7">4° Primaria</option>
 										<option value="8">5° Primaria</option>
 										<option value="9">6° Primaria</option>
+										<option value="10">1° Secundaria</option>
+										<option value="11">2° Secundaria</option>
+										<option value="12">3° Secundaria</option>
 									</form:select>
 								</div>
 							</div>
