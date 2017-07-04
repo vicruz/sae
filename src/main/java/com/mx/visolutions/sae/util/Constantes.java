@@ -1,0 +1,10 @@
+package com.mx.visolutions.sae.util;
+
+public class Constantes {
+
+	public static final int SEMAFORO_PAGADO = 1;
+	public static final int SEMAFORO_PARCIAL = 2;
+	public static final int SEMAFORO_ADEUDO = 3;
+	public static final int SEMAFORO_PENDIENTE = 4;
+	
+}

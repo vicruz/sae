@@ -24,6 +24,7 @@ import com.mx.visolutions.sae.repositories.AlumnoPagoBitacoraRepository;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
 import com.mx.visolutions.sae.repositories.AlumnoRepository;
 import com.mx.visolutions.sae.repositories.PagoGradoRepository;
+import com.mx.visolutions.sae.util.Constantes;
 import com.mx.visolutions.sae.util.MyUtil;
 
 @Service
@@ -124,6 +125,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		Alumno alumno = null;
 		AlumnoPago alumnoPago = alumnoPagoRepository.findOne(idPago);
 		AlumnoPagoForm alumnoPagoForm = new AlumnoPagoForm();
+		AlumnoBeca alumnoBeca;
 		Double pagoTotal = 0.0;
 		Double saldo = 0.0;
 		Double saldoBitacora = 0.0;
@@ -131,17 +133,41 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		int mesesDiff = 0;
 		Double montoOriginal;
 		Double montoCalculado;
-		int porcentaje;
+		double montoPorcentaje = 0;
+		double porcentaje;
 		
-		if(fechaPago!=null){
+		Calendar calFechaPago = Calendar.getInstance();
+		Calendar calFechaLimite = Calendar.getInstance();
+		
+		if(fechaPago!=null && 
+				(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_PENDIENTE || 
+				alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_ADEUDO)){
 			//Cuando es un administrador, puede ingresar la fecha de pago
 			//Si el pago es anterior a la fecha límite, se obtiene el pago antes de que se le generen recargos
-			if(fechaPago.before(alumnoPago.getFechaLimite())){
-				alumnoPago.setMonto(alumnoPago.getPagoGrado().getCatPago().getMonto());
+			
+			//Se obtiene la beca del alumno
+			alumnoBeca = alumnoBecaRepository.findByIdAlumnoAndDate(alumnoPago.getIdAlumno(),alumnoPago.getFechaLimite());
+			if(alumnoBeca!=null){
+				montoPorcentaje = alumnoPago.getPagoGrado().getCatPago().getMonto() - 
+						(alumnoPago.getPagoGrado().getCatPago().getMonto() * alumnoBeca.getPorcentaje())/100;
+			}else{
+				montoPorcentaje = alumnoPago.getPagoGrado().getCatPago().getMonto();
+			}
+			
+			
+			calFechaPago.setTime(fechaPago);
+			calFechaLimite.setTime(alumnoPago.getFechaLimite());
+			calFechaLimite.set(Calendar.HOUR_OF_DAY, 23);
+			calFechaLimite.set(Calendar.MINUTE, 59);
+			calFechaLimite.set(Calendar.SECOND, 59);
+			
+			if(calFechaPago.before(calFechaLimite)){
+				//alumnoPago.setMonto(alumnoPago.getPagoGrado().getCatPago().getMonto());
+				alumnoPago.setMonto(montoPorcentaje);
 			}
 			//Si el pago es posterior a la fecha limite, se obtienen los meses de diferencia entre la fecha límite
 			//y la fecha de pago. El resultado es el porcentaje del monto a pagar
-			if(fechaPago.after(alumnoPago.getFechaLimite())){
+			if(calFechaPago.after(calFechaLimite)){
 				mesesDiff = MyUtil.calcularMesesAFecha(alumnoPago.getFechaLimite(), fechaPago);
 				
 				//Se agrega un mes a la diferencia de meses ya que si solo ha pasado 1 día de retardo no
@@ -152,7 +178,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 				//Calculo del % a sumar al pago
 				/////////////////////////////////				
 				//Monto original
-				montoOriginal = alumnoPago.getPagoGrado().getCatPago().getMonto();
+				montoOriginal = montoPorcentaje;//alumnoPago.getPagoGrado().getCatPago().getMonto();
 				//Porcentaje
 				porcentaje = mesesDiff * 10;
 				//Monto calculado
@@ -172,7 +198,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		Integer idSemaforo = alumnoPago.getIdSemaforo();
 		
 		//Si se utiliza el saldo a favor del pago, se suman los valores de
-		//pago y saldo para el pagoTotal. 
+		//pago y saldo para el pagoTotal.
 		alumno = alumnoRepository.findOne(alumnoPago.getIdAlumno());
 		if(checked){
 			saldo = alumno.getSaldo();
@@ -201,13 +227,13 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		
 		//Pago completo
 		if(alumnoPago.getMonto()<=pagoOriginal){
-			alumnoPago.setIdSemaforo(1);
+			alumnoPago.setIdSemaforo(Constantes.SEMAFORO_PAGADO);
 		}
 		//Pago parcial
 		else if(alumnoPago.getMonto()>pagoOriginal){
 			//Si el pago es pendiente, el semaforo se pone en parcial
-			if(idSemaforo==4 || idSemaforo==3){
-				alumnoPago.setIdSemaforo(2);
+			if(idSemaforo==Constantes.SEMAFORO_PENDIENTE || idSemaforo==Constantes.SEMAFORO_ADEUDO){
+				alumnoPago.setIdSemaforo(Constantes.SEMAFORO_PARCIAL);
 			}
 		}
 		
@@ -261,10 +287,10 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		alumnoPagoForm.setPago(alumnoPago.getPago());
 		alumnoPagoForm.setSaldo(alumno.getSaldo());
 		
-		if(alumnoPago.getIdSemaforo()==1){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");}
-		else if(alumnoPago.getIdSemaforo()==2){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");}
-		else if(alumnoPago.getIdSemaforo()==3){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-danger\">Adeudo</span>");}
-		else if(alumnoPago.getIdSemaforo()==4){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-info\">Pendiente</span>");}
+		if(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_PAGADO){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");}
+		else if(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_PARCIAL){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");}
+		else if(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_ADEUDO){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-danger\">Adeudo</span>");}
+		else if(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_PENDIENTE){alumnoPagoForm.setSemaforo("<span class=\"label label-sm label-info\">Pendiente</span>");}
 		
 		
 		return alumnoPagoForm;
@@ -286,11 +312,11 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			alumnoPagoForm.setId(alumno.getId());
 			alumnoPagoForm.setMonto(alumno.getMonto());
 			alumnoPagoForm.setPago(alumno.getPago());
-			if(alumno.getIdSemaforo()==1){
+			if(alumno.getIdSemaforo()==Constantes.SEMAFORO_PAGADO){
 				alumnoPagoForm.setSemaforo("Pagado");
-			}else if(alumno.getIdSemaforo()==2){
+			}else if(alumno.getIdSemaforo()==Constantes.SEMAFORO_PARCIAL){
 				alumnoPagoForm.setSemaforo("Parcial");
-			}else if(alumno.getIdSemaforo()==3){
+			}else if(alumno.getIdSemaforo()==Constantes.SEMAFORO_ADEUDO){
 				alumnoPagoForm.setSemaforo("Adeudo");
 			}
 			
@@ -314,7 +340,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	public void updateMontoFechaExceed() {
 		Calendar fechaActual = Calendar.getInstance();
 		//Solo busca los pagos que hayan excedido la fecha límite y se encuentren en "pendiente"
-		List<AlumnoPago> lstAlumno = alumnoPagoRepository.findPagoLimitExceed(4,fechaActual.getTime());
+		List<AlumnoPago> lstAlumno = alumnoPagoRepository.findPagoLimitExceed(Constantes.SEMAFORO_PENDIENTE,fechaActual.getTime());
 		int mesesDiff;
 		Double montoOriginal;
 		Double montoCalculado;
@@ -346,7 +372,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			
 			//Nuevo monto
 			alumnoPago.setMonto(montoCalculado);
-			alumnoPago.setIdSemaforo(3);
+			alumnoPago.setIdSemaforo(Constantes.SEMAFORO_ADEUDO);
 			
 			//Se agrega el Id del alumno modificado a la lista para posteriormente modificar su estatus
 			set.add(alumnoPago.getIdAlumno());
@@ -360,7 +386,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		//Una vez modificados los pagos, se modifica el estatus de cada alumno
 		for(Integer idAlumno : set){
 			alumno = alumnoRepository.findOne(idAlumno);
-			alumno.setIdSemaforo(3); //Adeudo
+			alumno.setIdSemaforo(Constantes.SEMAFORO_ADEUDO); //Adeudo
 			alumnoRepository.save(alumno);
 		}
 		
@@ -380,14 +406,14 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			set.add(alumnoPago.getIdSemaforo());
 		}
 		
-		if(set.contains(3)){
-			idSemaforo = 3;
-		}else if(set.contains(2)){
-			idSemaforo = 2;
-		}else if(set.contains(1)){
-			idSemaforo = 1;
+		if(set.contains(Constantes.SEMAFORO_ADEUDO)){
+			idSemaforo = Constantes.SEMAFORO_ADEUDO;
+		}else if(set.contains(Constantes.SEMAFORO_PARCIAL)){
+			idSemaforo = Constantes.SEMAFORO_PARCIAL;
+		}else if(set.contains(Constantes.SEMAFORO_PAGADO)){
+			idSemaforo = Constantes.SEMAFORO_PAGADO;
 		}else {
-			idSemaforo = 4;
+			idSemaforo = Constantes.SEMAFORO_PENDIENTE;
 		}
 		
 		//Se actualiza el semaforo del alumno
@@ -406,7 +432,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		
 		alumnoPago.setFechaLimite(fechaLimite);
 		alumnoPago.setMonto(alumnoPago.getPagoGrado().getCatPago().getMonto());
-		alumnoPago.setIdSemaforo(4); //Se pone el estatus como Pendiente
+		alumnoPago.setIdSemaforo(Constantes.SEMAFORO_PENDIENTE); //Se pone el estatus como Pendiente
 		
 		alumnoPagoRepository.save(alumnoPago);
 		//updateStatusByPago(alumnoPago.getIdAlumno());
@@ -435,11 +461,11 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 			alumnoPagoForm.setId(alumno.getId());
 			alumnoPagoForm.setMonto(alumno.getMonto());
 			alumnoPagoForm.setPago(alumno.getPago());
-			if(alumno.getIdSemaforo()==1){
+			if(alumno.getIdSemaforo()==Constantes.SEMAFORO_PAGADO){
 				alumnoPagoForm.setSemaforo("Pagado");
-			}else if(alumno.getIdSemaforo()==2){
+			}else if(alumno.getIdSemaforo()==Constantes.SEMAFORO_PARCIAL){
 				alumnoPagoForm.setSemaforo("Parcial");
-			}else if(alumno.getIdSemaforo()==3){
+			}else if(alumno.getIdSemaforo()==Constantes.SEMAFORO_ADEUDO){
 				alumnoPagoForm.setSemaforo("Adeudo");
 			}
 			lstAlumnoPagoForm.add(alumnoPagoForm);

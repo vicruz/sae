@@ -35,5 +35,8 @@ public interface AlumnoBecaRepository extends JpaRepository<AlumnoBeca, Integer>
 	
 	@Query("Select ab from AlumnoBeca ab where ab.idAlumno = ?1 and ab.fechaInicio <= CURRENT_DATE and ab.fechaFin >= CURRENT_DATE ")
 	AlumnoBeca findByIdAlumnoAndCurrentDate(Integer idAlumno);
+	
+	@Query("Select ab from AlumnoBeca ab where ab.idAlumno = ?1 and ab.fechaInicio <= ?2 and ab.fechaFin >= ?2 ")
+	AlumnoBeca findByIdAlumnoAndDate(Integer idAlumno, Date fecha);
 
 }

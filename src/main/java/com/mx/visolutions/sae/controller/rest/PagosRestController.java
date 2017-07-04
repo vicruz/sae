@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mx.visolutions.sae.dto.AlumnoPagoForm;
@@ -26,6 +25,7 @@ import com.mx.visolutions.sae.json.PagoGradoJson;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
 import com.mx.visolutions.sae.services.AlumnoPagoService;
 import com.mx.visolutions.sae.services.PagoGradoService;
+import com.mx.visolutions.sae.util.Constantes;
 import com.mx.visolutions.sae.util.MyUtil;
 
 
@@ -70,12 +70,12 @@ public class PagosRestController {
 				json.setPago(alumnoPago.getPago());
 				
 				//TODO debe obtener el valor del catalogo de semaforos
-				if(alumnoPago.getIdSemaforo()==1){json.setEstatus("<span class=\"label label-sm label-success\">Pagado</span>");}
-				else if(alumnoPago.getIdSemaforo()==2){json.setEstatus("<span class=\"label label-sm label-warning\">Parcial</span>");}
-				else if(alumnoPago.getIdSemaforo()==3){json.setEstatus("<span class=\"label label-sm label-danger\">Adeudo</span>");}
-				else if(alumnoPago.getIdSemaforo()==4){json.setEstatus("<span class=\"label label-sm label-info\">Pendiente</span>");}
+				if(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_PAGADO){json.setEstatus("<span class=\"label label-sm label-success\">Pagado</span>");}
+				else if(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_PARCIAL){json.setEstatus("<span class=\"label label-sm label-warning\">Parcial</span>");}
+				else if(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_ADEUDO){json.setEstatus("<span class=\"label label-sm label-danger\">Adeudo</span>");}
+				else if(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_PENDIENTE){json.setEstatus("<span class=\"label label-sm label-info\">Pendiente</span>");}
 				
-				if(alumnoPago.getIdSemaforo()==1){json.setEditar("<button type=\"button\" class=\"btn-table disabled-btn-table\">Pagar</button>"); }
+				if(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_PAGADO){json.setEditar("<button type=\"button\" class=\"btn-table disabled-btn-table\">Pagar</button>"); }
 				else{ json.setEditar("<button type=\"button\" class=\"btn-table\" >Pagar</button>"); }
 				
 				if(alumnoPago.getFechaLimite()!=null){
@@ -141,7 +141,7 @@ public class PagosRestController {
 		Date fechaPagoDate = null;
 		
 		//Esta fecha se recibe cuando es un administrador el que inserta el pago y lo inserta en una fecha posterior a la requerida
-		//puede no recibir la feca, en ese caso se usará la fecha del sistema
+		//puede no recibir la fecha, en ese caso se usará la fecha del sistema
 		if(fechaPago!=null && !fechaPago.equals("")){
 			try {
 				fechaPagoDate = sdf.parse(fechaPago);
