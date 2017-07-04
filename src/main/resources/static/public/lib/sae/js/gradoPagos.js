@@ -185,4 +185,7 @@ $(document).ready(function() {
     } );
 	
 	
+	
 } );
+
+$( "#datepicker" ).datepicker({format: "yyyy-mm", startView: 1, minViewMode: 1, language: "es", autoclose: true});
