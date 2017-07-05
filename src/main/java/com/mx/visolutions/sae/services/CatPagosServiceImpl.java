@@ -39,7 +39,6 @@ public class CatPagosServiceImpl implements CatPagosService {
 
 	public List<CatPagos> findAll(){
 		return catPagosRepository.findAll();
-			
 	}
 
 	@Override
@@ -53,6 +52,8 @@ public class CatPagosServiceImpl implements CatPagosService {
 		pagos.setConcepto(catPagosForm.getConcepto());
 		pagos.setMonto(catPagosForm.getMonto());
 		pagos.setAplicaBeca(catPagosForm.getBeca()?1:0);
+		pagos.setGeneraAdeudo(catPagosForm.getGeneraAdeudo()?1:0);
+		pagos.setPagoUnico(catPagosForm.getPagoUnico()?1:0);
 		
 		catPagosRepository.save(pagos);
 	}

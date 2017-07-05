@@ -20,6 +20,8 @@ $(document).ready(function() {
     	                    { "data": "monto", render: $.fn.dataTable.render.number( ',', '.', 2, '$' )  },
     	                    { "data": "fecha" },
     	                    { "data": "beca" },
+    	                    { "data": "generaAdeudo" },
+    	                    { "data": "pagoUnico" },
     	                    { "data": "url",
     	                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
     	                            //$(nTd).html("<a href='"+elPath+oData.url+"'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>&nbsp;Borrar</a>");
@@ -38,14 +40,24 @@ $(document).ready(function() {
         document.getElementById('id').value = values.id;
         document.getElementById('concepto').value = values.concepto;
         document.getElementById('monto').value = values.monto;
-        if(values.beca=="SI"){
+        if(values.beca.indexOf("glyphicon-ok")){
         	document.getElementById('cbBeca').checked = true;
         }else{
         	document.getElementById('cbBeca').checked = false;
         }
+        
+        if(values.generaAdeudo.indexOf("glyphicon-ok")){
+        	document.getElementById('cbGeneraAdeudo').checked = true;
+        }else{
+        	document.getElementById('cbGeneraAdeudo').checked = false;
+        }
+        
+        if(values.pagoUnico.indexOf("glyphicon-ok")){
+        	document.getElementById('cbPagoUnico').checked = true;
+        }else{
+        	document.getElementById('cbPagoUnico').checked = false;
+        }
     } );
     
-    
-    
-    	} );
+} );
 

@@ -140,8 +140,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 		Calendar calFechaLimite = Calendar.getInstance();
 		
 		if(fechaPago!=null && 
-				(alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_PENDIENTE || 
-				alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_ADEUDO)){
+				alumnoPago.getIdSemaforo()==Constantes.SEMAFORO_ADEUDO){
 			//Cuando es un administrador, puede ingresar la fecha de pago
 			//Si el pago es anterior a la fecha límite, se obtiene el pago antes de que se le generen recargos
 			
@@ -340,6 +339,7 @@ public class AlumnoPagoServiceImpl implements AlumnoPagoService {
 	public void updateMontoFechaExceed() {
 		Calendar fechaActual = Calendar.getInstance();
 		//Solo busca los pagos que hayan excedido la fecha límite y se encuentren en "pendiente"
+		//Pagos que notenga activo el campo "Genera Adeudo" ni "Pago Unico"
 		List<AlumnoPago> lstAlumno = alumnoPagoRepository.findPagoLimitExceed(Constantes.SEMAFORO_PENDIENTE,fechaActual.getTime());
 		int mesesDiff;
 		Double montoOriginal;

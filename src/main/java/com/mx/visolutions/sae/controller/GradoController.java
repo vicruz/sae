@@ -32,6 +32,7 @@ import com.mx.visolutions.sae.services.AlumnoService;
 import com.mx.visolutions.sae.services.CatPagosService;
 import com.mx.visolutions.sae.services.GradoService;
 import com.mx.visolutions.sae.services.PagoGradoService;
+import com.mx.visolutions.sae.util.Constantes;
 import com.mx.visolutions.sae.util.MyUtil;
 
 @Controller
@@ -204,19 +205,24 @@ public class GradoController {
 					//Se obtiene el monto de pago del concepto
 					CatPagos catPago = catPagosService.findById(pagoGradoRelForm.getIdPago());
 					
-					//Se realiza un ciclo para agregar el pago a cada alumno
-					for(Alumno alumno: alumnoLst){
-						AlumnoPagoForm alumnoForm = new AlumnoPagoForm();
-						
-						alumnoForm.setIdPagoGrado(pagoGrado.getId());
-						alumnoForm.setIdAlumno(alumno.getId());
-						alumnoForm.setMonto(catPago.getMonto());
-						alumnoForm.setFechaPago(null);
-						alumnoForm.setPago(0.0);
-						alumnoForm.setFechaLimite(pagoGradoRelForm.getFechaLimite());
-						alumnoForm.setAplicaBeca(catPago.getAplicaBeca());
-						alumnoPagoService.save(alumnoForm);
+					//SI el pago es tipo 'UNICO', no se agrega a los alumnos
+					if(catPago.getPagoUnico()==Constantes.ESTATUS_INACTIVO){						
+						//Se realiza un ciclo para agregar el pago a cada alumno
+						for(Alumno alumno: alumnoLst){
+							AlumnoPagoForm alumnoForm = new AlumnoPagoForm();
+							
+							alumnoForm.setIdPagoGrado(pagoGrado.getId());
+							alumnoForm.setIdAlumno(alumno.getId());
+							alumnoForm.setMonto(catPago.getMonto());
+							alumnoForm.setFechaPago(null);
+							alumnoForm.setPago(0.0);
+							alumnoForm.setFechaLimite(pagoGradoRelForm.getFechaLimite());
+							alumnoForm.setAplicaBeca(catPago.getAplicaBeca());
+							alumnoPagoService.save(alumnoForm);
+						}						
 					}
+					
+					
 					
 				} catch (Throwable e) {
 					// TODO Ver como manejar el avisar cuando no se guarda un pago

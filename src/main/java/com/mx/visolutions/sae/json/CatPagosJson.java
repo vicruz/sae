@@ -8,7 +8,8 @@ public class CatPagosJson {
 	private String fecha;
 	private String beca;
 	private String url;
-	
+	private String generaAdeudo;
+	private String pagoUnico;
 	
 	public int getId() {
 		return id;
@@ -45,6 +46,18 @@ public class CatPagosJson {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String getGeneraAdeudo() {
+		return generaAdeudo;
+	}
+	public void setGeneraAdeudo(String generaAdeudo) {
+		this.generaAdeudo = generaAdeudo;
+	}
+	public String getPagoUnico() {
+		return pagoUnico;
+	}
+	public void setPagoUnico(String pagoUnico) {
+		this.pagoUnico = pagoUnico;
 	}
 	
 	

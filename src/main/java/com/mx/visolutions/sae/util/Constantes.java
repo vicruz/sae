@@ -7,4 +7,7 @@ public class Constantes {
 	public static final int SEMAFORO_ADEUDO = 3;
 	public static final int SEMAFORO_PENDIENTE = 4;
 	
+	public static final int ESTATUS_ACTIVO = 1;
+	public static final int ESTATUS_INACTIVO = 0;
+	
 }

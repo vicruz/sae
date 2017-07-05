@@ -48,6 +48,16 @@
 			<div class="form-group" align="right">
 				<form:label path="beca" >Pago aplica para beca </form:label>    			
 				<form:checkbox path="beca" id="cbBeca" name="cbBeca"/>  
+    		</div>
+    		
+    		<div class="form-group" align="right">
+				<form:label path="generaAdeudo" >Pago genera recargos </form:label>    			
+				<form:checkbox path="generaAdeudo" id="cbGeneraAdeudo" name="cbGeneraAdeudo"/>  
+    		</div>
+    		
+    		<div class="form-group" align="right">
+				<form:label path="pagoUnico" >Pago es &uacute;nico </form:label>    			
+				<form:checkbox path="pagoUnico" id="cbPagoUnico" name="cbPagoUnico"/>  
     		</div>	
 		
 			<div class="form-group">
@@ -75,13 +85,11 @@
                   <th>Monto</th>
                   <th>Fecha de Registro</th>
                   <th>Aplica Beca</th>
+                  <th>Genera Adeudo</th>
+                  <th>Pago &uacute;nico</th>
   				  <th>Acción</th>
                 </tr>
-                
-                
-                
                 </thead>
-               
                 <tfoot>
                 <tr>
                   <th>#</th>
@@ -89,14 +97,13 @@
                   <th>Monto</th>
                   <th>Fecha de Registro</th>
                   <th>Aplica Beca</th>
+                  <th>Genera Adeudo</th>
+                  <th>Pago &uacute;nico</th>
   				  <th>Acción</th>
                 </tr>
                 </tfoot>
               </table>
-		
 	</div>
-	
-	
 
 	<!-- <spring:message code="hello"/> -->
 <%@include file="includes/footer.jsp" %>

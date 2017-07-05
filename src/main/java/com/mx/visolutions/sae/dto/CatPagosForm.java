@@ -13,6 +13,10 @@ public class CatPagosForm {
 	private Double monto;
 	
 	private Boolean beca;
+	
+	private Boolean generaAdeudo;
+	
+	private Boolean pagoUnico;
 
 	public Integer getId() {
 		return id;
@@ -46,11 +50,26 @@ public class CatPagosForm {
 		this.beca = beca;
 	}
 
+	public Boolean getGeneraAdeudo() {
+		return generaAdeudo;
+	}
+
+	public void setGeneraAdeudo(Boolean generaAdeudo) {
+		this.generaAdeudo = generaAdeudo;
+	}
+
+	public Boolean getPagoUnico() {
+		return pagoUnico;
+	}
+
+	public void setPagoUnico(Boolean pagoUnico) {
+		this.pagoUnico = pagoUnico;
+	}
+
 	@Override
 	public String toString() {
-		return "CatPagoForm [concepto=" + concepto + ", monto=" + monto + ", beca="+beca+"]";
+		return "CatPagosForm [id=" + id + ", concepto=" + concepto + ", monto=" + monto + ", beca=" + beca
+				+ ", generaAdeudo=" + generaAdeudo + ", pagoUnico=" + pagoUnico + "]";
 	}
-	
 
-	
 }

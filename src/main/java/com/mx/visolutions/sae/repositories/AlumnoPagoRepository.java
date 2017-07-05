@@ -35,13 +35,21 @@ public interface AlumnoPagoRepository extends JpaRepository<AlumnoPago, Integer>
 	List<AlumnoPago> betweenMonthPays(Date fechaInicio, Date fechaFin);
 	
 	/*
-	Busca los pagos que han pasado su fecha limite
-	select ap.id_alumno, ap.id_semaforo, ap.monto, ap.fecha_limite
+	Busca los pagos que han pasado su fecha limite y no son pagos únicos y generan adeudo
+	select ap.*
 	from alumno_pago ap
-	where ap.id_semaforo = 3
-	and ap.fecha_limite < sysdate();
+    join pago_grado pg on ap.id_pago_grado = pg.id
+    join cat_pagos cp on pg.id_pago = cp.id
+	where cp.genera_adeudo = 1
+    and cp.pago_unico = 0
+    and ap.id_semaforo = 3
+	and ap.fecha_limite < sysdate()
 	*/
-	@Query("Select ap from AlumnoPago ap where ap.idSemaforo = ?1 and ap.fechaLimite < ?2")
+	@Query("Select ap from AlumnoPago ap "
+			+ "join ap.pagoGrado pg "
+			+ "join pg.catPago cp "
+			+ "where cp.generaAdeudo = 1 and cp.pagoUnico = 0 "
+			+ "and ap.idSemaforo = ?1 and ap.fechaLimite < ?2")
 	List<AlumnoPago> findPagoLimitExceed(Integer idSemaforo, Date today);
 	
 	

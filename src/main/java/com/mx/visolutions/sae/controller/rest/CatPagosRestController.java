@@ -58,7 +58,7 @@ public class CatPagosRestController {
 		
 		List<CatPagosJson> lstJson = new ArrayList<CatPagosJson>();
 		
-	List<CatPagos> lstPagos = catPagosService.findAll();
+		List<CatPagos> lstPagos = catPagosService.findAll();
 		
 		if(lstPagos!=null){
 			for(CatPagos pagos : lstPagos){
@@ -68,6 +68,8 @@ public class CatPagosRestController {
 				json.setId(pagos.getId());
 				json.setMonto(pagos.getMonto());
 				json.setBeca(pagos.getAplicaBeca()==1?"<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\">":"<span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\">");
+				json.setGeneraAdeudo(pagos.getGeneraAdeudo()==1?"<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\">":"<span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\">");
+				json.setPagoUnico(pagos.getPagoUnico()==1?"<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\">":"<span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\">");
 				json.setUrl("/borrar/"+pagos.getId());
 				lstJson.add(json);
 			}

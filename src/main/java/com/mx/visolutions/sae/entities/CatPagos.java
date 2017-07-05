@@ -38,6 +38,12 @@ public class CatPagos implements Serializable{
 	
 	@Column(name="APLICA_BECA")
 	private int aplicaBeca;
+	
+	@Column(name="GENERA_ADEUDO")
+	private int generaAdeudo;
+	
+	@Column(name="PAGO_UNICO")
+	private int pagoUnico;
 
 	public Integer getId() {
 		return id;
@@ -77,6 +83,22 @@ public class CatPagos implements Serializable{
 
 	public void setAplicaBeca(int aplicaBeca) {
 		this.aplicaBeca = aplicaBeca;
+	}
+
+	public int getGeneraAdeudo() {
+		return generaAdeudo;
+	}
+
+	public void setGeneraAdeudo(int generaAdeudo) {
+		this.generaAdeudo = generaAdeudo;
+	}
+
+	public int getPagoUnico() {
+		return pagoUnico;
+	}
+
+	public void setPagoUnico(int pagoUnico) {
+		this.pagoUnico = pagoUnico;
 	}
     
 
