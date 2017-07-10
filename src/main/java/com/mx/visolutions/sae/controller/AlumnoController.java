@@ -155,6 +155,7 @@ public class AlumnoController {
 		alumnoForm.setApPaterno(alumno.getApPaterno());
 		alumnoForm.setGradoId(alumno.getGrado().getId());
 		alumnoForm.setNombre(alumno.getNombre());
+		alumnoForm.setActivo(alumno.getActivo()==1?true:false);
 		
 		model.addAttribute(alumnoForm);
 		model.addAttribute(new BecaForm());

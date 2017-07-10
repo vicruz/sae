@@ -25,6 +25,7 @@
     </style>
   	<link rel="stylesheet" href="${conPath}/public/lib/datepicker/css/bootstrap-datepicker3.min.css">
 <%@include file="includes/header_html.jsp"%>
+<sec:authentication property='principal.user.rol_id' var="adminValue"/>
 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
 	<div class="page-header pull-left">
 		<div class="page-title">Alumno</div>
@@ -40,6 +41,8 @@
 	
 		<input type="hidden" name="id" id="id"
 					value='<c:out value="${alumnoForm.id}" />' />
+		<input type="hidden" name="activo" id="activo"
+					value='<c:out value="${alumnoForm.activo}" />' />
 	
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -129,7 +132,30 @@
 					<button type="submit" class="btn btn-primary pull-right" >
 						 Guardar
 					</button>
+					<c:if test = "${adminValue eq 1 }">
+						<span id="divAltaBaja">
+							<c:choose>
+	    						<c:when test="${alumnoForm.activo==true}">
+	        						<button type="button" id="deactivateAlumno"
+										class="btn btn-danger pull-right" onclick="bajaAlumnos()" >
+										<span class="glyphicon glyphicon-ban-circle"></span> Baja
+									</button> 
+	    						</c:when>    
+	    						<c:otherwise>
+	    							<button type="button" id="deactivateAlumno"
+										class="btn btn-success pull-right" onclick="altaAlumnos()" >
+										<span class="glyphicon glyphicon-ok-circle"></span> Alta
+									</button>
+	    						</c:otherwise>
+							</c:choose>
+						</span>
+					</c:if>
 				</div>
+				
+				<!-- link a 'Pagos' -->
+	 			<div align="left">
+					<a onclick="gotToPayments()" href="#">Pagos</a>
+	 			</div>
 			</div>
 		</div>
 	</form:form>
@@ -227,5 +253,6 @@
 <%@include file="includes/footer.jsp"%>
 	<script type="text/javascript" src="${conPath}/public/lib/datepicker/js/bootstrap-datepicker.min.js"></script>
  	<script type="text/javascript" src="${conPath}/public/lib/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+ 	<script type="text/javascript" src="${conPath}/public/lib/alerts/jquery-impromptu.js"></script>
  	<script type="text/javascript" src="${conPath}/public/lib/sae/js/becas.js"></script>
 <%@include file="includes/footer_bottom.jsp"%>

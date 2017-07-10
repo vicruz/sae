@@ -1,116 +1,71 @@
 package com.mx.visolutions.sae.controller.rest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mx.visolutions.sae.entities.Alumno;
-import com.mx.visolutions.sae.json.AlumnoJson;
 import com.mx.visolutions.sae.json.JSon;
-import com.mx.visolutions.sae.repositories.AlumnoRepository;
+import com.mx.visolutions.sae.services.AlumnoService;
+import com.mx.visolutions.sae.util.Constantes;
 
 @RestController
 public class AlumnoRestController {
 	
-private static final Logger logger = LoggerFactory.getLogger(AlumnoRestController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlumnoRestController.class);
 	
-	private AlumnoRepository alumnoRepository;
+	//private AlumnoRepository alumnoRepository;
+	private AlumnoService alumnoService;
 	
 	@Autowired
-	public AlumnoRestController(AlumnoRepository alumnoRepository){
-		this.alumnoRepository = alumnoRepository;
+	public AlumnoRestController(AlumnoService alumnoService){
+		this.alumnoService = alumnoService;
 	}
 	
 	@RequestMapping(value="/alumnoRest", method = RequestMethod.POST)
 	public JSon alumnosRest() {
-		JSon value = new JSon();
-		System.out.println("alumno rest");
-		//model.addAttribute("name","vic");
-		//model.addAttribute(new SignupForm());
-		logger.info("Alumnos GET request");
-		List<AlumnoJson> lstJson = new ArrayList<AlumnoJson>();
-		
-		List<Alumno> lstAlumno = alumnoRepository.findAll();
-		
-		if(lstAlumno!=null){
-			for(Alumno alumno : lstAlumno){
-				AlumnoJson json = new AlumnoJson();
-				json.setApMaterno(alumno.getApMaterno());
-				json.setApPaterno(alumno.getApPaterno());
-				json.setId(alumno.getId());
-				json.setNombre(alumno.getNombre());
-				json.setGrado(alumno.getGrado().getName());
-				
-				//TODO Pendiente asignar los pagos de cada alumno
-				if(alumno.getIdSemaforo()==0){
-					switch(alumno.getGrado().getId()){
-					case 1:
-						json.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");
-						break;
-					case 2:
-						json.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");
-						break;
-					case 3:
-						json.setSemaforo("<span class=\"label label-sm label-danger\">Adeudo</span>");
-						break;
-					case 4:
-						json.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");
-						break;
-					case 5:
-						json.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");
-						break;
-					case 6:
-						json.setSemaforo("<span class=\"label label-sm label-danger\">Adeudo</span>");
-						break;
-					case 7:
-						json.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");
-						break;
-					case 8:
-						json.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");
-						break;
-					case 9:
-						json.setSemaforo("<span class=\"label label-sm label-danger\">Adeudo</span>");
-						break;
-					default:
-						json.setGrado("Baja");
-						json.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");
-						break;
-					}
-				}else{
-					switch(Long.valueOf(alumno.getIdSemaforo()).intValue()){
-					case 1:
-						json.setSemaforo("<span class=\"label label-sm label-success\">Pagado</span>");
-						break;
-					case 2:
-						json.setSemaforo("<span class=\"label label-sm label-warning\">Parcial</span>");
-						break;
-					case 3:
-						json.setSemaforo("<span class=\"label label-sm label-danger\">Adeudo</span>");
-						break;
-					default:
-						json.setSemaforo("<span class=\"label label-sm label-info\">Pendiente</span>");
-						break;
-					}
-				}
-				
-				json.setUrl("/alumnos/"+alumno.getId()+"/pagos");
-				json.setUrlEditar("/alumnos/"+alumno.getId()+"/editar");
-				lstJson.add(json);
-			}
-		}
-		
-		value.setData(lstJson);
-		//value.setDraw(3);
-		//value.setRecordsTotal(lstJson.size());
-		//value.setRecordsFiltered(lstJson.size());
-		
-		return value;
+		logger.debug("Obtener todos los alumnos");
+		return alumnoService.getList();
+	}
+	
+	
+	/**
+	 * Da de baja a todos los alumnos registrados
+	 */
+	@RequestMapping(value="/alumnoRest/baja", method = RequestMethod.POST)
+	public void deactivateAllAlumnos(){
+		logger.debug("Desactivar a todos los alumnos");
+		alumnoService.deactivateAllAlumnos();
+	}
+	
+	/**
+	 * Da de alta a todos los alumnos registrados
+	 */
+	@RequestMapping(value="/alumnoRest/alta", method = RequestMethod.POST)
+	public void activateAllAlumnos(){
+		logger.debug("Activar a todos los alumnos");
+		alumnoService.activateAllAlumnos();
+	}
+	
+	/**
+	 * Cambia el estatus del alumno a 'baja'
+	 */
+	@RequestMapping(value="/alumnoRest/bajaById/{idAlumno}", method = RequestMethod.GET)
+	public void bajaByAlumno(@PathVariable("idAlumno") Integer alumnoId){
+		logger.debug("Baja del alumno: " + alumnoId);
+		alumnoService.changeEstatusByAlumno(Constantes.ESTATUS_INACTIVO, alumnoId);
+	}
+	
+	/**
+	 * Cambia el estatus del alumno a 'alta'
+	 */
+	@RequestMapping(value="/alumnoRest/altaById/{idAlumno}", method = RequestMethod.GET)
+	public void altaByAlumno(@PathVariable("idAlumno") Integer alumnoId){
+		logger.debug("Alta del alumno: " + alumnoId);
+		alumnoService.changeEstatusByAlumno(Constantes.ESTATUS_ACTIVO, alumnoId);
 	}
 
 }

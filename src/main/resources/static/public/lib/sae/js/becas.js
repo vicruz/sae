@@ -1,6 +1,10 @@
 var elPath = $("#elPath").val();
 var becaDataTable;
 
+var buttonBaja = "<button type=\"button\" id=\"deactivateAlumno\" class=\"btn btn-danger pull-right\ " +
+		"onclick=\"bajaAlumnos()\" > <span class=\"glyphicon glyphicon-ban-circle\"></span> Baja</button>;";
+var buttonAlta = "<button type=\"button\" id=\"deactivateAlumno\" class=\"btn btn-success pull-right\" " +
+		"onclick=\"altaAlumnos()\" > <span class=\"glyphicon glyphicon-ok-circle\"></span> Alta</button>";
 
 $(document).ready(function() {
 	var urlRest= elPath +"/beca/alumno/"+$("#id").val();
@@ -26,7 +30,6 @@ $(document).ready(function() {
                     { "data": "fin" },
                     { "data": "urlBorrar",
                     	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                            //$(nTd).html("<a href='"+elPath+oData.urlBorrar+"'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>&nbsp;&nbsp;");
                     		$(nTd).html("<a href='#'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>&nbsp;&nbsp;");
                         } 
                     }
@@ -41,3 +44,55 @@ $(document).ready(function() {
 $( function() {
     $( "#datepicker" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, language: "es", autoclose: true});
   } );
+
+/* Evento que da de baja a todos los alumnos registrados */
+function bajaAlumnos(){
+	$.prompt("Desea dar de baja al alumno?", {
+		title: "Baja Alumno",
+		buttons: { "SI": true, "NO": false },
+		submit: function(e,v,m,f){
+			if(v){
+				 $.ajax({
+					 url: elPath +"/alumnoRest/bajaById/"+$("#id").val(),
+					 type: "GET",
+					 success: function( data, textStatus, jQxhr ){
+        					console.log("ajax.data: "+data);
+        					$('#divAltaBaja').html(buttonAlta);
+        					$.prompt("El alumno se han dado de baja",{
+        						title: "Actualizado!"
+        					});
+        			}
+        		});
+			}
+		}
+	});
+}
+
+/* Evento que da de baja a todos los alumnos registrados */
+function altaAlumnos(){
+	$.prompt("Desea dar de alta al alumno?", {
+		title: "Alta Alumno",
+		buttons: { "SI": true, "NO": false },
+		submit: function(e,v,m,f){
+			if(v){
+				 $.ajax({
+					 url: elPath +"/alumnoRest/altaById/"+$("#id").val(),
+					 type: "GET",
+					 success: function( data, textStatus, jQxhr ){
+        					console.log("ajax.data: "+data);
+        					$('#divAltaBaja').html(buttonBaja);
+        					$.prompt("El alumno se ha dado de alta",{
+        						title: "Actualizado!"
+        					});
+        			}
+        		});
+			}
+		}
+	});
+}
+
+function gotToPayments(){
+	var elPath = $("#elPath").val();
+	var url = elPath + "/alumnos/"+$("#id").val()+"/pagos";
+	window.open(url,"_self");
+}

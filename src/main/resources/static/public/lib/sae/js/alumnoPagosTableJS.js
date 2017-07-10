@@ -113,3 +113,9 @@ function creaReporte(){
 	$( "#datepickerPeriodo" ).datepicker({startView: 1, minViewMode: 1, todayHighlight: true, autoclose: true, language: "es", format: "dd-mm-yyyy" });
 }
 
+function gotToEdit(){
+	var elPath = $("#elPath").val();
+	var idAlumno = document.getElementById('id').value;
+	var url = elPath + "/alumnos/"+idAlumno+"/editar";
+	window.open(url,"_self");
+}

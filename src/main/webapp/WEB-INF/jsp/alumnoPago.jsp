@@ -90,20 +90,7 @@
 					
 				</dl>
 			</div>
-	<!-- 		
-			<div align="right">
-			
-				<button type="button" id="addAlumno"
-					class="btn btn-primary pull-right" data-toggle="modal"
-					data-target="#myModal">
-					<span class="glyphicon glyphicon-plus"></span> Agregar Pago
-				</button>
-				
-				<button type="button" id="reporteAlumno" class="btn btn-primary pull-right" onclick="reporte()">
-			<span class="glyphicon glyphicon-usd"></span> Reporte</button>
-				
-			</div>
-	 -->
+	
 	 		<!-- Single button -->
 	 		<div align="right">
 				<div class="btn-group">
@@ -114,12 +101,15 @@
 				</div>
 				
 				<div class="btn-group">
-	  				<button type="button" id="addAlumno"
-					class="btn btn-primary pull-right" data-toggle="modal"
-					data-target="#myModal">
-					<span class="glyphicon glyphicon-plus"></span> Agregar Pago
-				</button>
+	  				<button type="button" id="addAlumno" class="btn btn-primary pull-right" data-toggle="modal"
+						data-target="#myModal"> <span class="glyphicon glyphicon-plus"></span> Agregar Pago
+					</button>
 				</div>	
+	 		</div>
+	 		
+	 		<!-- link a 'Editar' -->
+	 		<div align="left">
+					<a onclick="gotToEdit()" href="#">Editar</a>
 	 		</div>
 		</div>
 	</div>

@@ -18,6 +18,7 @@ public class AlumnoForm {
 	private Integer gradoId;
 	private Integer semaforoId;
 	private Boolean becaId;
+	private Boolean activo;
 	
 	public Integer getId() {
 		return id;
@@ -62,6 +63,12 @@ public class AlumnoForm {
 		this.becaId = becaId;
 	}
 	
+	public Boolean getActivo() {
+		return activo;
+	}
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
 	@Override
 	public String toString() {
 		return "AlumnoForm [apPaterno=" + apPaterno + ", apMaterno=" + apMaterno + ", nombre=" + nombre + ", gradoId="

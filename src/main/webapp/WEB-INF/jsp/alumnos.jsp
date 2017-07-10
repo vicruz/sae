@@ -1,5 +1,6 @@
 <%@include file="includes/header.jsp"%>
 <%@include file="includes/header_html.jsp"%>
+<link rel="stylesheet"  href="${conPath}/public/css/alerts/jquery-impromptu.css">
 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
 	<div class="page-header pull-left">
 		<div class="page-title">Alumnos</div>
@@ -8,11 +9,23 @@
 </div>
 
 <input type="hidden" name="elPath" id="elPath" value="${conPath}">
-
+<sec:authentication property='principal.user.rol_id' var="adminValue"/>
 <div class="page-content">
 
 	<div id="addButton">
 		<div class="panel-body">
+			<c:if test = "${adminValue eq 1 }">
+				<button type="button" id="deactivateAlumno"
+					class="btn btn-success pull-right" onclick="altaAlumnos()" >
+					<span class="glyphicon glyphicon-ok-circle"></span> Alta de Alumnos
+				</button>
+				<button type="button" id="deactivateAlumno"
+					class="btn btn-danger pull-right" onclick="bajaAlumnos()" >
+					<span class="glyphicon glyphicon-ban-circle"></span> Baja de Alumnos
+				</button>
+			</c:if>
+		
+		&nbsp;&nbsp;&nbsp;
 			<button type="button" id="addAlumno"
 				class="btn btn-primary pull-right" data-toggle="modal"
 				data-target="#myModal">
@@ -111,6 +124,7 @@
 				<th>Estatus</th>
 				<th>Pagos</th>
 				<th>Editar</th>
+				<th>Activo</th>
 			</tr>
 		</thead>
 
@@ -124,6 +138,7 @@
 				<th>Estatus</th>
 				<th>Pagos</th>
 				<th>Editar</th>
+				<th>Activo</th>
 			</tr>
 		</tfoot>
 	</table>
@@ -134,5 +149,6 @@
 
 <!-- <spring:message code="hello"/> -->
 <%@include file="includes/footer.jsp"%>
+<script type="text/javascript" src="${conPath}/public/lib/alerts/jquery-impromptu.js"></script>
 <script src="${conPath}/public/lib/sae/js/alumnoTable.js"></script>
 <%@include file="includes/footer_bottom.jsp"%>

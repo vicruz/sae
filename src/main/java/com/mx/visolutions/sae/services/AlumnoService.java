@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mx.visolutions.sae.dto.AlumnoForm;
 import com.mx.visolutions.sae.entities.Alumno;
+import com.mx.visolutions.sae.json.JSon;
 
 public interface AlumnoService {
 
@@ -17,7 +18,15 @@ public interface AlumnoService {
 	
 	public void delete(AlumnoForm alumnoForm);
 	
-	public void getList();
+	public JSon getList();
 	
 	public List<Alumno> findByGrado(Integer idGrado);
+	
+	public void deactivateAllAlumnos();
+	
+	public void activateAllAlumnos();
+	
+	public void changeEstatusByAlumno(int activo, int alumnoId);
+	
+	public List<Alumno> findByGradoAndActivo(Integer idGrado);
 }

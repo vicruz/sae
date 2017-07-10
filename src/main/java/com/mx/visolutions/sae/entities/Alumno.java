@@ -47,11 +47,10 @@ public class Alumno {
 	@Column(name="SALDO")
 	private double saldo;
 	
-	/*
-	@OneToOne
-    private Grado grado;
+	@Column(name="ACTIVO")
+    private int activo;
     
-	@OneToOne
+	/*@OneToOne
     private Semaforo semaforo;*/
 
 	public int getId() {
@@ -132,6 +131,14 @@ public class Alumno {
 
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
+	}
+
+	public int getActivo() {
+		return activo;
+	}
+
+	public void setActivo(int activo) {
+		this.activo = activo;
 	}
 
 	

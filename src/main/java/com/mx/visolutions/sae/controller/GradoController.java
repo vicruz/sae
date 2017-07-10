@@ -159,8 +159,9 @@ public class GradoController {
 			int errores = 0;
 			String mesError = "";
 			
-			//Buscar los alumnos que spertenecen al grado
-			List<Alumno> alumnoLst = alumnoService.findByGrado(gradoId);
+			//Buscar los alumnos que pertenecen al grado y se encuentran activos
+			//List<Alumno> alumnoLst = alumnoService.findByGrado(gradoId);
+			List<Alumno> alumnoLst = alumnoService.findByGradoAndActivo(gradoId);
 			
 			//Crear una lista de los meses a crear
 			fechaInicial.setTime(sdf.parse(gradoPagoForm.getFechaInicio()));
