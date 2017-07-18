@@ -49,7 +49,7 @@ $(document).ready(function() {
 		
 		htmlText = '<p><b>Actualizar Fecha L&iacute;mite de Pago</b></p>'+
 		'<p>Fecha Limite Actual: '+values.fechaLimite.substring(0, 10)+'</br>'+
-		'Fecha Limite Nueva: <input type="text" id="datepickerFL" class="datepickerFL" name="fecha_limite" data-date-format="mm/dd/yyyy" placeholder="AAAA-MM-DD"></p>';
+		'Fecha Limite Nueva: <input type="text" id="datepickerFL" class="datepickerFL" name="fecha_limite" data-date-format="mm/dd/yyyy" placeholder="DD-MM-AAAA"></p>';
 		
 		var updateFechaBox =  {
 			state0: {

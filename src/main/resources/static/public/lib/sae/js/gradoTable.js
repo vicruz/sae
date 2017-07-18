@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	var elPath = $("#elPath").val();
-    	    $('#grados').DataTable( {
+    var tabla = $('#grados').DataTable( {
     	        "language": {
     	        	"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
     	        },
@@ -24,4 +24,5 @@ $(document).ready(function() {
     	                    }
     	                ]
     	    } );
+    tabla.page.len(20).draw();
     	} );

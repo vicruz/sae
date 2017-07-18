@@ -1,0 +1,66 @@
+package com.mx.visolutions.sae.controller.rest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mx.visolutions.sae.dto.DescuentoForm;
+import com.mx.visolutions.sae.json.AlumnoDescuentoJson;
+import com.mx.visolutions.sae.json.JSon;
+import com.mx.visolutions.sae.services.AlumnoBecaService;
+import com.mx.visolutions.sae.services.AlumnoDescuentoService;
+
+@RestController
+@RequestMapping(path="/descuento")
+public class DescuentoRestController {
+
+	private static final Logger logger = LoggerFactory.getLogger(DescuentoRestController.class);
+	
+	
+	private AlumnoBecaService alumnoBecaService;
+	private AlumnoDescuentoService alumnoDescuentoService;
+	
+	@Autowired
+	public DescuentoRestController(AlumnoBecaService alumnoBecaService, 
+			AlumnoDescuentoService alumnoDescuentoService){
+		this.alumnoBecaService = alumnoBecaService;
+		this.alumnoDescuentoService = alumnoDescuentoService;
+	}
+	
+	
+	@RequestMapping(value="/alumno/{idAlumno}", method = RequestMethod.GET)
+	public JSon getCatalogoDescuento(@PathVariable("idAlumno") Integer idAlumno){
+		
+		logger.debug("Buscando descuentos del alumno: " + idAlumno);
+		
+		AlumnoDescuentoJson json;
+		JSon value = new JSon();
+		
+		List<AlumnoDescuentoJson> lst = new ArrayList<AlumnoDescuentoJson>();
+		List<DescuentoForm> lstDescuentos = alumnoDescuentoService.findListAlumno(idAlumno);
+		
+		for(DescuentoForm form : lstDescuentos){
+			json = new AlumnoDescuentoJson();
+			
+			json.setFin(form.getFechaFin());
+			json.setId(form.getDescuentoId());
+			json.setInicio(form.getFechaInicio());
+			json.setDescuento(form.getMonto());
+			json.setUrlBorrar("/descuento/alumno/borrar/"+form.getDescuentoId());
+			
+			lst.add(json);
+		}
+		
+		value.setData(lst);
+		
+		return value;
+	}
+	
+}

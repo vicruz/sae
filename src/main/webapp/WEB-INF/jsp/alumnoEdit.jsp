@@ -160,6 +160,9 @@
 		</div>
 	</form:form>
 	
+	<!-- ---------------------------------------------------------------------------------------------------------------------------- -->
+	<!-- Agregar Beca -->
+	<!-- ---------------------------------------------------------------------------------------------------------------------------- -->
 	<!-- Modal -->
 	<div class="modal fade" id="modalBeca" tabindex="-1" role="dialog"
 		aria-labelledby="modalBecaLabel">
@@ -188,9 +191,9 @@
 								</div>
 								
 								<div class="input-daterange input-group" id="datepicker">
-    								<input type="text" id="fechaInicio" class="form-control" name="fechaInicio" placeholder="AAAA-MM-DD" readonly/>
+    								<input type="text" id="fechaInicio" class="form-control" name="fechaInicio" placeholder="DD-MM-AAAA" readonly/>
     								<span class="input-group-addon">A</span>
-    								<input type="text" id="fechaFin" class="form-control" name="fechaFin" placeholder="AAAA-MM-DD" readonly/>
+    								<input type="text" id="fechaFin" class="form-control" name="fechaFin" placeholder="DD-MM-AAAA" readonly/>
 								</div>
 								
 							</div>
@@ -247,6 +250,99 @@
 		
 		</div>
 	</div>
+	
+	
+	<!-- ---------------------------------------------------------------------------------------------------------------------------- -->
+	<!-- Agregar Descuentos -->
+	<!-- ---------------------------------------------------------------------------------------------------------------------------- -->
+	<!-- Modal -->
+	<div class="modal fade" id="modalDescuento" tabindex="-1" role="dialog"
+		aria-labelledby="modalDescuentoLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Agregar Descuento</h4>
+				</div>
+				<div class="modal-body">
+
+					<form:form modelAttribute="descuentoForm" action="${conPath}/alumnos/${alumnoForm.id}/editar/descuento" role="form">
+
+						<form:errors />
+
+						<div class="row">
+							<div class="col-md-6">
+								
+								<div class="form-group">
+									<form:label path="monto">Descuento: </form:label>
+									<form:input path="monto" type="monto" class="form-control" 
+										onkeypress="return ((event.charCode >= 48 && event.charCode <= 57)||(event.charCode == 46))" />
+								</div>
+								
+								<div class="input-daterange input-group" id="datepickerD">
+    								<input type="text" id="fechaInicio" class="form-control" name="fechaInicio" placeholder="DD-MM-AAAA" readonly/>
+    								<span class="input-group-addon">A</span>
+    								<input type="text" id="fechaFin" class="form-control" name="fechaFin" placeholder="DD-MM-AAAA" readonly/>
+								</div>
+								
+							</div>
+						</div>
+
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary pull-right">Guardar</button>
+							<button type="button" class="btn btn-danger pull-right"
+								data-dismiss="modal">Cerrar</button>
+						</div>
+
+
+					</form:form>
+				</div>
+				<div class="modal-footer"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Descuento</h3> 
+			
+		</div>
+		<div class="panel-body">
+			<button type="button" id="addDescuento"
+				class="btn btn-primary pull-right" data-toggle="modal"
+				data-target="#modalDescuento">
+				<span class="glyphicon glyphicon-plus"></span> Descuento
+			</button>
+<br/>
+<br/>
+			<table id="descuentosTable" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Cantidad</th>
+						<th>Inicio</th>
+						<th>Fin</th>
+						<th>Borrar</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th>#</th>
+						<th>Cantidad</th>
+						<th>Inicio</th>
+						<th>Fin</th>
+						<th>Borrar</th>
+					</tr>
+				</tfoot>
+			</table>
+		
+		
+		</div>
+	</div>
+	
 </div>
 
 

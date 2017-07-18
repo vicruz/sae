@@ -1,5 +1,6 @@
 var elPath = $("#elPath").val();
 var becaDataTable;
+var descuentoDataTable;
 
 var buttonBaja = "<button type=\"button\" id=\"deactivateAlumno\" class=\"btn btn-danger pull-right\ " +
 		"onclick=\"bajaAlumnos()\" > <span class=\"glyphicon glyphicon-ban-circle\"></span> Baja</button>;";
@@ -8,6 +9,7 @@ var buttonAlta = "<button type=\"button\" id=\"deactivateAlumno\" class=\"btn bt
 
 $(document).ready(function() {
 	var urlRest= elPath +"/beca/alumno/"+$("#id").val();
+	var urlRestDescuento= elPath +"/descuento/alumno/"+$("#id").val();
 	
 	becaDataTable = $('#becasTable').DataTable( {
         "language": {
@@ -36,13 +38,44 @@ $(document).ready(function() {
                 ]
     } );
 	
+	descuentoDataTable = $('#descuentosTable').DataTable( {
+        "language": {
+        	"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+        },
+    	"dom": "Bfrtip",
+        "buttons": [
+                    "excel", "pdf", "print"
+                ],
+    	"processing": true,
+        //"serverSide": true,
+        "ajax": {
+        	"url": urlRestDescuento,
+        	"type": "GET"
+        },
+        "columns": [
+                    { "data": "id" },
+                    { "data": "descuento" },
+                    { "data": "inicio" },
+                    { "data": "fin" },
+                    { "data": "urlBorrar",
+                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    		$(nTd).html("<a href='#'><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>&nbsp;&nbsp;");
+                        } 
+                    }
+                ]
+    } );
 	
-	
+	//descuentoDataTable.ajax.reload();
+		
 } );
 
 
 $( function() {
-    $( "#datepicker" ).datepicker({format: "yyyy-mm-dd", todayHighlight: true, language: "es", autoclose: true});
+    $( "#datepicker" ).datepicker({format: "dd-mm-yyyy", todayHighlight: true, language: "es", autoclose: true, weekStart: 0});
+  } );
+
+$( function() {
+    $( "#datepickerD" ).datepicker({format: "dd-mm-yyyy", todayHighlight: true, language: "es", autoclose: true, weekStart: 0});
   } );
 
 /* Evento que da de baja a todos los alumnos registrados */

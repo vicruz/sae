@@ -1,5 +1,6 @@
 package com.mx.visolutions.sae.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +23,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mx.visolutions.sae.dto.AlumnoForm;
 import com.mx.visolutions.sae.dto.AlumnoPagoForm;
 import com.mx.visolutions.sae.dto.BecaForm;
+import com.mx.visolutions.sae.dto.DescuentoForm;
 import com.mx.visolutions.sae.entities.Alumno;
 import com.mx.visolutions.sae.entities.PagoGrado;
 import com.mx.visolutions.sae.services.AlumnoBecaService;
+import com.mx.visolutions.sae.services.AlumnoDescuentoService;
 import com.mx.visolutions.sae.services.AlumnoPagoService;
 import com.mx.visolutions.sae.services.AlumnoService;
 import com.mx.visolutions.sae.services.CatPagosService;
@@ -40,15 +43,17 @@ public class AlumnoController {
 	private PagoGradoService pagoGradoService;
 	private AlumnoPagoService alumnoPagoService;
 	private AlumnoBecaService alumnoBecaService;
+	private AlumnoDescuentoService alumnoDescuentoService;
 
 	@Autowired
 	public AlumnoController(AlumnoService alumnoService,PagoGradoService pagoGradoService,
 			AlumnoPagoService alumnoPagoService, CatPagosService catPagosService,
-			AlumnoBecaService alumnoBecaService) {
+			AlumnoBecaService alumnoBecaService, AlumnoDescuentoService alumnoDescuentoService) {
 		this.alumnoService = alumnoService;
 		this.pagoGradoService = pagoGradoService;
 		this.alumnoPagoService = alumnoPagoService;
 		this.alumnoBecaService = alumnoBecaService;
+		this.alumnoDescuentoService = alumnoDescuentoService;
 	}
 	
 	
@@ -159,6 +164,7 @@ public class AlumnoController {
 		
 		model.addAttribute(alumnoForm);
 		model.addAttribute(new BecaForm());
+		model.addAttribute(new DescuentoForm());
 				
 		return "alumnoEdit";
 	}
@@ -196,8 +202,6 @@ public class AlumnoController {
 		if(result.hasErrors())
 			return "redirect:/alumnos/"+alumnoId+"/editar";
 		
-		
-		
 		try {
 			if(becaForm.getPorcentaje()>100){
 				MyUtil.flash(redirectAttributes, "danger", "alumnoSaveBecaPorcentajeError");
@@ -213,5 +217,39 @@ public class AlumnoController {
 		
 		return "redirect:/alumnos/"+alumnoId+"/editar";
 	}
+	
+	
+	@RequestMapping(value="/alumnos/{alumnoId}/editar/descuento", method=RequestMethod.POST)
+	public String editarPostDescuento(@PathVariable("alumnoId") Integer alumnoId, 
+			@ModelAttribute("descuentoForm") @Valid DescuentoForm descuentoForm,
+			BindingResult result, RedirectAttributes redirectAttributes, Model model){
+
+		SimpleDateFormat formatter = null;
+		BecaForm becaForm = null;
+		
+		if(result.hasErrors())
+			return "redirect:/alumnos/"+alumnoId+"/editar";
+		
+		try {
+			
+			formatter = new SimpleDateFormat("dd-MM-yyyy");
+			becaForm = alumnoBecaService.findByAlumnoAndDate(alumnoId, formatter.parse(descuentoForm.getFechaInicio()));
+			
+			if(becaForm!=null){
+				MyUtil.flash(redirectAttributes, "danger", "alumnoSaveDescuentoBecaError");
+			}else{
+				alumnoDescuentoService.save(descuentoForm, alumnoId);
+				MyUtil.flash(redirectAttributes, "success", "alumnoSaveDescuentoSuccess");				
+			}
+			
+		} catch (Exception e) {
+			MyUtil.flash(redirectAttributes, "danger", "alumnoSaveDescuentoNoSuccess", e.getMessage());
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return "redirect:/alumnos/"+alumnoId+"/editar";
+	}
+	
 	
 }

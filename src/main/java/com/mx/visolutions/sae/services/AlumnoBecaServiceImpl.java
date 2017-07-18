@@ -3,6 +3,7 @@ package com.mx.visolutions.sae.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class AlumnoBecaServiceImpl implements AlumnoBecaService{
 	@Override
 	public void save(BecaForm becaForm, Integer idAlumno) {
 		AlumnoBeca alumnoBeca = new AlumnoBeca();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		double diferencia = 0.0;
 		double montoPorcentaje;
 		
@@ -98,7 +99,7 @@ public class AlumnoBecaServiceImpl implements AlumnoBecaService{
 		List<BecaForm> lst = null;
 		List<AlumnoBeca> lstAlumno;
 		BecaForm form;
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		
 		lstAlumno = alumnoBecaRepository.findByIdAlumno(idAlumno);
 		
@@ -126,6 +127,25 @@ public class AlumnoBecaServiceImpl implements AlumnoBecaService{
 		alumnoBeca = alumnoBecaRepository.findByIdAlumnoAndCurrentDate(idAlumno);
 		if(alumnoBeca!=null){
 			formatter = new SimpleDateFormat("yyyy-MM-dd");
+			becaForm = new BecaForm();
+			becaForm.setBecaId(alumnoBeca.getIdBeca());
+			becaForm.setPorcentaje(alumnoBeca.getPorcentaje());
+			becaForm.setFechaInicio(formatter.format(alumnoBeca.getFechaInicio()));
+			becaForm.setFechaFin(formatter.format(alumnoBeca.getFechaFin()));
+		}
+		
+		return becaForm;
+	}
+
+	@Override
+	public BecaForm findByAlumnoAndDate(Integer idAlumno, Date fechaInicio) {
+		AlumnoBeca alumnoBeca;
+		BecaForm becaForm = null;
+		SimpleDateFormat formatter = null;
+		
+		alumnoBeca = alumnoBecaRepository.findByIdAlumnoAndDate(idAlumno, fechaInicio);
+		if(alumnoBeca!=null){
+			formatter = new SimpleDateFormat("dd-MM-yyyy");
 			becaForm = new BecaForm();
 			becaForm.setBecaId(alumnoBeca.getIdBeca());
 			becaForm.setPorcentaje(alumnoBeca.getPorcentaje());
