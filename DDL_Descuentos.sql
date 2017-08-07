@@ -1,3 +1,6 @@
+alter table sae.alumno add activo int(1) default 1;
+alter table sae.cat_pagos add genera_adeudo int(1) default 0;
+alter table sae.cat_pagos add pago_unico int(1) default 0;
 create table sae.alumno_descuento(
 	id_descuento int not null auto_increment,
 	id_alumno int not null,

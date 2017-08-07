@@ -195,10 +195,10 @@ public class ReportesRestController {
 			
 			//TODO para debug
 			try{
-				reporte = (JasperReport) JRLoader.loadObjectFromFile("C:/Workspaces/SAE/sae/src/main/resources/reports/reportAlumno1.jasper");
+				reporte = (JasperReport) JRLoader.loadObjectFromFile("C:/x/Workspaces/SAE/sae/src/main/resources/reports/reportAlumno1.jasper");
 			}catch(Exception e){ 
 				reporte = null; 
-				reporte = (JasperReport) JRLoader.loadObjectFromFile("src/main/resources/reports/reportAlumno1.jasper");
+				reporte = (JasperReport) JRLoader.loadObject(ReportesRestController.class.getResourceAsStream("/reports/reportAlumno1.jasper"));
 			}
 			
 			JRBeanCollectionDataSource ds =new JRBeanCollectionDataSource(lstReporte);
