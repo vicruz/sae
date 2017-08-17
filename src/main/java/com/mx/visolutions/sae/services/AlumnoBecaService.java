@@ -16,5 +16,7 @@ public interface AlumnoBecaService {
 	public BecaForm findByAlumnoAndCurrentDate(Integer idAlumno);
 	
 	public BecaForm findByAlumnoAndDate(Integer idAlumno, Date fechaInicio);
+	
+	public void deleteBeca(Integer idBeca);
 
 }

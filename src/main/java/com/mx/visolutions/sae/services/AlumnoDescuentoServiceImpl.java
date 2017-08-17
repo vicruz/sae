@@ -3,6 +3,7 @@ package com.mx.visolutions.sae.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.mx.visolutions.sae.repositories.AlumnoBecaRepository;
 import com.mx.visolutions.sae.repositories.AlumnoDescuentoRepository;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
 import com.mx.visolutions.sae.repositories.AlumnoRepository;
+import com.mx.visolutions.sae.util.Constantes;
 
 @Service
 @Transactional(propagation=Propagation.SUPPORTS, readOnly=true)
@@ -50,6 +52,7 @@ public class AlumnoDescuentoServiceImpl implements AlumnoDescuentoService{
 			alumnoDescuento.setFechaInicio(formatter.parse(descuentoForm.getFechaInicio()));
 			alumnoDescuento.setDescuento(descuentoForm.getMonto());
 			alumnoDescuento.setIdAlumno(idAlumno);
+			alumnoDescuento.setActivo(Constantes.ESTATUS_ACTIVO);
 			
 			//Guardar el descuento
 			alumnoDescuentoRepository.save(alumnoDescuento);
@@ -102,6 +105,51 @@ public class AlumnoDescuentoServiceImpl implements AlumnoDescuentoService{
 			}
 		}
 		return lst;
+	}
+
+	/**
+	 * Elimina el descuento solicitado y restaura los precios de los pagos
+	 */
+	@Override
+	public void deleteDescuentoById(Integer idDescuento) {
+		
+		//Buscar el descuento
+		AlumnoDescuento alumnoDescuento = alumnoDescuentoRepository.findOne(idDescuento);
+		
+		if(alumnoDescuento.getActivo()==Constantes.ESTATUS_ACTIVO){
+			
+			//Se obtienen los pagos donde se aplica el descuento
+			List<AlumnoPago> lstPagos = alumnoBecaRepository.findPagosAplicaBeca(
+					alumnoDescuento.getIdAlumno(), alumnoDescuento.getFechaInicio(), alumnoDescuento.getFechaFin());
+			
+			//Modificar los pagos sumando el monto de descuento
+			for(AlumnoPago pago : lstPagos){
+				
+				//Se establece el monto de pago sumando el monto del descuento
+				pago.setMonto(pago.getMonto()+alumnoDescuento.getDescuento());
+				
+				//Establece el semáforo del pago
+				if(pago.getPago().doubleValue()==pago.getMonto().doubleValue()){
+					pago.setIdSemaforo(Constantes.SEMAFORO_PAGADO);
+				}else if(pago.getPago().doubleValue()<pago.getMonto().doubleValue()){
+					//Si pago es 0 y la fecha limite de pago ha expirado
+					if(pago.getPago().doubleValue()==0 && pago.getFechaLimite().before(Calendar.getInstance().getTime())){
+						pago.setIdSemaforo(Constantes.SEMAFORO_ADEUDO);
+					}else if(pago.getPago().doubleValue()==0 && pago.getFechaLimite().after(Calendar.getInstance().getTime())){
+						pago.setIdSemaforo(Constantes.SEMAFORO_PENDIENTE);
+					}else{
+						pago.setIdSemaforo(Constantes.SEMAFORO_PARCIAL);
+					}
+				}
+				
+				//TODO manejo de saldos
+				
+				alumnoPagoRepository.save(pago);
+			}
+			
+		}
+		
+		alumnoDescuentoRepository.delete(idDescuento);
 	}
 
 }

@@ -48,11 +48,32 @@ public class BecaRestController {
 			json.setId(form.getBecaId());
 			json.setInicio(form.getFechaInicio());
 			json.setPorcentaje(form.getPorcentaje());
-			json.setUrlBorrar("/beca/alumno/borrar/"+form.getBecaId());
+			json.setUrlBorrar("/beca/delete/"+form.getBecaId());
 			
 			lst.add(json);
 		}
 		
+		value.setData(lst);
+		
+		return value;
+	}
+	
+	/**
+	 * Elimina la beca asignada al alumno
+	 * @param idBeca
+	 * @return
+	 */
+	@RequestMapping(value="/delete/{idBeca}", method = RequestMethod.GET)
+	public JSon deleteBeca(@PathVariable("idBeca") Integer idBeca){
+		
+		logger.info("Eliminando beca : " + idBeca);
+		
+		JSon value = new JSon();
+		List<Boolean> lst = new ArrayList<Boolean>();
+		lst.add(true);
+		
+		alumnoBecaService.deleteBeca(idBeca);
+				
 		value.setData(lst);
 		
 		return value;

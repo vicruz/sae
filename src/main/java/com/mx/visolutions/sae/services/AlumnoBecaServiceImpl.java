@@ -3,9 +3,11 @@ package com.mx.visolutions.sae.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,11 +20,13 @@ import com.mx.visolutions.sae.entities.AlumnoPago;
 import com.mx.visolutions.sae.repositories.AlumnoBecaRepository;
 import com.mx.visolutions.sae.repositories.AlumnoPagoRepository;
 import com.mx.visolutions.sae.repositories.AlumnoRepository;
+import com.mx.visolutions.sae.util.Constantes;
 
 @Service
 @Transactional(propagation=Propagation.SUPPORTS, readOnly=true)
 public class AlumnoBecaServiceImpl implements AlumnoBecaService{
 	
+	private static Logger logger = Logger.getLogger(AlumnoBecaServiceImpl.class);
 	
 	private AlumnoBecaRepository alumnoBecaRepository;
 	private AlumnoRepository alumnoRepository;
@@ -154,6 +158,49 @@ public class AlumnoBecaServiceImpl implements AlumnoBecaService{
 		}
 		
 		return becaForm;
+	}
+
+	@Override
+	public void deleteBeca(Integer idBeca) {
+		AlumnoBeca alumnoBeca;
+		
+		//Se obtienen los datos de la beca
+		logger.debug("Se obtienen los datos de la beca");
+		alumnoBeca = alumnoBecaRepository.findOne(idBeca);
+		
+		//Obtener los pagos del alumno en el periodo de la beca
+		logger.debug("Obtener los pagos donde se aplica la beca");
+		//Obtener los pagos donde se aplica la beca
+		List<AlumnoPago> lstPagos = alumnoBecaRepository.findPagosAplicaBeca(
+				alumnoBeca.getIdAlumno(), alumnoBeca.getFechaInicio(), alumnoBeca.getFechaFin());
+		
+		//Reestablecer el monto de los pagos
+		logger.debug("Actualizando pagos");
+		for(AlumnoPago pago : lstPagos){
+			//Se busca el monto del pago para establecerlo
+			pago.setMonto(pago.getPagoGrado().getCatPago().getMonto());
+			
+			//Establece el semáforo del pago
+			if(pago.getPago().doubleValue()==pago.getMonto().doubleValue()){
+				pago.setIdSemaforo(Constantes.SEMAFORO_PAGADO);
+			}else if(pago.getPago().doubleValue()<pago.getMonto().doubleValue()){
+				//Si pago es 0 y la fecha limite de pago ha expirado
+				if(pago.getPago().doubleValue()==0 && pago.getFechaLimite().before(Calendar.getInstance().getTime())){
+					pago.setIdSemaforo(Constantes.SEMAFORO_ADEUDO);
+				}else if(pago.getPago().doubleValue()==0 && pago.getFechaLimite().after(Calendar.getInstance().getTime())){
+					pago.setIdSemaforo(Constantes.SEMAFORO_PENDIENTE);
+				}else{
+					pago.setIdSemaforo(Constantes.SEMAFORO_PARCIAL);
+				}
+			}			
+			
+			//TODO Manejo de saldos
+			
+			alumnoPagoRepository.save(pago);
+		}
+		
+		logger.debug("Borrar beca");
+		alumnoBecaRepository.delete(idBeca);
 	}
 
 }

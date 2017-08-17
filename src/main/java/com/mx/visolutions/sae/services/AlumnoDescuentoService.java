@@ -12,5 +12,7 @@ public interface AlumnoDescuentoService {
 	public DescuentoForm findOne(Integer idBeca);
 	
 	public List<DescuentoForm> findListAlumno(Integer idAlumno);
+	
+	public void deleteDescuentoById(Integer idDescuento);
 
 }

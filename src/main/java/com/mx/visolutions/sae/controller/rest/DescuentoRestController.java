@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mx.visolutions.sae.dto.DescuentoForm;
 import com.mx.visolutions.sae.json.AlumnoDescuentoJson;
 import com.mx.visolutions.sae.json.JSon;
-import com.mx.visolutions.sae.services.AlumnoBecaService;
 import com.mx.visolutions.sae.services.AlumnoDescuentoService;
 
 @RestController
@@ -24,13 +23,10 @@ public class DescuentoRestController {
 	private static final Logger logger = LoggerFactory.getLogger(DescuentoRestController.class);
 	
 	
-	private AlumnoBecaService alumnoBecaService;
 	private AlumnoDescuentoService alumnoDescuentoService;
 	
 	@Autowired
-	public DescuentoRestController(AlumnoBecaService alumnoBecaService, 
-			AlumnoDescuentoService alumnoDescuentoService){
-		this.alumnoBecaService = alumnoBecaService;
+	public DescuentoRestController(AlumnoDescuentoService alumnoDescuentoService){
 		this.alumnoDescuentoService = alumnoDescuentoService;
 	}
 	
@@ -53,11 +49,27 @@ public class DescuentoRestController {
 			json.setId(form.getDescuentoId());
 			json.setInicio(form.getFechaInicio());
 			json.setDescuento(form.getMonto());
-			json.setUrlBorrar("/descuento/alumno/borrar/"+form.getDescuentoId());
+			json.setUrlBorrar("/descuento/delete/"+form.getDescuentoId());
 			
 			lst.add(json);
 		}
 		
+		value.setData(lst);
+		
+		return value;
+	}
+	
+	@RequestMapping(value="/delete/{idDescuento}", method = RequestMethod.GET)
+	public JSon deleteBeca(@PathVariable("idDescuento") Integer idDescuento){
+		
+		logger.debug("Eliminando descuento: " + idDescuento);
+		
+		JSon value = new JSon();
+		List<Boolean> lst = new ArrayList<Boolean>();
+		lst.add(true);
+		
+		alumnoDescuentoService.deleteDescuentoById(idDescuento);
+				
 		value.setData(lst);
 		
 		return value;

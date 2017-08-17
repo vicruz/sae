@@ -38,6 +38,37 @@ $(document).ready(function() {
                 ]
     } );
 	
+	//Evento de eliminar beca
+	$('#becasTable tbody').on( 'click', 'a', function () {
+    	var objTabla = $(this).parents('tr');
+        var values = becaDataTable.row( objTabla ).data();
+        var idx = becaDataTable.row( objTabla ).index();
+        console.log(values);
+        
+        $.prompt("Desea eliminar la beca del alumno?", {
+    		title: "Eliminar Beca",
+    		buttons: { "SI": true, "NO": false },
+    		submit: function(e,v,m,f){
+    			if(v){
+    				 $.ajax({
+    					 url: elPath + values.urlBorrar,
+    					 type: "GET",
+    					 success: function( data, textStatus, jQxhr ){
+            					console.log("becaDataTable: "+data);
+            					becaDataTable.ajax.reload();
+            					$.prompt("La beca se ha eliminado",{
+            						title: "Actualizado!"
+            					});
+            			}
+            		});
+    			}
+    		}
+    	});
+        
+        
+    } );
+	
+	
 	descuentoDataTable = $('#descuentosTable').DataTable( {
         "language": {
         	"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
@@ -65,7 +96,35 @@ $(document).ready(function() {
                 ]
     } );
 	
-	//descuentoDataTable.ajax.reload();
+	//Evento de eliminar descuento
+	$('#descuentosTable tbody').on( 'click', 'a', function () {
+    	var objTabla = $(this).parents('tr');
+        var values = descuentoDataTable.row( objTabla ).data();
+        var idx = descuentoDataTable.row( objTabla ).index();
+        console.log(values);
+        
+        $.prompt("Desea eliminar el descuento del alumno?", {
+    		title: "Eliminar Descuento",
+    		buttons: { "SI": true, "NO": false },
+    		submit: function(e,v,m,f){
+    			if(v){
+    				 $.ajax({
+    					 url: elPath + values.urlBorrar,
+    					 type: "GET",
+    					 success: function( data, textStatus, jQxhr ){
+            					console.log("descuentoDataTable: "+data);
+            					descuentoDataTable.ajax.reload();
+            					$.prompt("El descuento se ha eliminado",{
+            						title: "Actualizado!"
+            					});
+            			}
+            		});
+    			}
+    		}
+    	});
+        
+        
+    } );
 		
 } );
 
