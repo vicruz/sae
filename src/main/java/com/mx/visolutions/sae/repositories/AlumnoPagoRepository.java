@@ -41,16 +41,23 @@ public interface AlumnoPagoRepository extends JpaRepository<AlumnoPago, Integer>
     join pago_grado pg on ap.id_pago_grado = pg.id
     join cat_pagos cp on pg.id_pago = cp.id
 	where cp.genera_adeudo = 1
-    and cp.pago_unico = 0
     and ap.id_semaforo = 3
 	and ap.fecha_limite < sysdate()
 	*/
 	@Query("Select ap from AlumnoPago ap "
 			+ "join ap.pagoGrado pg "
 			+ "join pg.catPago cp "
-			+ "where cp.generaAdeudo = 1 and cp.pagoUnico = 0 "
+			+ "where cp.generaAdeudo = 1 "
 			+ "and ap.idSemaforo = ?1 and ap.fechaLimite < ?2")
 	List<AlumnoPago> findPagoLimitExceed(Integer idSemaforo, Date today);
+	
+	@Query("Select ap from AlumnoPago ap "
+			+ "join ap.pagoGrado pg "
+			+ "join pg.catPago cp "
+			+ "where cp.generaAdeudo = 1 "
+			+ "and (ap.idSemaforo = ?1 or ap.idSemaforo = ?2) "
+			+ "and ap.fechaLimite < ?3")
+	List<AlumnoPago> findPagoLimitExceed2(Integer idSemaforo, Integer idSemaforo2, Date today);
 	
 	
 	List<AlumnoPago> findByPagoGradoAndFechaLimite(PagoGrado pagoGrado, Date fechaLimite);

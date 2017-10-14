@@ -178,8 +178,8 @@
 				<th>idAlumno</th>
 				<th>Concepto</th>
 				<th>Monto a pagar</th>
-				<th>Pago</th>
 				<th>Fecha L&iacute;mite</th>
+				<th>Pago</th>
 				<th>Fecha de pago</th>
 				<th>Estatus</th>
 				<th>Editar</th>
@@ -191,8 +191,8 @@
 				<th>idAlumno</th>
 				<th>Concepto</th>
 				<th>Monto a pagar</th>
-				<th>Pago</th>
 				<th>Fecha L&iacute;mite</th>
+				<th>Pago</th>
 				<th>Fecha de pago</th>
 				<th>Estatus</th>
 				<th>Editar</th>

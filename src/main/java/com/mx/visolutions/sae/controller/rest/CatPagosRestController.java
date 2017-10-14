@@ -18,6 +18,7 @@ import com.mx.visolutions.sae.json.JSon;
 import com.mx.visolutions.sae.services.CatPagosService;
 import com.mx.visolutions.sae.services.PagoGradoService;
 //import com.mx.visolutions.sae.services.PagoGradoService;
+import com.mx.visolutions.sae.util.MyUtil;
 
 @RestController
 @RequestMapping(path="/catpagos")
@@ -85,6 +86,32 @@ public class CatPagosRestController {
         int año = fecha.get(Calendar.YEAR);
         
 		return String.valueOf(año);
+	}
+	
+	@RequestMapping(path="/add", method = RequestMethod.POST)
+	public String addPay(){
+		//Agrega pagos
+/*
+		try {
+			catPagosService.addNuevoPago(catPagosForm);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+*/
+		return "";
+	}
+	
+	@RequestMapping(path="/modify", method = RequestMethod.POST)
+	public String modifyPay(){
+		//Agrega pagos
+/*
+		try {
+			catPagosService.addNuevoPago(catPagosForm);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+*/
+		return "";
 	}
 	
 

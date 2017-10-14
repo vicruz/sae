@@ -28,7 +28,6 @@ $(document).ready(function() {
 		            { "data": "idAlumno", visible: false, searchable: false },
 		            { "data": "concepto" },
 		            { "data": "monto", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
-		            { "data": "pago", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
 		            { "data": "fechaLimite",
                     	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                     		if(oData.estatus.includes("Pagado")){
@@ -41,6 +40,7 @@ $(document).ready(function() {
                     		
                         }
 		            },
+		            { "data": "pago", render: $.fn.dataTable.render.number( ',', '.', 2, '$' ) },
 		            { "data": "fecha" },
 		            { "data": "estatus" },
 		            { "data": "editar" }

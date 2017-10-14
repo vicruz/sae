@@ -14,7 +14,7 @@ import com.mx.visolutions.sae.services.AlumnoPagoService;
 @Component
 public class SchedulePayments {
 
-	private static final Logger log = LoggerFactory.getLogger(ScheduledTasksTest.class);
+	private static final Logger log = LoggerFactory.getLogger(SchedulePayments.class);
 	private AlumnoPagoService alumnoPagoService;
 	
 	@Autowired
@@ -24,7 +24,7 @@ public class SchedulePayments {
 	
 	//Se ejecuta todos los dias a las 00:10 a.m.
 	//@Scheduled(cron="0 10 0 * * *")
-	@Scheduled(cron="0 0/5 * * * *") //Para debug, cada 5 minutos
+	@Scheduled(cron="0 10 0 * * *") //Para debug, cada 5 minutos
     public void updatePayments() {
         log.info("Iniciando la busqueda de pagos vencidos: " + Calendar.getInstance().getTime());
         alumnoPagoService.updateMontoFechaExceed();

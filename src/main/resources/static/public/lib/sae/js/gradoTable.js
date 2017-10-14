@@ -4,6 +4,7 @@ $(document).ready(function() {
     	        "language": {
     	        	"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
     	        },
+    	        "pageLength": 20,
     	    	"dom": "Bfrtip",
     	        "buttons": [
     	                    "excel", "pdf", "print"
