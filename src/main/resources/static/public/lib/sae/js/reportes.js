@@ -16,8 +16,30 @@ function generaReporte(){
 		
 }
 
+function generaReporteAdeudos(){
+	var dateInicio = document.getElementById('datepickerInicioAdeudo').value;
+	var dateFin = document.getElementById('datepickerFinAdeudo').value;
+	
+	if(dateInicio == ''){
+		alert("Selecciona una fecha");
+		return;
+	}
+	
+	var link = document.createElement("a");
+    link.download = 'x';
+    link.href = elPath +"/reporte/adeudos/fechas/"+dateInicio+"/"+dateFin;
+    link.click();
+		
+}
+
 $( function() {
 	$( "#datepicker" ).datepicker({todayHighlight: true, format: "dd-mm-yyyy",weekStart: 0,language: "es",
+	    daysOfWeekDisabled: "0,6",
+	    autoclose: true });
+  } );
+
+$( function() {
+	$( "#datepickerAdeudo" ).datepicker({todayHighlight: true, format: "dd-mm-yyyy",weekStart: 0,language: "es",
 	    daysOfWeekDisabled: "0,6",
 	    autoclose: true });
   } );

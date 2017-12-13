@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mx.visolutions.sae.dto.AlumnoForm;
 import com.mx.visolutions.sae.entities.Alumno;
+import com.mx.visolutions.sae.json.AlumnoJson;
 import com.mx.visolutions.sae.json.JSon;
 
 public interface AlumnoService {
@@ -29,4 +30,6 @@ public interface AlumnoService {
 	public void changeEstatusByAlumno(int activo, int alumnoId);
 	
 	public List<Alumno> findByGradoAndActivo(Integer idGrado);
+	
+	public List<AlumnoJson> findActivos();
 }

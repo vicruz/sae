@@ -17,7 +17,7 @@
 	
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h3 class="panel-title">Periodo</h3>
+			<h3 class="panel-title">Reporte de Pagos</h3>
 		</div>
 		
 		<div class="panel-body">
@@ -27,6 +27,21 @@
     			<input type="text" id="datepickerFin" class="form-control" name="end" placeholder="DD-MM-AAAA" readonly/>
 			</div>
 			<button type="button" onclick="generaReporte()" class="btn btn-info pull-right">Generar Reporte</button>
+		</div>
+	</div>
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Reporte de Adeudos</h3>
+		</div>
+		
+		<div class="panel-body">
+			<div class="input-daterange input-group" id="datepickerAdeudo">
+    			<input type="text" id="datepickerInicioAdeudo" class="form-control" name="start" placeholder="DD-MM-AAAA" readonly/>
+    			<span class="input-group-addon">A</span>
+    			<input type="text" id="datepickerFinAdeudo" class="form-control" name="end" placeholder="DD-MM-AAAA" readonly/>
+			</div>
+			<button type="button" onclick="generaReporteAdeudos()" class="btn btn-info pull-right">Generar Reporte</button>
 		</div>
 	</div>
 

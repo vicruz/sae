@@ -210,4 +210,22 @@ public class AlumnoServiceImpl implements AlumnoService {
 		return alumnoRepository.findByGradoAndActivo(grado,Constantes.ESTATUS_ACTIVO);
 	}
 
+	@Override
+	public List<AlumnoJson> findActivos() {
+		List<AlumnoJson> lstAlumnoJson = new ArrayList<>();
+		AlumnoJson alumnoJson;
+		List<Alumno> lstAlumno = alumnoRepository.findByActivo(Constantes.ESTATUS_ACTIVO);
+		
+		for(Alumno alumno : lstAlumno){
+			alumnoJson = new AlumnoJson();
+			alumnoJson.setNombre(alumno.getNombre());
+			alumnoJson.setApPaterno(alumno.getApPaterno());
+			alumnoJson.setApMaterno(alumno.getApMaterno());
+			alumnoJson.setId(alumno.getId());
+			lstAlumnoJson.add(alumnoJson);
+		}
+		
+		return lstAlumnoJson;
+	}
+
 }

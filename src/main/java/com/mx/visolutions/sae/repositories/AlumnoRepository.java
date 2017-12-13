@@ -26,4 +26,6 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Integer> {
 	
 	//@Query("Select al from Alumno al join al.grado gr where gr.id = ?1 and al.activo = ?2")
 	List<Alumno> findByGradoAndActivo(Grado grado, int activo);
+	
+	List<Alumno> findByActivo(int activo);
 }

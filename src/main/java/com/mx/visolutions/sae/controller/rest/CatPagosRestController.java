@@ -83,9 +83,9 @@ public class CatPagosRestController {
 	@RequestMapping(path="/getAnio", method = RequestMethod.GET)
 	public String getAnio(){
 		Calendar fecha = Calendar.getInstance();
-        int año = fecha.get(Calendar.YEAR);
+        int anio = fecha.get(Calendar.YEAR);
         
-		return String.valueOf(año);
+		return String.valueOf(anio);
 	}
 	
 	@RequestMapping(path="/add", method = RequestMethod.POST)

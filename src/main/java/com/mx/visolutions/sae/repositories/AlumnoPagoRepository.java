@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mx.visolutions.sae.entities.AlumnoPago;
 import com.mx.visolutions.sae.entities.PagoGrado;
+import com.mx.visolutions.sae.entities.vo.AlumnoAdeudoVO;
 
 public interface AlumnoPagoRepository extends JpaRepository<AlumnoPago, Integer>{
 
@@ -72,6 +73,37 @@ public interface AlumnoPagoRepository extends JpaRepository<AlumnoPago, Integer>
 	@Transactional
 	@Query("delete from AlumnoPago ap where ap.idPagoGrado = ?1")
 	void deleteInBulkByPagoGradoId(Integer idPagoGrado);
+	
+	//Encuentra los adeudos por alumno
+	/*select apago.id, cpago.concepto, pgrado.anio_corresponde, 
+	pgrado.mes_corresponde, apago.monto, apago.pago, apago.fecha_limite, apago.id_semaforo 
+	from alumno_pago apago
+	join pago_grado pgrado on apago.id_pago_grado = pgrado.id
+	join cat_pagos cpago on pgrado.id_pago = cpago.id
+	where apago.id_semaforo in (2,3);
+	 */
+	@Query("Select new com.mx.visolutions.sae.entities.vo.AlumnoAdeudoVO("
+			+ "apago.id, cpago.concepto, pgrado.anio_corresponde, pgrado.mes_corresponde, "
+			+ "apago.monto, apago.pago, apago.fechaLimite, apago.idSemaforo) "
+			+ "from AlumnoPago apago "
+			+ "join apago.pagoGrado pgrado "
+			+ "join pgrado.catPago cpago "
+			+ "where apago.idAlumno = ?1 "
+			+ "and apago.idSemaforo in (2,3) "
+			+ "and apago.fechaLimite between ?2 and ?3 "
+			+ "order by apago.fechaLimite")
+	public List<AlumnoAdeudoVO> findDebthsXAlumno(Integer idAlumno, Date initDate, Date endDate);
+	
+	@Query("Select new com.mx.visolutions.sae.entities.vo.AlumnoAdeudoVO("
+			+ "apago.id, cpago.concepto, pgrado.anio_corresponde, pgrado.mes_corresponde, "
+			+ "apago.monto, apago.pago, apago.fechaLimite, apago.idSemaforo) "
+			+ "from AlumnoPago apago "
+			+ "join apago.pagoGrado pgrado "
+			+ "join pgrado.catPago cpago "
+			+ "where apago.fechaLimite between ?1 and ?2 "
+			+ "and apago.idSemaforo in (2,3) "
+			+ "order by apago.fechaLimite")
+	public List<AlumnoAdeudoVO> findAllDebths(Date initDate, Date endDate);
 	
 	
 }
